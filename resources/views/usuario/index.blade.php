@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 <script src ="{{ asset('plugins/jQuery/jQuery-3.1.0.min.js') }}" type = "text/javascript" ></script>
-<script src=" {{ asset('js/Equipamento/equipamento.js') }} "> </script>
+<script src=" {{ asset('js/Usuario/usuarios.js') }} "> </script>
 
 <!-- DataTables -->
 <script src="{{ asset('plugins/datatables/jquery.dataTables.js') }}" type = "text/javascript"></script>
@@ -18,12 +18,13 @@
 				
 			   <thead>
 					<tr>
+						 <th>Id</th>
 						 <th>Nome</th>
-						 <th>Nº tombo</th>
-						 <th>Código</th>
+						 <th>E-mail</th>
+						 <th>Função</th>
+						 <th>Telefone</th>
+						 <th>Rua</th>
 						 <th>Status</th>
-						 <th>Tipo</th>
-						 <th>Marca</th>
 						 <th>Ação</th>
 					 </tr>
 				</thead>

@@ -10,22 +10,16 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', 'HomeController@index');
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::group(['prefix'=> 'users', 'where'=>['id'=>'0-9+']], function () {
-    //    Route::get('/link1', function ()    {
-//        // Uses Auth Middleware
-//    });
-
-    //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
-    #adminlte_routes
-    Route::get('', ['as' => 'users.index', 'uses' => 'UserController@index']);
+    
+//Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.    #adminlte_routes
+Route::get('', ['as' => 'users.index', 'uses' => 'UserController@index']);
         Route::get('/list',['as' => 'users.list', 'uses' => 'UserController@listar']);
         Route::post('/create', ['as' => 'users.store', 'uses' => 'UserController@store']);
-        Route::post('/edit', ['as' => 'users.update', 'uses' => 'UserController@update']);
+        Route::get('/edit', ['as' => 'users.update', 'uses' => 'UserController@update']);
         Route::post('/delete', ['as' => 'users.destroy', 'uses' => 'UserController@destroy',]);
         Route::post('/ativar', ['as' => 'users.ativar', 'uses' => 'UserController@ativar',]);
         Route::get('/load', ['as' => 'users.load', 'uses' => 'UserController@loadPapeis']);

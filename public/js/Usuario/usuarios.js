@@ -4,7 +4,7 @@ $(document).ready(function($) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-
+    //tabela Usuarios
     var tabela = $('#table').DataTable({
             processing: true,
             serverSide: true,
@@ -12,11 +12,12 @@ $(document).ready(function($) {
             ajax: './users/list',
             columns: [
             { data: null, name: 'order' },
-            { data: 'num_tombo', name: 'num_tombo' },
-            { data: 'codigo', name: 'codigo'},
-            { data: 'status', name: 'status' },
-            { data: 'id_tipo_users', name: 'id_tipo_equipamento' },
-            { data: 'marca', name: 'marca' },
+            { data: 'name', name: 'name' },
+            { data: 'email', name: 'email'},
+            { data: 'funcao', name: 'funcao' },
+            { data: 'telefone', name: 'telefone'},
+            { data: 'rua', name: 'rua' },
+            { data: 'status', name: 'status'},
             { data: 'acao', name: 'acao' }
             ],
             createdRow : function( row, data, index ) {
@@ -62,12 +63,13 @@ $(document).ready(function($) {
             columnDefs : [
               { targets : [0,6], sortable : false },
               { "width": "5%", "targets": 0 }, //nº
-              { "width": "10%", "targets": 1 },//tombo
-              { "width": "10%", "targets": 2 },//tombo
-              { "width": "6%", "targets": 3 },//status
-              { "width": "15%", "targets": 4 },//tipo
-              { "width": "15%", "targets": 5 },//marca
-              { "width": "14%", "targets": 6 }//ação
+              { "width": "10%", "targets": 1 },//nome
+              { "width": "10%", "targets": 2 },//email
+              { "width": "6%", "targets": 3 },//função
+              { "width": "6%", "targets": 3 },//telefone
+              { "width": "14%", "targets": 4 },//Rua
+              { "width": "14%", "targets": 5 },//status
+              { "width": "14%", "targets": 6 },//ação
             ]
     });
 
