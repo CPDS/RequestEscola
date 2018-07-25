@@ -20,6 +20,7 @@ $(document).ready(function($) {
             { data: 'status', name: 'status'},
             { data: 'acao', name: 'acao' }
             ],
+           
             createdRow : function( row, data, index ) {
                 row.id = "item-" + data.id;   
             },
@@ -79,5 +80,19 @@ $(document).ready(function($) {
         });
     }).draw();
 
+    //Visualizar
+    $(document).on('click', '.btnVisualizar', function() {
+        
+        $('#nome-visualizar').text($(this).data('nome'));
+        $('#email-visualizar').text($(this).data('email'));
+        $('#funcao-visualizar').text($(this).data('funcao'));
+        $('#telefone-visualizar').text($(this).data('telefone'));
+        $('#rua-visualizar').text($(this).data('rua'));
+        $('#status-visualizar').text($(this).data('status'));
+        
+        jQuery('#visualizar-modal').modal('show');
+    });
+    
+    
 
  });

@@ -32,5 +32,5 @@
 			</table>
 		</div>
 	</div>
-    
+    @include('usuario.modals.visualizar')
     @endsection

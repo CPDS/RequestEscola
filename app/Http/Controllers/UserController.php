@@ -19,15 +19,21 @@ class UserController extends Controller
 
     //Função para criar botões 
     private function setDataButtons(User $usuario){
-
-         $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'" data-rua="'.$usuario->rua.'" data-numero="'.$usuario->numero.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'" data-status="'.$usuario->status.'"';
+        if($usuario->status)
+            $status = 'Ativo';
+        else
+            $status = 'Inativo';
+        
+         $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'"
+          data-rua="'.$usuario->rua.'" data-numero="'.$usuario->numero.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'"
+           data-status="'.$status.'"';
 
         $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados .' title="Visualizar" data-toggle="tooltip" ><i class="fa fa-eye"></i></a>';
         $btnEditar = ' <a  data-id="'.$usuario->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip" ><i class="fa fa- fa-pencil-square-o"></i></a> ';
         $btnExcluir = ' <a  data-id="'.$usuario->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip" ><i class="fa fa-trash-o"></i> </a> ';
         
         //caso status do úsuario seja inativo
-        if(!$usuario->status){
+        if(!$status){
             $btnAtivar = '<a  data-id="'.$usuario->id.'" class="btn btn-warning btnAtivar" '. $dados .' title="Ativar Usúário" data-toggle="tooltip" ><i class="fa fa-user-plus"> </i></a>';
             return $btnVisualizar.$btnEditar.$btnExcluir.$btnAtivar;
         }else{
