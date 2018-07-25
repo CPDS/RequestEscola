@@ -43,7 +43,7 @@ class UserController extends Controller
         
     }
 
-
+    //Função listar
     public function listar()
     {
         $usuario = User::all();
@@ -114,7 +114,7 @@ class UserController extends Controller
     //Função para atualizar dados do Usuário
     public function update(Request $request){
         $usuario = User::find($request->id);
-
+        
         
     }
 
