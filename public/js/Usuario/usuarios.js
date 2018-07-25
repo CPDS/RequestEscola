@@ -93,6 +93,32 @@ $(document).ready(function($) {
         jQuery('#visualizar-modal').modal('show');
     });
     
-    
+    // Editar
+    $(document).on('click', '.btnEditar', function() {
+        
+        $('.modal-footer .btn-action').removeClass('add');
+        $('.modal-footer .btn-action').addClass('edit');
+        $('.modal-body .senha').addClass("hidden");
+        $('.modal-title').text('Editar Usuário');
+        $('.callout').addClass("hidden"); //ocultar a div de aviso
+        $('.callout').find("p").text(""); //limpar a div de aviso
 
- });
+        var btnEditar = $(this);
+
+        $('#form :input').each(function(index,input){
+            $('#'+input.id).val($(btnEditar).data(input.id));
+        });
+
+        
+        jQuery('#editar-modal').modal('show'); //Abrir o modal
+    });
+
+    //Excluir
+    $(document).on('click', '.btnExcluir', function() {
+        
+        $('.modal-title').text('Excluir Usuário');
+        $('.id_del').val($(this).data('id')); 
+        jQuery('#excluir-modal').modal('show'); //Abrir o modal
+    });
+
+});

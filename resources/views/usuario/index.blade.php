@@ -32,5 +32,9 @@
 			</table>
 		</div>
 	</div>
-    @include('usuario.modals.visualizar')
-    @endsection
+    
+@include('usuario.modals.editar')
+@include('usuario.modals.excluir')
+@include('usuario.modals.visualizar')
+
+@endsection
