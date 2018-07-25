@@ -19,6 +19,7 @@ class UserController extends Controller
 
     //Função para criar botões 
     private function setDataButtons(User $usuario){
+        
         if($usuario->status)
             $status = 'Ativo';
         else
