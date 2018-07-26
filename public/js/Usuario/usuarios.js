@@ -70,7 +70,7 @@ $(document).ready(function($) {
               { "width": "6%", "targets": 3 },//telefone
               { "width": "14%", "targets": 4 },//Rua
               { "width": "14%", "targets": 5 },//status
-              { "width": "14%", "targets": 6 },//ação
+              { "width": "10%", "targets": 6 },//ação
             ]
     });
 

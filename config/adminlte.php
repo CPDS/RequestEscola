@@ -39,6 +39,10 @@ return [
     | The name of the seeder to add admin user to database.
     */
 
-    'AdminUserSeeder' => 'AdminUserSeeder.php'
+    'AdminUserSeeder' => 'AdminUserSeeder.php',
+    'title' =>  'Request Escola',
+    'title_prefix'  =>  'Request',
+    'title_postfix' =>  'Escola',
+    'htmlheader_title'  =>  'Request - Escola'
 
 ];

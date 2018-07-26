@@ -36,7 +36,7 @@ class UserController extends Controller
         $btnExcluir = ' <a data-id="'.$usuario->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i> </a> ';
         
         //caso status do úsuario seja inativo
-        if(!$status){
+        if(!$usuario->status){
             $btnAtivar = '<a data-id="'.$usuario->id.'" class="btn btn-warning btnAtivar" '. $dados .' title="Ativar Usúário" data-toggle="tooltip" ><i class="fa fa-user-plus"> </i></a>';
             return $btnVisualizar.$btnEditar.$btnExcluir.$btnAtivar;
         }else{
