@@ -1,13 +1,12 @@
 <?php
 
 
-
 Route::get('/', 'HomeController@index');
 Route::auth();
 
 Route::group(['middleware' => ['auth']], function() {
 	//Rotas de Usuário
-	Route::group(['prefix'=> 'users', 'where'=>['id'=>'0-9+']], function () {
+	Route::group(['prefix'=> 'users', 'where'=>['id'=>'0-9+'],'middleware' => ['role:Administrador']], function () {
 		Route::get('', ['as' => 'users.index', 'uses' => 'UserController@index']);
 	    Route::get('/list',['as' => 'users.list', 'uses' => 'UserController@listar']);
 	    Route::post('/create', ['as' => 'users.store', 'uses' => 'UserController@store']);
@@ -17,6 +16,7 @@ Route::group(['middleware' => ['auth']], function() {
 	    Route::get('/load', ['as' => 'users.load', 'uses' => 'UserController@loadPapeis']);
 	    Route::get('/loadName', ['as' => 'users.loadName', 'uses' => 'UserController@loadNomePapel']);
 	});
+
 });
 
 

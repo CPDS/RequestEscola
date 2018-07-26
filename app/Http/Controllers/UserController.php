@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
-use DB;
+use App\Http\Requests;
+use Illuminate\Support\Facades\Input;
+use Validator;
+use Response;
 use DataTables;
-use Hash;
+use DB;
+use Auth;
+use App\User;
 
 class UserController extends Controller
 {
@@ -25,7 +29,7 @@ class UserController extends Controller
         else
             $status = 'Inativo';
         
-        $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'"
+            $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'"
           data-rua="'.$usuario->rua.'" data-numero="'.$usuario->numero.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'"
            data-status="'.$status.'"';
 
@@ -114,38 +118,22 @@ class UserController extends Controller
     }
 
     //Função para atualizar dados do Usuário
-    public function update(Request $request){
-        $usuario = User::find($request->id);
+    public function update(Request $request){ 
+        $rules = array(
+            'nome' => 'required',
+            'funcao' => 'required',
+            'telefone' => 'required',
+            'rua' => 'required',
+            'numero' => 'required',
+            'cidade' => 'required',
+            'estado' => 'required'
+        );
+        $validator = Validator::make(Input::all(), $rules);
         
-        if($usuario->email == null){
-            $rules = array(
-                'nome' => 'requered',
-                'funcao' => 'requered',
-                'telefone' => 'required',
-                'rua' => 'requered',
-                'numero' => 'requered',
-                'cidade' => 'requered',
-                'estado' => 'requered',
-            );
-        }else{
-            $rules = array(
-                'nome' => 'requered',
-                'funcao' => 'requered',
-                'email' => 'requered',
-                'telefone' => 'required',
-                'rua' => 'requered',
-                'numero' => 'requered',
-                'cidade' => 'requered',
-                'estado' => 'requered',
-            );
-        }
-
-        $validator = Validador::make(Input::all(),$rules);
-        $validator->setAttributeNames($attributeNames);
-
         if($validator->fails()){
             return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
         }else{
+            $usuario = User::find($request->id);
             $usuario->name = $request->nome;
             $usuario->email = $request->email;
             $usuario->funcao = $request->funcao;
@@ -154,7 +142,6 @@ class UserController extends Controller
             $usuario->numero = $request->numero;
             $usuario->cidade = $request->cidade;
             $usuario->estado = $request->estado;
-            $usuario->status = $request->status;
             $usuario->save();
 
             $usuario->setAttribute('buttons',$this->setDataButtons($usuario));

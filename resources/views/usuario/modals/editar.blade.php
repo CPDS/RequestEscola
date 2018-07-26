@@ -10,7 +10,7 @@
       <div class="modal-body">
 
         <div class="callout callout-danger hidden">
-                <p></p>
+              <p></p>
         </div>
 
 
@@ -28,12 +28,12 @@
             <div class="form-group col-md-12">
               <strong>Email:</strong>
               <div class="input-group">
-                  <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                  <input placeholder="Digite um email" maxlength="254" class="form-control" id="email" name="email" type="text">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                <input placeholder="Digite um email" maxlength="254" class="form-control" id="email" name="email" type="text">
               </div>
             </div>
 
-            <div class="form-group col-md-6 senha">
+            <!--<div class="form-group col-md-6 senha">
               <strong>Senha:</strong>
               <input placeholder="Digite uma senha" id="senha" maxlength="32" class="form-control" name="senha" type="password">
             </div>
@@ -41,43 +41,51 @@
             <div class="form-group col-md-6 senha ">
               <strong>Confirmar Senha:</strong>
               <input placeholder="Digite a senha novamente" maxlength="32" id="confirmarsenha" class="form-control"  name="confirmarsenha" type="password">
-            </div>
+            </div> -->
 
             <div class="form-group col-xs-6">
               <strong>Telefone:</strong>
               <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-                <input placeholder="Digite o telefone" id="telefone" maxlength="254" class="form-control" name="telefone" type="text">
-              </div>
+                <input placeholder="Digite o telefone" id="telefone" maxlength="254" class="form-control" name="telefone" type="text">              </div>
             </div>
+
             <div class="form-group col-md-6">
              <strong>Função:</strong>
                 <select name="funcao" id="funcao" class="form-control">
                   <option value='' selected disabled>Selecione ...</option>
-                  @role('Administrador')
+                  
                   <option value="1">Administrador</option> 
-                  @endrole
                   <option value="2">Secretário</option>
                   <option value="3">Coordenador</option> 
                   <option value="4">Estagiário</option> 
                   <option value="5">Professor</option>
                 </select>
             </div>
+
             <div class="form-group col-md-12">
-                    <strong>Rua:</strong>
-                    <div class="input-group">
-                      <span class="input-group-addon"><i class="material-icons md-18">add_location</i></span>
-                      <input placeholder="Digite o endereço" maxlength="254" id="rua" class="form-control" name="rua" type="text">
-                    </div>
+              <strong>Rua:</strong>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="material-icons md-18">add_location</i></span>
+                <input placeholder="Digite o endereço" maxlength="254" id="rua" class="form-control" name="rua" type="text">
+              </div>
             </div>
+            
             <div class="form-group col-md-6">
-                    <strong>Matrícula: (para professores)</strong>
-                    <input placeholder="Digite a matrícula" maxlength="254" id="matricula" class="form-control" name="matricula" type="text">
+                    <strong>Número</strong>
+                    <input placeholder="Número" maxlength="254" id="numero" class="form-control" name="numero" type="text">
             </div>
+
             <div class="form-group col-md-6">
-                    <strong>Departamento: (para professores)</strong>
-                    <input placeholder="Digite o departamento" maxlength="254" id="departamento" class="form-control" name="departamento" type="text">
+                    <strong>Cidade</strong>
+                    <input placeholder="Cidade" maxlength="254" id="cidade" class="form-control" name="cidade" type="text">
             </div>
+
+            <div class="form-group col-md-6">
+                    <strong>Estado</strong>
+                    <input placeholder="Estado" maxlength="254" id="estado" class="form-control" name="estado" type="text">
+            </div>
+
             <input type="hidden" id="id" name="id">
 
         </div> 
@@ -88,7 +96,7 @@
       </div> <!-- Fim de ModaL Body-->
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-action btn-success" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> &nbsp Aguarde...">
+        <button type="button" class="edit btn btn-action btn-success" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> &nbsp Aguarde...">
           <span class="glyphicon glyphicon-floppy-disk"> Salvar</span>
         </button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">

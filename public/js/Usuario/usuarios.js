@@ -121,4 +121,61 @@ $(document).ready(function($) {
         jQuery('#excluir-modal').modal('show'); //Abrir o modal
     });
 
+    
+    $('.modal-footer').on('click', '.edit', function() {
+        
+        var dados = new FormData($("#form")[0]); //pega os dados do form
+
+        $.ajax({
+            type: 'post',
+            url: "./users/edit",
+            data: dados,
+            processData: false,
+            contentType: false,
+            beforeSend: function(){
+                jQuery('.edit').button('loading');
+            },
+            complete: function() {
+                jQuery('.edit').button('reset');
+            },
+            success: function(data) {
+                 //Verificar os erros de preenchimento
+                if ((data.errors)){
+
+                    $('.callout').removeClass('hidden'); //exibe a div de erro
+                    $('.callout').find('p').text(""); //limpa a div para erros successivos
+
+                    $.each(data.errors, function(nome, mensagem) {
+                        $('.callout').find("p").append(mensagem + "</br>");
+                    });
+
+                }
+                else {
+                    
+                    $('#table').DataTable().draw(false);
+
+                    jQuery('#editar-modal').modal('hide');
+
+                    $(function() {
+                        iziToast.success({
+                            title: 'OK',
+                            message: 'Usuário Atualizado com Sucesso!',
+                        });
+                    });
+
+                }
+            },
+
+            error: function() {
+                jQuery('#editar-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+
+        });
+    });
+
 });
