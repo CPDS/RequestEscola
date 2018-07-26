@@ -117,7 +117,58 @@ class UserController extends Controller
     public function update(Request $request){
         $usuario = User::find($request->id);
         
-        
+        if($usuario->email == null){
+            $rules = array(
+                'nome' => 'requered',
+                'funcao' => 'requered',
+                'telefone' => 'required',
+                'rua' => 'requered',
+                'numero' => 'requered',
+                'cidade' => 'requered',
+                'estado' => 'requered',
+            );
+        }else{
+            $rules = array(
+                'nome' => 'requered',
+                'funcao' => 'requered',
+                'email' => 'requered',
+                'telefone' => 'required',
+                'rua' => 'requered',
+                'numero' => 'requered',
+                'cidade' => 'requered',
+                'estado' => 'requered',
+            );
+        }
+
+        $validator = Validador::make(Input::all(),$rules);
+        $validator->setAttributeNames($attributeNames);
+
+        if($validator->fails()){
+            return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
+        }else{
+            $usuario->name = $request->nome;
+            $usuario->email = $request->email;
+            $usuario->funcao = $request->funcao;
+            $usuario->telefone = $request->telefone;
+            $usuario->rua = $request->rua;
+            $usuario->numero = $request->numero;
+            $usuario->cidade = $request->cidade;
+            $usuario->estado = $request->estado;
+            $usuario->status = $request->status;
+            $usuario->save();
+
+            $usuario->setAttribute('buttons',$this->setDataButtons($usuario));
+            return response()->json($usuario);
+        }
+    }
+
+    //desativar Funcionário
+    public function destroy(Request $request){
+        $usuario = User::find($request->id);
+        $usuario->status = false;
+        $usuario->save();
+
+        return response()->json($usuario);
     }
 
 
