@@ -10,6 +10,7 @@
         <div class="login-box">
             <div class="login-logo">
                 <b>Request Escola</b>
+                <center><h5>Sistema de Reservas e Requisições</h5></center>
             </div><!-- /.login-logo -->
 
         @if (count($errors) > 0)
