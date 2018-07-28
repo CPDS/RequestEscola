@@ -113,17 +113,8 @@ $(document).ready(function($) {
         jQuery('#editar-modal').modal('show'); //Abrir o modal
     });
 
-    //Excluir
-    $(document).on('click', '.btnExcluir', function() {
-        
-        $('.modal-title').text('Excluir Usuário');
-        $('.id_del').val($(this).data('id')); 
-        jQuery('#excluir-modal').modal('show'); //Abrir o modal
-    });
-
-    
+    /*Evento ajax - EDITAR USUÁRIO*/
     $('.modal-footer').on('click', '.edit', function() {
-        
         var dados = new FormData($("#form")[0]); //pega os dados do form
 
         $.ajax({
@@ -174,8 +165,123 @@ $(document).ready(function($) {
                     message: 'Operação Cancelada!',
                 });
             },
-
         });
     });
 
+    //Excluir
+    $(document).on('click', '.btnExcluir', function() {
+        $('.modal-title').text('Excluir Usuário');
+        $('.id_del').val($(this).data('id')); 
+       
+        jQuery('#excluir-modal').modal('show'); //Abrir o modal
+    });
+
+
+    //Evento ajax - EXCLUIR USUÁRIO
+    $('.modal-footer').on('click', '.del', function() {
+        
+        $.ajax({
+            type: 'post',
+            url: './users/delete',
+            data: {
+                'id': $(".id_del").val(),
+            },
+            beforeSend: function(){
+                jQuery('.del').button('loading');
+            },
+            complete: function() {
+                jQuery('.del').button('reset');
+            },
+            success: function(data) {
+                $('#table').DataTable().row('#item-' + data.id).remove().draw(); //remove a linha e ordena
+                jQuery('#excluir-modal').modal('hide'); //fechar o modal
+
+                $(function() {
+
+                    iziToast.success({
+                        title: 'OK',
+                        message: 'Usuário Excluído com Sucesso!',
+                    });
+                });
+            },
+            error: function() {
+                jQuery('#excluir-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+        });
+    });
+
+    //Adicionar
+    $(document).on('click', '.btnAdicionar', function() {
+       
+        $('.modal-footer .btn-action').addClass('add');
+        $('.modal-body .senha').removeClass("hidden");
+        $('.modal-title').text('Novo Usuário');
+        $('.callout').addClass("hidden"); 
+        $('.callout').find("p").text(""); 
+
+        $('#form')[0].reset();
+
+        jQuery('#criar-modal').modal('show');
+    
+    });
+
+    //Evento ajax - ADICIONAR USUÁRIO
+    $('.modal-footer').on('click', '.add', function() {
+    var dados = new FormData($("#form")[0]); //pega os dados do form
+
+        $.ajax({
+            type: 'post',
+            url: "./users/create",
+            data: dados,
+            processData: false,
+            contentType: false,
+            beforeSend: function(){
+                jQuery('.add').button('loading');
+            },
+
+            complete: function() {
+                jQuery('.add').button('reset');
+            },
+
+            success: function(data) {
+                //Verificar os erros de preenchimento
+                if ((data.errors)) {
+
+                    $('.callout').removeClass('hidden'); //exibe a div de erro
+                    $('.callout').find('p').text(""); //limpa a div para erros successivos
+
+                    $.each(data.errors, function(nome, mensagem) {
+                            $('.callout').find("p").append(mensagem + "</br>");
+                    });
+                }
+                else {
+                    
+                    $('#table').DataTable().draw(false);
+
+                    jQuery('#criar_editar-modal').modal('hide');
+
+                    $(function() {
+                        iziToast.success({
+                            title: 'OK',
+                            message: 'Usuário Adicionado com Sucesso!',
+                        });
+                    });
+                }
+            },
+
+            error: function() {
+                jQuery('#criar_editar-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+        });
+    });
 });

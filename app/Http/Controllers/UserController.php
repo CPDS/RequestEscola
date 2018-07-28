@@ -33,44 +33,43 @@ class UserController extends Controller
           data-rua="'.$usuario->rua.'" data-numero="'.$usuario->numero.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'"
            data-status="'.$status.'"';
 
-        $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
+            $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
 
-        $btnEditar = ' <a data-id="'.$usuario->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a> ';
+            $btnEditar = ' <a data-id="'.$usuario->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
 
-        $btnExcluir = ' <a data-id="'.$usuario->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i> </a> ';
-        
-        //caso status do úsuario seja inativo
-        if(!$usuario->status){
-            $btnAtivar = '<a data-id="'.$usuario->id.'" class="btn btn-warning btnAtivar" '. $dados .' title="Ativar Usúário" data-toggle="tooltip" ><i class="fa fa-user-plus"> </i></a>';
-            return $btnVisualizar.$btnEditar.$btnExcluir.$btnAtivar;
-        }else{
-            return $btnVisualizar.$btnEditar.$btnExcluir;
+            $btnExcluir = ' <a data-id="'.$usuario->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
+            
+            //caso status do úsuario seja inativo
+            if(!$usuario->status){
+                $btnAtivar = '<a data-id="'.$usuario->id.'" class="btn btn-warning btnAtivar" '. $dados .' title="Ativar Usúário" data-toggle="tooltip" ><i class="fa fa-user-plus"> </i></a>';
+                return $btnVisualizar.$btnEditar.$btnExcluir.$btnAtivar;
+            }else{
+                return $btnVisualizar.$btnEditar.$btnExcluir;
+            }
+
         }
-        
-    }
 
-    //Função listar
-    public function listar()
-    {
-        $usuario = User::all();
-        
-        return Datatables::of($usuario)
-        ->editColumn('acao',function($usuario){
-            return $this->setDataButtons($usuario);
-        })
-        ->editColumn('status',function($usuario){
-            if($usuario->status)
-                return "<span class='label label-success' style='font-size:14px'>Ativo</span>";
-            else
-                return "<span class='label label-default' style='font-size:14px'>Inativo</span>";
-        })->escapeColumns([0])
-        ->make(true);
-    }
+        //Função listar
+        public function listar(){
+            $usuario = User::all();
+            
+            return Datatables::of($usuario)
+            ->editColumn('acao',function($usuario){
+                return $this->setDataButtons($usuario);
+            })
+            ->editColumn('status',function($usuario){
+                if($usuario->status)
+                    return "<span class='label label-success' style='font-size:14px'>Ativo</span>";
+                else
+                    return "<span class='label label-default' style='font-size:14px'>Inativo</span>";
+            })->escapeColumns([0])
+            ->make(true);
+        }
 
     //função para Cadastrar usuários
     public function store(Request $request){
 
-         $rules = array(
+        $rules = array(
             'nome' => 'required',
             'email' => 'required|email|unique:users,email',
             'senha' => 'required|min:8|same:confirmarsenha',
@@ -152,7 +151,7 @@ class UserController extends Controller
     //desativar Funcionário
     public function destroy(Request $request){
         $usuario = User::find($request->id);
-        $usuario->status = false;
+        $usuario->status = false;       //  Tem um erro aqui
         $usuario->save();
 
         return response()->json($usuario);
