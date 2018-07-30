@@ -11,6 +11,7 @@ use DataTables;
 use DB;
 use Auth;
 use App\User;
+use Hash;
 
 class UserController extends Controller
 {
@@ -62,7 +63,16 @@ class UserController extends Controller
                     return "<span class='label label-success' style='font-size:14px'>Ativo</span>";
                 else
                     return "<span class='label label-default' style='font-size:14px'>Inativo</span>";
-            })->escapeColumns([0])
+            })
+            ->editColumn('funcao', function($usuario){
+                if($usuario->funcao == 1)
+                    return "Administrador";
+                else if($usuario->funcao == 2)
+                    return "Funcionário";
+                else
+                    return "Professor";
+            })
+            ->escapeColumns([0])
             ->make(true);
         }
 
@@ -79,6 +89,7 @@ class UserController extends Controller
             'numero' => 'required',
             'cidade' => 'required',
             'estado' => 'required',
+            'funcao' => 'required',
         );
 
         $attributeNames = array(
@@ -153,9 +164,14 @@ class UserController extends Controller
         $usuario = User::find($request->id);
         $usuario->status = false;       //  Tem um erro aqui
         $usuario->save();
-
         return response()->json($usuario);
     }
-
+    //Ativar Usuário
+    public function ativar(Request $request){
+        $usuario = User::find($request->id);
+        $usuario->status = true;
+        $usuario->save;
+        return response()->json($usuario);
+    }
 
 }

@@ -11,7 +11,7 @@ Route::group(['middleware' => ['auth']], function() {
 	    Route::get('/list',['as' => 'users.list', 'uses' => 'UserController@listar']);
 	    Route::post('/create', ['as' => 'users.store', 'uses' => 'UserController@store']);
 	    Route::post('/edit', ['as' => 'users.update', 'uses' => 'UserController@update']);
-	    Route::get('/delete', ['as' => 'users.destroy', 'uses' => 'UserController@destroy',]);
+	    Route::post('/delete', ['as' => 'users.destroy', 'uses' => 'UserController@destroy',]);
 	    Route::post('/ativar', ['as' => 'users.ativar', 'uses' => 'UserController@ativar',]);
 	    Route::get('/load', ['as' => 'users.load', 'uses' => 'UserController@loadPapeis']);
 	    Route::get('/loadName', ['as' => 'users.loadName', 'uses' => 'UserController@loadNomePapel']);
