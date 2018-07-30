@@ -170,7 +170,7 @@ $(document).ready(function($) {
 
     //Excluir
     $(document).on('click', '.btnExcluir', function() {
-        $('.modal-title').text('Excluir Usuário');
+        $('.modal-title').text('Desativar Usuário');
         $('.id_del').val($(this).data('id')); 
        
         jQuery('#excluir-modal').modal('show'); //Abrir o modal
@@ -200,7 +200,7 @@ $(document).ready(function($) {
 
                     iziToast.success({
                         title: 'OK',
-                        message: 'Usuário Excluído com Sucesso!',
+                        message: 'Usuário Desativado com Sucesso!',
                     });
                 });
             },

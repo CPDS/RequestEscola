@@ -39,7 +39,6 @@
                 <a href="#"><i class='fa fa-user'></i> <span>Gestão de Usuários</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="{{ url('users') }}">Usuários</a></li>
-                    <li><a href="#">Tipos de Usuários</a></li>
                 </ul>
             </li>
 
