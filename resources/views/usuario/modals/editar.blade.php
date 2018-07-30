@@ -57,7 +57,11 @@
                   
                   <option value="1">Administrador</option> 
                   <option value="2">Secretário</option>
+<<<<<<< HEAD
+                  <option value="3">Professor</option> 
+=======
                   <option value="3">Professor</option>
+>>>>>>> f9225b8c36de376d3c61b7b2dd41ff0c7d0b352f
                 </select>
             </div>
 

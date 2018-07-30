@@ -10,10 +10,10 @@
         <span aria-hidden="true">&times;</span>
         </button>
 
-        <h4 class="modal-title"><strong>Excluir</strong></h4>
+        <h4 class="modal-title"><strong>Desativar usuário</strong></h4>
       </div>
 
-      <div class="modal-body"> Tem certeza que deseja excluir? </div>
+      <div class="modal-body"> Tem certeza que deseja desativar este usuário? </div>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-primary del" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> &nbsp Aguarde...">OK</button>

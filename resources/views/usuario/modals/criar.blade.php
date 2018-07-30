@@ -50,6 +50,7 @@
                 <input placeholder="Digite o telefone" id="telefone" maxlength="254" class="form-control" name="telefone" type="text">
               </div>
             </div>
+
             <div class="form-group col-md-6">
              <strong>Função:</strong>
                 <select name="funcao" id="funcao" class="form-control">
@@ -61,6 +62,7 @@
                   <option value="3">Professor</option> 
                 </select>
             </div>
+            
             <div class="form-group col-md-12">
                     <strong>Rua:</strong>
                     <div class="input-group">
