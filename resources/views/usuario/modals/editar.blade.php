@@ -57,9 +57,7 @@
                   
                   <option value="1">Administrador</option> 
                   <option value="2">Secretário</option>
-                  <option value="3">Coordenador</option> 
-                  <option value="4">Estagiário</option> 
-                  <option value="5">Professor</option>
+                  <option value="3">Professor</option>
                 </select>
             </div>
 

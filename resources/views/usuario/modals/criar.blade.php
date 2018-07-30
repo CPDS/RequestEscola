@@ -59,8 +59,6 @@
                   @endrole
                   <option value="2">Secretário</option>
                   <option value="3">Professor</option> 
-                  <option value="4">Estagiário</option> 
-                  <option value="5">Professor</option>
                 </select>
             </div>
             <div class="form-group col-md-12">
