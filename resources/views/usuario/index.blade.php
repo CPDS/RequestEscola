@@ -13,19 +13,18 @@
 
 @section('main-content')
 
-
 	<div class="row">
-			<div class="col-lg-12 margin-tb">
-				<div class="pull-left">
-					<h2> <i class="fa fa-users"></i> Usuários</h2>
-				</div>
-
-				<br><br><br>	
-
-				<div class="pull-right">
-					<a class="btn btn-primary btnAdicionar" title="Novo Usuário" data-toggle="tooltip"><span class="fa fa- fa-user-plus"></span> Novo Usuário</a>
-				</div>
+		<div class="col-lg-12 margin-tb">
+			<div class="pull-left">
+				<h2><i class="fa fa-users"></i> Usuários</h2>
 			</div>
+
+			<br><br><br>	
+
+			<div class="pull-right">
+				<a class="btn btn-primary btnAdicionar" title="Novo Usuário" data-toggle="tooltip"><span class="fa fa- fa-user-plus"></span> Novo Usuário</a>
+			</div>
+		</div>
 	</div>
 
 	<br>
@@ -33,7 +32,6 @@
 	<div class="box">
 		<div class="box-body">
 			<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
-				
 			   <thead>
 					<tr>
 						 <th>Id</th>
@@ -48,8 +46,9 @@
 				</thead>
 			</table>
 		</div>	
-	@include('usuario.modals.editar')
+	
 	</div>
+	@include('usuario.modals.editar')
 	@include('usuario.modals.criar')
 	@include('usuario.modals.excluir')
 	@include('usuario.modals.visualizar')

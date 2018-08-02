@@ -47,7 +47,6 @@
                     </ul>
                 </li><!-- /.messages-menu -->
 
-
                 @if (Auth::guest())
                     <li><a href="{{ url('/register') }}">{{ trans('adminlte_lang::message.register') }}</a></li>
                     <li><a href="{{ url('/login') }}">{{ trans('adminlte_lang::message.login') }}</a></li>
@@ -72,7 +71,7 @@
                             </li>
                             
                             <!-- Menu Body -->
-                            <li class="user-body">
+                           <!-- <li class="user-body">
                                 <div class="col-xs-4 text-center">
                                     <a href="#">?</a>
                                 </div>
@@ -82,7 +81,7 @@
                                 <div class="col-xs-4 text-center">
                                     <a href="#">?</a>
                                 </div>
-                            </li>
+                            </li>-->
 
                             <!-- Menu Footer-->
                             <li class="user-footer">
