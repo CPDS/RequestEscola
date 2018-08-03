@@ -240,6 +240,7 @@ $(document).ready(function($) {
             data: dados,
             processData: false,
             contentType: false,
+            
             beforeSend: function(){
                 jQuery('.add').button('loading');
             },

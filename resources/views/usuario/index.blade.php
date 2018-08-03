@@ -46,9 +46,9 @@
 				</thead>
 			</table>
 		</div>	
-	
-	</div>
 	@include('usuario.modals.editar')
+	</div>
+	
 	@include('usuario.modals.criar')
 	@include('usuario.modals.excluir')
 	@include('usuario.modals.visualizar')

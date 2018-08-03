@@ -27,6 +27,11 @@
             </div>
 
             <div class="form-group">
+              <strong>Descrição:</strong>
+              <span id="descricao-visualizar"></span>
+            </div>
+
+            <div class="form-group">
               <strong>Número de tombo:</strong>
               <span id="num_tombo-visualizar"></span>
             </div>
