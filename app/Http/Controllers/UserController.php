@@ -42,7 +42,7 @@ class UserController extends Controller
             
             //caso status do úsuario seja inativo
             if(!$usuario->status){
-                $btnAtivar = '<a data-id="'.$usuario->id.'" class="btn btn-warning btnAtivar" '. $dados .' title="Ativar Usúário" data-toggle="tooltip" ><i class="fa fa-user-plus"> </i></a>';
+                $btnAtivar = ' <a data-id="'.$usuario->id.'" class="btn btn-warning btnAtivar" '. $dados .' title="Ativar Usúário" data-toggle="tooltip" ><i class="fa fa-user-plus"> </i></a>';
                 return $btnVisualizar.$btnEditar.$btnExcluir.$btnAtivar;
             }else{
                 return $btnVisualizar.$btnEditar.$btnExcluir;
@@ -60,9 +60,9 @@ class UserController extends Controller
             })
             ->editColumn('status',function($usuario){
                 if($usuario->status)
-                    return "<span class='label label-success' style='font-size:14px'>Ativo</span>";
+                    return " <span class='label label-success' style='font-size:14px'>Ativo</span>";
                 else
-                    return "<span class='label label-default' style='font-size:14px'>Inativo</span>";
+                    return " <span class='label label-default' style='font-size:14px'>Inativo</span>";
             })
             ->editColumn('funcao', function($usuario){
                 if($usuario->funcao == 1)
