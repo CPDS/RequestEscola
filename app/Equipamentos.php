@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class local extends Model
+class Equipamentos extends Model
 {
     //
 }

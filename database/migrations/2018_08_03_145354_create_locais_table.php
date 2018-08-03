@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTipoEquipamentosTable extends Migration
+class CreateLocaisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateTipoEquipamentosTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipo_equipamentos', function (Blueprint $table) {
+         Schema::create('locais', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('nome');
+            $table->text('observacao');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateTipoEquipamentosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_equipamentos');
+        Schema::dropIfExists('locais');
     }
 }
