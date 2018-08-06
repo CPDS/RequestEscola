@@ -176,7 +176,6 @@ $(document).ready(function($) {
         jQuery('#excluir-modal').modal('show'); //Abrir o modal
     });
 
-
     //Evento ajax - EXCLUIR USUÁRIO
     $('.modal-footer').on('click', '.del', function() {
         
@@ -215,6 +214,52 @@ $(document).ready(function($) {
         });
     });
 
+    //Ativar
+    $(document).on('click', '.btnAtivar', function() {
+        $('.modal-title').text('Ativar Usuário');
+        $('.id_ativ').val($(this).data('id')); 
+        jQuery('#ativar-modal').modal('show'); //Abrir o modal
+    });
+
+    //Evento ajax - ATIVAR USUÁRIO
+    $('.modal-footer').on('click', '.ativ', function() {
+        $.ajax({
+            type: 'post',
+            url: './users/ativar',
+            data: {
+                'id': $(".id_ativ").val(),
+            },
+            beforeSend: function(){
+                jQuery('.ativ').button('loading');
+            },
+            complete: function() {
+                jQuery('.ativ').button('reset');
+            },
+            success: function(data) {
+                $('#table').DataTable().row('#item-' + data.id).remove().draw(); //remove a linha e ordena
+                jQuery('#ativar-modal').modal('hide'); //fechar o modal
+
+                $(function() {
+
+                    iziToast.success({
+                        title: 'OK',
+                        message: 'Usuário Ativado com Sucesso!',
+                    });
+                });
+            },
+            error: function() {
+
+                jQuery('#ativar-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+
+        });
+    });
+
     //Adicionar
     $(document).on('click', '.btnAdicionar', function() {
        
@@ -226,8 +271,7 @@ $(document).ready(function($) {
 
         $('#form')[0].reset();
 
-        jQuery('#criar_editar-modal').modal('show');
-    
+        jQuery('#criar_editar-modal').modal('show'); 
     });
 
     //Evento ajax - ADICIONAR USUÁRIO

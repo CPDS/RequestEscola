@@ -43,7 +43,7 @@ class UserController extends Controller
             //caso status do úsuario seja inativo
             if(!$usuario->status){
                 $btnAtivar = ' <a data-id="'.$usuario->id.'" class="btn btn-warning btnAtivar" '. $dados .' title="Ativar Usúário" data-toggle="tooltip" ><i class="fa fa-user-plus"> </i></a>';
-                return $btnVisualizar.$btnEditar.$btnExcluir.$btnAtivar;
+                return $btnVisualizar.$btnEditar.$btnAtivar;
             }else{
                 return $btnVisualizar.$btnEditar.$btnExcluir;
             }
@@ -162,7 +162,7 @@ class UserController extends Controller
     //desativar Funcionário
     public function destroy(Request $request){
         $usuario = User::find($request->id);
-        $usuario->status = false;       //  Tem um erro aqui
+        $usuario->status = false;      
         $usuario->save();
         return response()->json($usuario);
     }
@@ -170,7 +170,7 @@ class UserController extends Controller
     public function ativar(Request $request){
         $usuario = User::find($request->id);
         $usuario->status = true;
-        $usuario->save;
+        $usuario->save();
         return response()->json($usuario);
     }
 

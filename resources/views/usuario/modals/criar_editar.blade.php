@@ -10,9 +10,8 @@
       <div class="modal-body">
 
         <div class="callout callout-danger hidden">
-              <p></p>
+            <p></p>
         </div>
-
 
        <form id="form" role="form" method="post">
          <div class="row" style="width: 100%">
@@ -33,7 +32,7 @@
               </div>
             </div>
 
-            <!--<div class="form-group col-md-6 senha">
+            <div class="form-group col-md-6 senha">
               <strong>Senha:</strong>
               <input placeholder="Digite uma senha" id="senha" maxlength="32" class="form-control" name="senha" type="password">
             </div>
@@ -41,13 +40,14 @@
             <div class="form-group col-md-6 senha ">
               <strong>Confirmar Senha:</strong>
               <input placeholder="Digite a senha novamente" maxlength="32" id="confirmarsenha" class="form-control"  name="confirmarsenha" type="password">
-            </div> -->
+            </div>
 
             <div class="form-group col-xs-6">
               <strong>Telefone:</strong>
               <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-                <input placeholder="Digite o telefone" id="telefone" maxlength="254" class="form-control" name="telefone" type="text">              </div>
+                <input placeholder="Digite o telefone" id="telefone" maxlength="254" class="form-control" name="telefone" type="text">
+              </div>
             </div>
 
             <div class="form-group col-md-6">

@@ -20,7 +20,6 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
         <span class="hidden id_del"></span> <!-- Passar o ID para o Controlador -->
       </div>      
-      
     </div> 
       <!-- Fim de ModaL Content -->
   </div> 
