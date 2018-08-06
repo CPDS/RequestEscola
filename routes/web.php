@@ -16,7 +16,6 @@ Route::group(['middleware' => ['auth']], function() {
 	    Route::get('/load', ['as' => 'users.load', 'uses' => 'UserController@loadPapeis']);
 	    Route::get('/loadName', ['as' => 'users.loadName', 'uses' => 'UserController@loadNomePapel']);
 	});
-
 });
 
 
