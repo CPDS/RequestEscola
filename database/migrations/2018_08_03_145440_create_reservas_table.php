@@ -16,7 +16,7 @@ class CreateReservasTable extends Migration
       Schema::create('reservas', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_usuario');
-            $table->integer('id_sala');
+            $table->integer('id_ambiente');
             $table->timestamp('data_inicial');
             $table->timestamp('data_final');
             $table->text('parecer');
@@ -24,7 +24,7 @@ class CreateReservasTable extends Migration
             $table->text('feedback')->nullable();
             $table->string('status');
             $table->foreign('id_usuario')->references('id')->on('users');
-            $table->foreign('id_sala')->references('id')->on('salas');
+            $table->foreign('id_ambiente')->references('id')->on('ambientes');
             $table->timestamps();
         });
     }

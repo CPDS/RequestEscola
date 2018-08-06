@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Salas extends Model
+class Ambiente extends Model
 {
     //
 }
