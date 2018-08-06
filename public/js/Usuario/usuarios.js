@@ -110,7 +110,7 @@ $(document).ready(function($) {
         });
 
         
-        jQuery('#editar-modal').modal('show'); //Abrir o modal
+        jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
     });
 
     /*Evento ajax - EDITAR USUÁRIO*/
@@ -145,7 +145,7 @@ $(document).ready(function($) {
                     
                     $('#table').DataTable().draw(false);
 
-                    jQuery('#editar-modal').modal('hide');
+                    jQuery('#criar_editar-modal').modal('hide');
 
                     $(function() {
                         iziToast.success({
@@ -158,7 +158,7 @@ $(document).ready(function($) {
             },
 
             error: function() {
-                jQuery('#editar-modal').modal('hide'); //fechar o modal
+                jQuery('#criar_editar-modal').modal('hide'); //fechar o modal
 
                 iziToast.error({
                     title: 'Erro Interno',
@@ -226,14 +226,14 @@ $(document).ready(function($) {
 
         $('#form')[0].reset();
 
-        jQuery('#criar-modal').modal('show');
+        jQuery('#criar_editar-modal').modal('show');
     
     });
 
     //Evento ajax - ADICIONAR USUÁRIO
     $('.modal-footer').on('click', '.add', function() {
     var dados = new FormData($("#form")[0]); //pega os dados do form
-
+        console.log(dados);
         $.ajax({
             type: 'post',
             url: "./users/create",
@@ -260,11 +260,11 @@ $(document).ready(function($) {
                             $('.callout').find("p").append(mensagem + "</br>");
                     });
                 }
-                else {
+                else{
                     
                     $('#table').DataTable().draw(false);
 
-                    jQuery('#criar-modal').modal('hide');
+                    jQuery('#criar_editar-modal').modal('hide');
 
                     $(function() {
                         iziToast.success({
@@ -276,7 +276,7 @@ $(document).ready(function($) {
             },
 
             error: function() {
-                jQuery('#criar-modal').modal('hide'); //fechar o modal
+                jQuery('#criar_editar-modal').modal('hide'); //fechar o modal
 
                 iziToast.error({
                     title: 'Erro Interno',

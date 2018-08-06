@@ -12,7 +12,7 @@
 <script src="{{ asset('js/iziToast.min.js') }}"></script>
 
 <!-- SCRIPT Geral -->
-<script src="{{ asset('js/equipamento/equipamento.js') }}"></script>
+<script src="{{ asset('js/Equipamento/equipamento.js') }}"></script>
 
 @section('main-content')
 
@@ -29,7 +29,7 @@
 				<a class="btnFiltro btn btn-primary" title="Filtro Equipamento" data-toggle="tooltip"><span class="fa fa-pdf-o"></span> Lista de Equipamentos (PDF)</a>
 		<!--	@endpermission
 				@permission('equipamento-create')-->
-				<a class="btnAdicionar btn btn-primary" title="Adicionar Equipamento" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Cadastrar Equipamento</a>
+				<a class="btnAdicionar btn btn-primary" title="Adicionar Equipamento" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Novo Equipamento</a>
 		<!--	@endpermission	-->
 				
 			</div>
@@ -43,7 +43,8 @@
 				
 			   <thead>
 					<tr>
-						<th>Nº</th>
+						<th>No</th>
+						<th>Descrição</th>
 						<th>Nº tombo</th>
 						<th>Código</th>
 						<th>Status</th>
@@ -56,5 +57,11 @@
 			</table>
 		</div>
 	</div>
+
+@include(modals.equipamento.criar)
+@include(modals.equipamento.editar)
+@include(modals.equipamento.defeito)
+@include(modals.equipamento.excluir)
+@include(modals.equipamento.visualizar)
 
 @endsection

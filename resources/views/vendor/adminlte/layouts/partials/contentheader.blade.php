@@ -4,12 +4,11 @@
 <section class="content-header">
   
   <h1>
-       @yield('contentheader_title', 'Painel de Controle')
-        <small>@yield('contentheader_description')</small>
+    @yield('contentheader_title', 'Painel de Controle')
+    <small>@yield('contentheader_description')</small>
  	</h1>
 
 </section>
-
 
 <section class="content">
   <!-- Small boxes (Stat box) -->
