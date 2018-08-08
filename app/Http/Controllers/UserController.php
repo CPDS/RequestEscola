@@ -78,7 +78,7 @@ class UserController extends Controller
 
     //função para Cadastrar usuários
     public function store(Request $request){
-        dd($request->all());
+        //dd($request->all());
         $rules = array(
             'nome' => 'required',
             'email' => 'required|email|unique:users,email',
