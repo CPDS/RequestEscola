@@ -262,7 +262,8 @@ $(document).ready(function($) {
 
     //Adicionar
     $(document).on('click', '.btnAdicionar', function() {
-       
+        
+        $('.modal-footer .btn-action').removeClass('edit');
         $('.modal-footer .btn-action').addClass('add');
         $('.modal-body .senha').removeClass("hidden");
         $('.modal-title').text('Novo Usuário');

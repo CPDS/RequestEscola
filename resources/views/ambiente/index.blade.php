@@ -9,20 +9,20 @@
 <link rel="stylesheet" href="{{ asset('css/iziToast.min.css') }}">
 <script src="{{ asset('js/iziToast.min.js') }}"></script>
 
-<script src=" {{ asset('js/Usuario/usuarios.js') }} "> </script>
+<script src=" {{ asset('js/Ambiente/ambiente.js') }} "> </script>
 
 @section('main-content')
 
 	<div class="row">
 		<div class="col-lg-12 margin-tb">
 			<div class="pull-left">
-				<h2><i class="fa fa-users"></i> Usuários</h2>
+				<h2><i class="fa fa-university"></i> Gestão de Ambiente</h2>
 			</div>
 
 			<br><br><br>	
 
 			<div class="pull-right">
-				<a class="btn btn-primary btnAdicionar" title="Novo Usuário" data-toggle="tooltip"><span class="fa fa- fa-user-plus"></span> Novo Usuário</a>
+				<a class="btn btn-primary btnAdicionar" title="Novo Laboratório" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Ambiente</a>
 			</div>
 		</div>
 	</div>
@@ -34,23 +34,14 @@
 			<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 			   <thead>
 					<tr>
-						 <th>Id</th>
+						 <th>No</th>
 						 <th>Nome</th>
-						 <th>E-mail</th>
-						 <th>Função</th>
-						 <th>Telefone</th>
-						 <th>Rua</th>
-						 <th>Status</th>
+						 <th>Tipo</th>
 						 <th>Ação</th>
 					</tr>
 				</thead>
 			</table>
 		</div>	
 	</div>
-	
-	@include('usuario.modals.ativar')
-	@include('usuario.modals.criar_editar')
-	@include('usuario.modals.excluir')
-	@include('usuario.modals.visualizar')
 
 @endsection

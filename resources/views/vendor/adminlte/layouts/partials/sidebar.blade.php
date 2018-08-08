@@ -52,10 +52,10 @@
             </li>
 
             <li class="treeview">
-                <a href="#"><i class='fa fa-university'></i><span>Gestão de Laboratórios</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <a href="#"><i class='fa fa-university'></i><span>Gestão de Ambiente</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class='fa fa-calendar'></i>Reservas de Laboratórios</a></li>
-                    <li><a href="#">Laboratórios</a></li>
+                    <li><a href="#"><i class='fa fa-calendar'></i>Reservas de Ambiente</a></li>
+                    <li><a href="{{ url('ambiente') }}">Ambientes</a></li>
                 </ul>
             </li>
 
