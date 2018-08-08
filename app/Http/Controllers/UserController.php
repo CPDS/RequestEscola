@@ -24,21 +24,28 @@ class UserController extends Controller
 
     //Função para criar botões 
     private function setDataButtons(User $usuario){
-        
+        //Variável de status
         if($usuario->status)
             $status = 'Ativo';
         else
             $status = 'Inativo';
-        
-            $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'"
-          data-rua="'.$usuario->rua.'" data-numero="'.$usuario->numero.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'"
-           data-status="'.$status.'"';
+        //Variável de Função
+        if($usuario->funcao == 1)
+            $tipoFuncao = 'Administrador';
+        else if($usuario->funcao == 2)
+            $tipoFuncao = 'Funcionário';
+        else 
+            $tipoFuncao = 'Professor';
 
-            $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
+        $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'"data-rua="'.$usuario->rua.'" data-numero="'.$usuario->numero.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'" data-status="'.$status.'"';
 
-            $btnEditar = ' <a data-id="'.$usuario->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
+        $dadosVisualizar = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$tipoFuncao.'"data-rua="'.$usuario->rua.'" data-numero="'.$usuario->numero.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'" data-status="'.$status.'"';
 
-            $btnExcluir = ' <a data-id="'.$usuario->id.'" class="btn btn-danger btnExcluir" title="Desativar" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
+        $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dadosVisualizar .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
+
+        $btnEditar = ' <a data-id="'.$usuario->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
+
+        $btnExcluir = ' <a data-id="'.$usuario->id.'" class="btn btn-danger btnExcluir" title="Desativar" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
             
             //caso status do úsuario seja inativo
             if(!$usuario->status){
