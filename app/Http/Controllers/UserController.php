@@ -24,13 +24,21 @@ class UserController extends Controller
 
     //Função para criar botões 
     private function setDataButtons(User $usuario){
-        
+        //Variável de status
         if($usuario->status)
             $status = 'Ativo';
         else
             $status = 'Inativo';
         
-            $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'"
+        //Variável de Função
+        if($usuario->funcao == 1)
+            $tipoFuncao = 'Administrador';
+        else if($usuario->funcao == 2)
+            $tipoFuncao = 'Funcionário';
+        else
+            $tipoFuncao = 'Professor';
+
+        $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'"
             data-rua="'.$usuario->rua.'" data-numero="'.$usuario->numero.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'"
             data-status="'.$status.'"';
 
