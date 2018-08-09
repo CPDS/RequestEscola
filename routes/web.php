@@ -3,6 +3,9 @@
 
 Route::get('/', 'HomeController@index');
 Route::auth();
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function() {
 	//Rotas de Usuário
@@ -16,10 +19,29 @@ Route::group(['middleware' => ['auth']], function() {
 	    Route::get('/load', ['as' => 'users.load', 'uses' => 'UserController@loadPapeis']);
 	    Route::get('/loadName', ['as' => 'users.loadName', 'uses' => 'UserController@loadNomePapel']);
 	});
+
+	//Rotas de Ambiente
+	Route::group(['prefix'=> 'ambiente', 'where' => ['id'=>'0-9+'], 'middleware' => ['role:Administrador']],function (){
+		Route::get('/',['as' => 'ambiente.index', 'uses' => 'AmbienteController@index']);
+		Route::get('/list',['as' => 'ambiente.list', 'uses' => 'AmbienteController@list']);
+		Route::post('/create', ['as' => 'ambiente.create', 'uses' => 'AmbienteController@store']);
+		Route::post('/edit',['as' => 'ambiente.edit', 'uses' => 'AmbienteController@update']);
+		Route::post('/delete',['as' => 'ambiente.destroy', 'uses'=> 'AmbienteController@destroy']);
+		Route::post('/ativar',['as'=>'ambiente.ativar', 'uses' => 'AmbienteController@ativar']);
+	});
+
+	//Rotas de Locais
+	Route::group(['prefix'=> 'locais', 'where' => ['id'=>'0-9+'], 'middleware' => ['role:Administrador']],
+	function (){
+		Route::get('/',['as' => 'locais.index', 'uses' => 'LocaisController@index']);
+		Route::get('/list',['as' => 'locais.list', 'uses' => 'LocaisController@list']);
+		Route::post('/create', ['as' => 'locais.create', 'uses' => 'LocaisController@store']);
+		Route::post('/edit',['as' => 'locais.edit', 'uses' => 'LocaisController@update']);
+		Route::post('/delete',['as' => 'locais.destroy', 'uses'=> 'LocaisController@destroy']);
+		Route::post('/ativar',['as'=>'locais.ativar', 'uses' => 'LocaisController@ativar']);
+	});
+
 });
 
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/ambiente', 'AmbienteController@index')->name('ambiente');
