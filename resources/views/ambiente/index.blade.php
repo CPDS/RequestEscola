@@ -22,7 +22,7 @@
 			<br><br><br>	
 
 			<div class="pull-right">
-				<a class="btn btn-primary btnAdicionar" title="Novo Laboratório" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Ambiente</a>
+				<a class="btn btn-primary btnAdicionar" title="Novo Ambiente" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Ambiente</a>
 			</div>
 		</div>
 	</div>
@@ -34,9 +34,12 @@
 			<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 			   <thead>
 					<tr>
-						 <th>No</th>
-						 <th>Nome</th>
+						 <th>Id</th>
+						 <th>Local</th>
 						 <th>Tipo</th>
+						 <th>Descrição</th>
+						 <th>Nº Ambiente</th>
+						 <th>Status</th>
 						 <th>Ação</th>
 					</tr>
 				</thead>

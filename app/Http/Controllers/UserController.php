@@ -31,8 +31,8 @@ class UserController extends Controller
             $status = 'Inativo';
         
             $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'"
-          data-rua="'.$usuario->rua.'" data-numero="'.$usuario->numero.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'"
-           data-status="'.$status.'"';
+            data-rua="'.$usuario->rua.'" data-numero="'.$usuario->numero.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'"
+            data-status="'.$status.'"';
 
             $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
 

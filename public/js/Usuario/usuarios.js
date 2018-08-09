@@ -4,6 +4,7 @@ $(document).ready(function($) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
     //tabela Usuarios
     var tabela = $('#table').DataTable({
             processing: true,
@@ -62,7 +63,7 @@ $(document).ready(function($) {
                 }
             },
             columnDefs : [
-              { targets : [0,6], sortable : false },
+              { targets : [0,5], sortable : false },
               { "width": "5%", "targets": 0 }, //nº
               { "width": "10%", "targets": 1 },//nome
               { "width": "10%", "targets": 2 },//email

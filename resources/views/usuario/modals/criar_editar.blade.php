@@ -56,7 +56,7 @@
                   <option value='' selected disabled>Selecione ...</option>
                   
                   <option value="1">Administrador</option> 
-                  <option value="2">Secretário</option>
+                  <option value="2">Funcionário</option>
                   <option value="3">Professor</option> 
                 </select>
             </div>
