@@ -56,6 +56,7 @@
                 <ul class="treeview-menu">
                     <li><a href="#"><i class='fa fa-calendar'></i>Reservas de Ambiente</a></li>
                     <li><a href="{{ url('ambiente') }}">Ambientes</a></li>
+                    <li><a href="{{ url('locais') }}">Locais</a></li>
                 </ul>
             </li>
 

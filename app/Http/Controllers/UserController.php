@@ -55,7 +55,6 @@ class UserController extends Controller
             }else{
                 return $btnVisualizar.$btnEditar.$btnExcluir;
             }
-
         }
 
         //Função listar
