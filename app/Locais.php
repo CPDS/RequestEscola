@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Locais extends Model
 {
     protected $fillable =[
-    	
+    	'nome',
+    	'descricao',
+    	'status'
     ];
 }
