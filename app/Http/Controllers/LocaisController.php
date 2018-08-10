@@ -40,7 +40,10 @@ class LocaisController extends Controller
             return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
         }else{
             $local = new Locais();
-            
+            $local->nome = $request->nome;
+            $local->descricao = $request->descricao;
+            $local->status = 'Ativo';
+            $local->save();
         }
 
     }
