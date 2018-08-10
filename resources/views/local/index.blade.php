@@ -1,0 +1,34 @@
+@extends('adminlte::layouts.app')
+
+<script src ="{{ asset('plugins/jQuery/jQuery-3.1.0.min.js') }}" type = "text/javascript" ></script>
+
+<!-- DataTables -->
+<script src="{{ asset('plugins/datatables/jquery.dataTables.js') }}" type = "text/javascript"></script>
+<script src="{{ asset('plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('plugins/datatables/dataTables.bootstrap.css') }}">
+<link rel="stylesheet" href="{{ asset('css/iziToast.min.css') }}">
+<script src="{{ asset('js/iziToast.min.js') }}"></script>
+
+<script src=" {{ asset('js/local/local.js') }} "> </script>
+
+@section('main-content')
+
+	<div class="row">
+		<div class="col-lg-12 margin-tb">
+			<div class="pull-left">
+				<h2><i class="fa fa-location-arrow"></i> Locais</h2>
+			</div>
+
+			<br><br><br>	
+
+			<div class="pull-right">
+				<a class="btn btn-primary btnAdicionar" title="Novo Local" data-toggle="tooltip"><span class="fa fa- fa-user-plus"></span> Novo Local</a>
+			</div>
+		</div>
+	</div>
+
+	<br>
+
+	
+
+@endsection

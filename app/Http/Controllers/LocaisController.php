@@ -17,7 +17,7 @@ class LocaisController extends Controller
 {
     
     public function index(){
-        
+        return view('local.index');
     }
 
     public function store(Request $request){
