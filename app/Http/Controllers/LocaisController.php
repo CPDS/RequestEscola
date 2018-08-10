@@ -49,6 +49,28 @@ class LocaisController extends Controller
     }
 
     public function list(){
+
+        $rules = array(
+            'nome' => 'required',
+        );
+
+         $attributeNames = array(
+            'nome' => 'nome',
+        );
+
+        $messages = array(
+            'same' => 'Campo nome obrigatório.'
+        );
+
+        $validator = Validator::make(Input::all(), $rules, $messages);
+        $validator->setAttributeNames($attributeNames);
+        if ($validator->fails()){
+            return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
+        }else{
+            
+        }
+
+
         
     }
    
