@@ -9,21 +9,18 @@
 <link rel="stylesheet" href="{{ asset('css/iziToast.min.css') }}">
 <script src="{{ asset('js/iziToast.min.js') }}"></script>
 
-<script src=" {{ asset('js/local/local.js') }} "> </script>
+<!--<script src=" {{ asset('js/tipoEquipamentos/tipoEquipamentos.js') }} "> </script>-->
 
 @section('main-content')
 
 	<div class="row">
 		<div class="col-lg-12 margin-tb">
 			<div class="pull-left">
-				<h2><i class="fa fa-location-arrow"></i> Locais</h2>
+				<h2> Tipos de Equipamentos</h2>
 			</div>
 
 			<br><br><br>	
 
-			<div class="pull-right">
-				<a class="btn btn-primary btnAdicionar" title="Novo Local" data-toggle="tooltip"><span class="fa fa- fa-user-plus"></span> Novo Local</a>
-			</div>
 		</div>
 	</div>
 
@@ -44,7 +41,5 @@
 			</table>
 		</div>
 	</div>
-
-@include('local.modals.criar_editar')
 
 @endsection

@@ -47,7 +47,7 @@
                 <ul class="treeview-menu">
                     <li><a href="#"><i class='fa fa-calendar'></i>Reservas e Retiradas</a></li>
                     <li><a href="#">Equipamentos</a></li>
-                    <li><a href="#">Tipos de Equipamentos</a></li>
+                    <li><a href="{{ url('tipoEquipamento') }}">Tipos de Equipamentos</a></li>
                 </ul>
             </li>
 
@@ -59,7 +59,8 @@
                 </ul>
             </li>
 
-            <li><a href="{{ url('locais') }}"><i class='fa fa-location-arrow'></i><span>Local</span></a></li>
+            <li><a href="{{ url('locais') }}"><i class='fa fa-location-arrow'></i><span>Locais</span></a></li>
+
 
         </ul><!-- /.sidebar-menu -->
     </section>

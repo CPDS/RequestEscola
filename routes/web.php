@@ -42,7 +42,7 @@ Route::group(['middleware' => ['auth']], function() {
 	});
 
 	//Rotas Tipo de equipamentos
-	Route::group(['prefix'=> 'tipoEquipamentos', 'where' => ['id'=>'0-9+'], 'middleware' => ['role:Administrador']], function (){
+	Route::group(['prefix'=> 'tipoEquipamento', 'where' => ['id'=>'0-9+'], 'middleware' => ['role:Administrador']], function (){
 		Route::get('/',['as' => 'locais.index', 'uses' => 'TipoEquipamentoController@index']);
 		Route::get('/list',['as' => 'locais.list', 'uses' => 'TipoEquipamentoController@list']);
 		Route::post('/create', ['as' => 'locais.create', 'uses' => 'TipoEquipamentoController@store']);
