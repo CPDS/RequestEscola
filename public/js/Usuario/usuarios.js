@@ -86,7 +86,7 @@ $(document).ready(function($) {
         
         $('#nome-visualizar').text($(this).data('nome'));
         $('#email-visualizar').text($(this).data('email'));
-        $('#funcao-visualizar').text($(this).data('funcao'));
+        $('#funcao-visualizar').text($(this).data('tipofuncao'));
         $('#telefone-visualizar').text($(this).data('telefone'));
         $('#rua-visualizar').text($(this).data('rua'));
         $('#status-visualizar').text($(this).data('status'));

@@ -16,7 +16,7 @@ class CreateTipoEquipamentosTable extends Migration
         Schema::create('tipo_equipamentos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
-            $table->text('observacao');
+            $table->text('observacao')->nullable();
             $table->string('status');
             $table->timestamps();
         });

@@ -8,6 +8,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function() {
+	
 	//Rotas de Usuário
 	Route::group(['prefix'=> 'users', 'where'=>['id'=>'0-9+'],'middleware' => ['role:Administrador']], function () {
 		Route::get('', ['as' => 'users.index', 'uses' => 'UserController@index']);
@@ -31,8 +32,7 @@ Route::group(['middleware' => ['auth']], function() {
 	});
 
 	//Rotas de Locais
-	Route::group(['prefix'=> 'locais', 'where' => ['id'=>'0-9+'], 'middleware' => ['role:Administrador']],
-	function (){
+	Route::group(['prefix'=> 'locais', 'where' => ['id'=>'0-9+'], 'middleware' => ['role:Administrador']], function (){
 		Route::get('/',['as' => 'locais.index', 'uses' => 'LocaisController@index']);
 		Route::get('/list',['as' => 'locais.list', 'uses' => 'LocaisController@list']);
 		Route::post('/create', ['as' => 'locais.create', 'uses' => 'LocaisController@store']);
@@ -41,5 +41,13 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::post('/ativar',['as'=>'locais.ativar', 'uses' => 'LocaisController@ativar']);
 	});
 
+	//Rotas Tipo de equipamentos
+	Route::group(['prefix'=> 'tipoEquipamentos', 'where' => ['id'=>'0-9+'], 'middleware' => ['role:Administrador']], function (){
+		Route::get('/',['as' => 'locais.index', 'uses' => 'TipoEquipamentoController@index']);
+		Route::get('/list',['as' => 'locais.list', 'uses' => 'TipoEquipamentoController@list']);
+		Route::post('/create', ['as' => 'locais.create', 'uses' => 'TipoEquipamentoController@store']);
+		Route::post('/edit',['as' => 'locais.edit', 'uses' => 'TipoEquipamentoController@update']);
+		Route::post('/delete',['as' => 'locais.destroy', 'uses'=> 'TipoEquipamentoController@destroy']);
+	});
 });
 

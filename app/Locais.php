@@ -8,7 +8,8 @@ class Locais extends Model
 {
     protected $fillable =[
     	'nome',
-    	'descricao',
+    	'observacao',
     	'status'
     ];
+
 }

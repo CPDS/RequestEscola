@@ -16,8 +16,8 @@ class CreateLocaisTable extends Migration
          Schema::create('locais', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
-            $table->text('observacao');
-            $table->string('status');
+            $table->text('observacao')->nullable();
+            $table->boolean('status');
             $table->timestamps();
         });
     }
