@@ -9,14 +9,14 @@
 <link rel="stylesheet" href="{{ asset('css/iziToast.min.css') }}">
 <script src="{{ asset('js/iziToast.min.js') }}"></script>
 
-<!--<script src=" {{ asset('js/tipoEquipamentos/tipoEquipamentos.js') }} "> </script>-->
+<script src=" {{ asset('js/tipoequipamentos/tipoequipamentos.js') }} "> </script>
 
 @section('main-content')
 
 	<div class="row">
 		<div class="col-lg-12 margin-tb">
 			<div class="pull-left">
-				<h2> Tipos de Equipamentos</h2>
+				<h2><i class='fa fa-tasks'></i> Tipos de Equipamentos</h2>
 			</div>
 
 			<br><br><br>	

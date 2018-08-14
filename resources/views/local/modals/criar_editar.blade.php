@@ -19,16 +19,16 @@
             <div class="form-group col-md-12">
               <strong>Nome:</strong>
               <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-arrow"></i></span>
+                <span class="input-group-addon"><i class="glyphicon glyphicon-font"></i></span>
                 <input placeholder="Digite o nome" maxlength="254" id="nome" class="form-control" name="nome" type="text">
               </div>
             </div>
 
             <div class="form-group col-md-12">
-              <strong>Descrição:</strong>
+              <strong>Observação:</strong>
               <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                <input placeholder="Descrição" maxlength="254" class="form-control" id="descricao" name="descricao" type="text">
+                <textarea maxlength="254" class="form-control" id="observacao" name="observacao" type="text"></textarea>
               </div>
             </div>
             
