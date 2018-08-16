@@ -22,12 +22,14 @@
 			<br><br><br>	
 
 			<div class="pull-right">
-				<a class="btn btn-primary btnAdicionar" title="Novo Local" data-toggle="tooltip"><span class="fa fa- fa-user-plus"></span> Novo Local</a>
+				<a class="btn btn-primary btnAdicionar" title="Novo Local" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Local</a>
 			</div>
+
 		</div>
 	</div>
 
 	<br>
+	
 	<div class="box">
 		<div class="box-body">
 			<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -46,5 +48,6 @@
 	</div>
 
 @include('local.modals.criar_editar')
+@include('local.modals.visualizar')
 
 @endsection

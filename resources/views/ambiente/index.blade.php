@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="{{ asset('css/iziToast.min.css') }}">
 <script src="{{ asset('js/iziToast.min.js') }}"></script>
 
-<script src=" {{ asset('js/Ambiente/ambiente.js') }} "> </script>
+<script src=" {{ asset('js/ambiente/ambiente.js') }} "> </script>
 
 @section('main-content')
 

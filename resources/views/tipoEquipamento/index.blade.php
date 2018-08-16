@@ -21,6 +21,10 @@
 
 			<br><br><br>	
 
+			<div class="pull-right">
+				<a class="btn btn-primary btnAdicionar" title="Novo Tipo" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Tipo</a>
+			</div>
+
 		</div>
 	</div>
 
@@ -41,5 +45,7 @@
 			</table>
 		</div>
 	</div>
+
+	@include('tipoEquipamento.modals.criar_editar')
 
 @endsection

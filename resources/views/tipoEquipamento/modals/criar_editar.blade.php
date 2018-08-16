@@ -10,26 +10,25 @@
       <div class="modal-body">
 
         <div class="callout callout-danger hidden">
-          <p></p>
+            <p></p>
         </div>
 
+       
        <form id="form" role="form" method="post">
          <div class="row" style="width: 100%">
          
             <div class="form-group col-md-12">
-              <strong>Nome do Local:</strong>
-                <input placeholder="Digite o nome do Local" maxlength="254" id="nome" class="form-control" name="nome" type="text">
+              <strong>Nome do tipo:</strong>
+                <input placeholder="Digite o tipo de equipamento" maxlength="254" id="nome" class="form-control" name="nome" type="text">
             </div>
 
             <div class="form-group col-xs-6">
               <strong>Observação:</strong>
-             <textarea name="observacao" id="observacao" maxlength="10000" rows="5" class="form-control "></textarea>
+              <textarea name="observacao" id="observacao" maxlength="10000" rows="5" class="form-control "></textarea>
             </div>
-            
             <input type="hidden" id="id" name="id">
 
         </div> 
-
       </form>
 
       </div> <!-- Fim de ModaL Body-->

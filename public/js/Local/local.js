@@ -74,13 +74,20 @@ $(document).ready(function($) {
         });
     }).draw();
 
+
+    //Visualizar
+    $(document).on('click', '.btnVisualizar', function() {
+        $('#nome-visualizar').text($(this).data('nome'));
+        $('#observacao-visualizar').text($(this).data('observacao'));        
+        jQuery('#visualizar-modal').modal('show');
+    });
+
     //Adicionar Local
     $(document).on('click', '.btnAdicionar', function() {
        
-       
         $('.modal-footer .btn-action').removeClass('edit');
         $('.modal-footer .btn-action').addClass('add');
-        $('.modal-body .senha').removeClass("hidden");
+       
         $('.modal-title').text('Novo Local');
         $('.callout').addClass("hidden"); 
         $('.callout').find("p").text(""); 
@@ -88,7 +95,6 @@ $(document).ready(function($) {
         $('#form')[0].reset();
 
         jQuery('#criar_editar-modal').modal('show'); 
-        
     });
 
     //AJAX Adicionar Local
@@ -98,7 +104,7 @@ $(document).ready(function($) {
 
         $.ajax({
             type: 'post',
-            url: "./salas/create",
+            url: "./locais/create",
             data: dados,
             processData: false,
             contentType: false,
@@ -113,7 +119,7 @@ $(document).ready(function($) {
                 if ((data.errors)) {
 
                     $('.callout').removeClass('hidden'); //exibe a div de erro
-                    $('.callout').find('p').text(""); //limpa a div para erros successivos
+                    $('.callout').find('p').text(""); //limpa a div para erros sucessivos
 
                     $.each(data.errors, function(nome, mensagem) {
                             $('.callout').find("p").append(mensagem + "</br>");
@@ -145,9 +151,83 @@ $(document).ready(function($) {
             },
 
         });*/
-        alert('foi');
+        alert('OK');
     });
 
+     // Editar
+    $(document).on('click', '.btnEditar', function() {
+        $('.modal-footer .btn-action').removeClass('add');
+        $('.modal-footer .btn-action').addClass('edit');
+
+        $('.modal-title').text('Editar Tipo de Equipamento');
+        $('.callout').addClass("hidden"); //ocultar a div de aviso
+        $('.callout').find("p").text(""); //limpar a div de aviso
+
+        var btnEditar = $(this);
+
+        $('#form :input').each(function(index,input){
+            $('#'+input.id).val($(btnEditar).data(input.id));
+        });
+
+        
+        jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
+    });
+
+
+    //AJAX Editar Local
+     $('.modal-footer').on('click', '.edit', function() {
+        var dados = new FormData($("#form")[0]); //pega os dados do form
+        $.ajax({
+            type: 'post',
+            url: "./tipoEquipamento/edit",
+            data: dados,
+            processData: false,
+            contentType: false,
+            beforeSend: function(){
+                jQuery('.edit').button('loading');
+            },
+            complete: function() {
+                jQuery('.edit').button('reset');
+            },
+            success: function(data) {
+                 //Verificar os erros de preenchimento
+
+                if ((data.errors)) {
+
+                    $('.callout').removeClass('hidden'); //exibe a div de erro
+                    $('.callout').find('p').text(""); //limpa a div para erros successivos
+
+                    $.each(data.errors, function(nome, mensagem) {
+                            $('.callout').find("p").append(mensagem + "</br>");
+                    });
+
+                } else {
+                    
+                    $('#table').DataTable().draw(false);
+
+                    jQuery('#criar_editar-modal').modal('hide');
+
+                    $(function() {
+                        iziToast.success({
+                            title: 'OK',
+                            message: 'Tipo de Equipamento Atualizado com Sucesso!',
+                        });
+                    });
+
+                }
+            },
+
+            error: function() {
+                jQuery('#criar_editar').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+
+        });
+    });
 
 
 });// FIM DOCUMENTO
