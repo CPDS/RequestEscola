@@ -20,8 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('funcao');
             $table->string('telefone');
-            $table->string('rua');
-            $table->integer('numero');
+            $table->string('endereco');
             $table->string('cidade');
             $table->string('estado');
             $table->boolean('status');

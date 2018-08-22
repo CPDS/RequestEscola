@@ -12,4 +12,6 @@ class Locais extends Model
     	'status'
     ];
 
+    
+
 }

@@ -15,16 +15,16 @@ class CreateReservasTable extends Migration
     {
       Schema::create('reservas', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_usuario');
-            $table->integer('id_ambiente');
+            $table->integer('fk_usuario');
+            $table->integer('fk_ambiente');
             $table->timestamp('data_inicial');
             $table->timestamp('data_final');
             $table->text('parecer');
             $table->text('observacao')->nullable();
             $table->text('feedback')->nullable();
             $table->string('status');
-            $table->foreign('id_usuario')->references('id')->on('users');
-            $table->foreign('id_ambiente')->references('id')->on('ambientes');
+            $table->foreign('fk_usuario')->references('id')->on('users');
+            $table->foreign('fk_ambiente')->references('id')->on('ambientes');
             $table->timestamps();
         });
     }

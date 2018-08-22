@@ -15,11 +15,11 @@ class CreateAlteracoesTable extends Migration
     {
         Schema::create('alteracoes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_reserva_equipamento');
-            $table->integer('id_usuario');
+            $table->integer('fk_reserva_equipamento');
+            $table->integer('fk_usuario');
             $table->text('descricao');
-            $table->foreign('id_reserva_equipamento')->references('id')->on('equipamento_reservas');
-            $table->foreign('id_usuario')->references('id')->on('users');
+            $table->foreign('fk_reserva_equipamento')->references('id')->on('equipamento_reservas');
+            $table->foreign('fk_usuario')->references('id')->on('users');
             $table->timestamps();
         });
     }

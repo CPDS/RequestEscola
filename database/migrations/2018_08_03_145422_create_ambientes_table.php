@@ -15,12 +15,12 @@ class CreateAmbientesTable extends Migration
     {
         Schema::create('ambientes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_local')->unsigned();
+            $table->integer('fk_local')->unsigned();
             $table->string('tipo');
             $table->text('descricao')->nullable();
             $table->integer('numero_ambiente')->nullable();
             $table->string('status');
-            $table->foreign('id_local')->references('id')->on('locais');
+            $table->foreign('fk_local')->references('id')->on('locais');
             $table->timestamps();
         });
     }

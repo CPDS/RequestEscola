@@ -18,11 +18,11 @@ class CreateManutencoesTable extends Migration
             $table->date('data');
             $table->text('descricao');
             $table->string('destino');
-            $table->integer('id_usuario');
-            $table->integer('id_equipamento');
+            $table->integer('fk_usuario');
+            $table->integer('fk_equipamento');
             $table->string('status');
-            $table->foreign('id_usuario')->references('id')->on('users');
-            $table->foreign('id_equipamento')->references('id')->on('equipamentos');
+            $table->foreign('fk_usuario')->references('id')->on('users');
+            $table->foreign('fk_equipamento')->references('id')->on('equipamentos');
             $table->timestamps();
         });
     }

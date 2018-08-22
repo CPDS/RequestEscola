@@ -16,14 +16,14 @@ class CreateEquipamentosTable extends Migration
         Schema::create('equipamentos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
-            $table->integer('id_tipo_equipamento');
-            $table->integer('id_local');
+            $table->integer('fk_tipo_equipamento');
+            $table->integer('fk_local');
             $table->string('num_tombo')->nullable();
             $table->string('codigo');
             $table->string('marca');
             $table->string('status');
-            $table->foreign('id_tipo_equipamento')->references('id')->on('tipo_equipamentos');
-            $table->foreign('id_local')->references('id')->on('locais');
+            $table->foreign('fk_tipo_equipamento')->references('id')->on('tipo_equipamentos');
+            $table->foreign('fk_local')->references('id')->on('locais');
             $table->timestamps();
         });
     }
