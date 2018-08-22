@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="{{ asset('css/iziToast.min.css') }}">
 <script src="{{ asset('js/iziToast.min.js') }}"></script>
 
-<script src=" {{ asset('js/local/local.js') }} "> </script>
+<script src=" {{ asset('js/Local/local.js') }} "> </script>
 
 @section('main-content')
 
@@ -19,7 +19,7 @@
 				<h2><i class="fa fa-location-arrow"></i> Locais</h2>
 			</div>
 
-			<br><br><br>	
+			<br><br><br>
 
 			<div class="pull-right">
 				<a class="btn btn-primary btnAdicionar" title="Novo Local" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Local</a>

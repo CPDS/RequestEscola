@@ -47,5 +47,7 @@
 	</div>
 
 	@include('tipoEquipamento.modals.criar_editar')
+	@include('tipoEquipamento.modals.excluir')
+	@include('tipoEquipamento.modals.visualizar')
 
 @endsection

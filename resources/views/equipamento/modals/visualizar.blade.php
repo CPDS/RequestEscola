@@ -61,4 +61,4 @@
 
     </div> <!-- Fim de ModaL Content -->
   </div> <!-- Fim de ModaL Dialog -->
-</div> <!-- Fim de ModaL Visualizar Usuario-->
+</div> <!-- Fim de ModaL Visualizar Equipamento-->

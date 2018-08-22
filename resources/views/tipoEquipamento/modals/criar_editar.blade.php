@@ -22,9 +22,9 @@
                 <input placeholder="Digite o tipo de equipamento" maxlength="254" id="nome" class="form-control" name="nome" type="text">
             </div>
 
-            <div class="form-group col-xs-6">
+            <div class="form-group col-xs-12">
               <strong>Observação:</strong>
-              <textarea name="observacao" id="observacao" maxlength="10000" rows="5" class="form-control "></textarea>
+              <textarea name="observacao" id="observacao" maxlength="10000" rows="5" class="form-control" style="resize: none;"></textarea>
             </div>
             <input type="hidden" id="id" name="id">
 

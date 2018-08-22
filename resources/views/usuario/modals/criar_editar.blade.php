@@ -50,7 +50,7 @@
               </div>
             </div>
 
-            <div class="form-group col-md-6">
+            <div class="form-group col-xs-6">
              <strong>Função:</strong>
                 <select name="funcao" id="funcao" class="form-control">
                   <option value='' selected disabled>Selecione ...</option>

@@ -68,6 +68,7 @@
                                     {{ Auth::user()->name }}
                                     
                                 </p>
+                                
                             </li>
                             
                             <!-- Menu Body -->
@@ -85,11 +86,11 @@
 
                             <!-- Menu Footer-->
                             <li class="user-footer">
-                                <div class="pull-left">
+                            <!--  <div class="pull-left">
                                     <a href="{{ url('/settings') }}" class="btn btn-default btn-flat">Perfil</a>
                                 </div>
-
-                                <div class="pull-right">
+                            -->
+                                <div class="text-center">
                                     <a href="{{ url('/logout') }}" class="btn btn-default btn-flat"
                                        onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
@@ -100,7 +101,6 @@
                                         {{ csrf_field() }}
                                         <input type="submit" value="logout" style="display: none;">
                                     </form>
-
                                 </div>
                             </li>
                         </ul>
