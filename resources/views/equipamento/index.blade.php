@@ -23,7 +23,7 @@
 					<h2><i class='fa fa-laptop'></i> Equipamentos</h2>
 				</div>
 			<!--@endsection-->
-			
+			<br>
 			<div class="pull-right">				
 		<!--	@permission('equipamento-list')-->
 				<a class="btnFiltro btn btn-primary" title="Filtro Equipamento" data-toggle="tooltip"><span class="fa fa-pdf-o"></span> Lista de Equipamentos (PDF)</a>
@@ -57,11 +57,11 @@
 			</table>
 		</div>
 	</div>
-
+<!--
 @include(modals.equipamento.criar)
 @include(modals.equipamento.editar)
 @include(modals.equipamento.defeito)
 @include(modals.equipamento.excluir)
 @include(modals.equipamento.visualizar)
-
+-->
 @endsection

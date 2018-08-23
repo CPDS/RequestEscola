@@ -19,7 +19,7 @@
 				<h2><i class="fa fa-university"></i> Gestão de Ambiente</h2>
 			</div>
 
-			<br><br><br>	
+			<br>
 
 			<div class="pull-right">
 				<a class="btn btn-primary btnAdicionar" title="Novo Ambiente" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Ambiente</a>
@@ -27,7 +27,6 @@
 		</div>
 	</div>
 
-	<br>
 
 	<div class="box">
 		<div class="box-body">

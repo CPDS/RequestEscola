@@ -62,7 +62,7 @@
             </div>
 
             <div class="form-group col-md-12">
-              <strong>Rua:</strong>
+              <strong>Endereço:</strong>
               <div class="input-group">
                 <span class="input-group-addon"><i class="material-icons md-18">add_location</i></span>
                 <input placeholder="Digite o endereço" maxlength="254" id="rua" class="form-control" name="rua" type="text">

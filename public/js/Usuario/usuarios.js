@@ -63,7 +63,7 @@ $(document).ready(function($) {
                 }
             },
             columnDefs : [
-              { targets : [0,5], sortable : false },
+              { targets : [0,7], sortable : false },
               { "width": "5%", "targets": 0 }, //nº
               { "width": "10%", "targets": 1 },//nome
               { "width": "10%", "targets": 2 },//email

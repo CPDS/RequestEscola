@@ -19,7 +19,7 @@
 				<h2><i class='fa fa-tasks'></i> Tipos de Equipamentos</h2>
 			</div>
 
-			<br><br><br>	
+			<br>
 
 			<div class="pull-right">
 				<a class="btn btn-primary btnAdicionar" title="Novo Tipo" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Tipo</a>
@@ -28,7 +28,7 @@
 		</div>
 	</div>
 
-	<br>
+	
 	<div class="box">
 		<div class="box-body">
 			<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">

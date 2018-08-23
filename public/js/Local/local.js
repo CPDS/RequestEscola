@@ -99,7 +99,7 @@ $(document).ready(function($) {
 
     //AJAX Adicionar Local
     $('.modal-footer').on('click', '.add', function() {
-        /*
+        
         var dados = new FormData($("#form")[0]); //pega os dados do form
 
         $.ajax({
@@ -150,8 +150,7 @@ $(document).ready(function($) {
                 });
             },
 
-        });*/
-        alert('OK');
+        });
     });
 
      // Editar
@@ -159,7 +158,7 @@ $(document).ready(function($) {
         $('.modal-footer .btn-action').removeClass('add');
         $('.modal-footer .btn-action').addClass('edit');
 
-        $('.modal-title').text('Editar Tipo de Equipamento');
+        $('.modal-title').text('Editar Local');
         $('.callout').addClass("hidden"); //ocultar a div de aviso
         $('.callout').find("p").text(""); //limpar a div de aviso
 
@@ -179,7 +178,7 @@ $(document).ready(function($) {
         var dados = new FormData($("#form")[0]); //pega os dados do form
         $.ajax({
             type: 'post',
-            url: "./tipoEquipamento/edit",
+            url: "./locais/edit",
             data: dados,
             processData: false,
             contentType: false,
@@ -229,5 +228,95 @@ $(document).ready(function($) {
         });
     });
 
+    //Excluir
+    $(document).on('click', '.btnExcluir', function() {
+        $('.modal-title').text('Desativar Local');
+        $('.id_del').val($(this).data('id')); 
+       
+        jQuery('#excluir-modal').modal('show'); //Abrir o modal
+    });
+
+    //Evento ajax - EXCLUIR LOCAL
+    $('.modal-footer').on('click', '.del', function() {
+        
+        $.ajax({
+            type: 'post',
+            url: './locais/delete',
+            data: {
+                'id': $(".id_del").val(),
+            },
+            beforeSend: function(){
+                jQuery('.del').button('loading');
+            },
+            complete: function() {
+                jQuery('.del').button('reset');
+            },
+            success: function(data) {
+                $('#table').DataTable().row('#item-' + data.id).remove().draw(); //remove a linha e ordena
+                jQuery('#excluir-modal').modal('hide'); //fechar o modal
+
+                $(function() {
+                    iziToast.success({
+                        title: 'OK',
+                        message: 'Local Desativado com Sucesso!',
+                    });
+                });
+            },
+            error: function() {
+                jQuery('#excluir-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+        });
+    });
+
+    //Ativar
+    $(document).on('click', '.btnAtivar', function() {
+        $('.modal-title').text('Ativar Local');
+        $('.id_ativ').val($(this).data('id')); 
+        jQuery('#ativar-modal').modal('show'); //Abrir o modal
+    });
+
+    //Evento ajax - ATIVAR LOCAL
+    $('.modal-footer').on('click', '.ativ', function() {
+        $.ajax({
+            type: 'post',
+            url: './locais/ativar',
+            data: {
+                'id': $(".id_ativ").val(),
+            },
+            beforeSend: function(){
+                jQuery('.ativ').button('loading');
+            },
+            complete: function() {
+                jQuery('.ativ').button('reset');
+            },
+            success: function(data) {
+                $('#table').DataTable().row('#item-' + data.id).remove().draw(); //remove a linha e ordena
+                jQuery('#ativar-modal').modal('hide'); //fechar o modal
+
+                $(function() {
+
+                    iziToast.success({
+                        title: 'OK',
+                        message: 'Local Ativado com Sucesso!',
+                    });
+                });
+            },
+            error: function() {
+
+                jQuery('#ativar-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+
+        });
+    });
 
 });// FIM DOCUMENTO

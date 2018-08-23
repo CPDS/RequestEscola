@@ -23,12 +23,13 @@
             <div class="inner">
               <h3>Geral</h3>
               <br>
-              <strong><p>descrição...</p></strong>
+              <strong><p>(descrição...)</p></strong>
             </div>
 
             <div class="icon">
               <i class="glyphicon glyphicon-eye-open"></i>
             </div>
+            <span class="small-box-footer" ><br></span>
           </div>
         </div>
 

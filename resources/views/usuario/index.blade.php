@@ -19,7 +19,7 @@
 				<h2><i class="fa fa-users"></i> Usuários</h2>
 			</div>
 
-			<br><br><br>	
+			<br>	
 
 			<div class="pull-right">
 				<a class="btn btn-primary btnAdicionar" title="Novo Usuário" data-toggle="tooltip"><span class="fa fa- fa-user-plus"></span> Novo Usuário</a>
@@ -27,7 +27,6 @@
 		</div>
 	</div>
 
-	<br>
 
 	<div class="box">
 		<div class="box-body">
@@ -39,7 +38,7 @@
 						 <th>E-mail</th>
 						 <th>Função</th>
 						 <th>Telefone</th>
-						 <th>Rua</th>
+						 <th>Endereço</th>
 						 <th>Status</th>
 						 <th>Ação</th>
 					</tr>

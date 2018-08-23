@@ -19,7 +19,7 @@
 				<h2><i class="fa fa-location-arrow"></i> Locais</h2>
 			</div>
 
-			<br><br><br>
+			<br>
 
 			<div class="pull-right">
 				<a class="btn btn-primary btnAdicionar" title="Novo Local" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Local</a>
@@ -28,7 +28,6 @@
 		</div>
 	</div>
 
-	<br>
 	
 	<div class="box">
 		<div class="box-body">

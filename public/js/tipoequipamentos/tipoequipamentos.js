@@ -90,7 +90,7 @@ $(document).ready(function($) {
 
     //AJAX Adicionar Tipo
     $('.modal-footer').on('click', '.add', function() {
-        /*
+       
         var dados = new FormData($("#form")[0]); //pega os dados do form
 
         $.ajax({
@@ -115,7 +115,6 @@ $(document).ready(function($) {
                     $.each(data.errors, function(nome, mensagem) {
                             $('.callout').find("p").append(mensagem + "</br>");
                     });
-
                 } else {
                     
                     $('#table').DataTable().draw(false);
@@ -141,8 +140,128 @@ $(document).ready(function($) {
                 });
             },
 
-        });*/
-        alert('OK');
+        });
+    });
+
+
+    // Editar
+    $(document).on('click', '.btnEditar', function() {
+        $('.modal-footer .btn-action').removeClass('add');
+        $('.modal-footer .btn-action').addClass('edit');
+
+        $('.modal-title').text('Editar Tipo de Equipamento');
+        $('.callout').addClass("hidden"); //ocultar a div de aviso
+        $('.callout').find("p").text(""); //limpar a div de aviso
+
+        var btnEditar = $(this);
+
+        $('#form :input').each(function(index,input){
+            $('#'+input.id).val($(btnEditar).data(input.id));
+        });
+
+        jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
+    });
+
+
+    //AJAX Editar Local
+     $('.modal-footer').on('click', '.edit', function() {
+        var dados = new FormData($("#form")[0]); //pega os dados do form
+        $.ajax({
+            type: 'post',
+            url: "./tipoEquipamento/edit",
+            data: dados,
+            processData: false,
+            contentType: false,
+            beforeSend: function(){
+                jQuery('.edit').button('loading');
+            },
+            complete: function() {
+                jQuery('.edit').button('reset');
+            },
+            success: function(data) {
+                 //Verificar os erros de preenchimento
+
+                if ((data.errors)) {
+
+                    $('.callout').removeClass('hidden'); //exibe a div de erro
+                    $('.callout').find('p').text(""); //limpa a div para erros successivos
+
+                    $.each(data.errors, function(nome, mensagem) {
+                            $('.callout').find("p").append(mensagem + "</br>");
+                    });
+
+                } else {
+                    
+                    $('#table').DataTable().draw(false);
+
+                    jQuery('#criar_editar-modal').modal('hide');
+
+                    $(function() {
+                        iziToast.success({
+                            title: 'OK',
+                            message: 'Tipo de Equipamento Atualizado com Sucesso!',
+                        });
+                    });
+
+                }
+            },
+
+            error: function() {
+                jQuery('#criar_editar').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+
+        });
+    });
+
+    //Excluir
+    $(document).on('click', '.btnExcluir', function() {
+        $('.modal-title').text('Desativar Tipo');
+        $('.id_del').val($(this).data('id')); 
+       
+        jQuery('#excluir-modal').modal('show'); //Abrir o modal
+    });
+
+    //Evento ajax - EXCLUIR TIPO
+    $('.modal-footer').on('click', '.del', function() {
+        
+        $.ajax({
+            type: 'post',
+            url: './tipoEquipamento/delete',
+            data: {
+                'id': $(".id_del").val(),
+            },
+            beforeSend: function(){
+                jQuery('.del').button('loading');
+            },
+            complete: function() {
+                jQuery('.del').button('reset');
+            },
+            success: function(data) {
+                $('#table').DataTable().row('#item-' + data.id).remove().draw(); //remove a linha e ordena
+                jQuery('#excluir-modal').modal('hide'); //fechar o modal
+
+                $(function() {
+
+                    iziToast.success({
+                        title: 'OK',
+                        message: 'Tipo Desativado com Sucesso!',
+                    });
+                });
+            },
+            error: function() {
+                jQuery('#excluir-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+        });
     });
 
 }); // FIM DOCUMENTO
