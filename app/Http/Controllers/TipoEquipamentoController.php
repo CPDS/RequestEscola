@@ -20,7 +20,7 @@ class TipoEquipamentoController extends Controller
     }
 
     //Função para criar botões 
-    private function setDataButtons(User $tipoEquipamento){
+    private function setDataButtons(TipoEquipamentos $tipoEquipamento){
         //Variável de status
         if($tipoEquipamento->status)
             $status = 'Ativo';
@@ -59,7 +59,7 @@ class TipoEquipamentoController extends Controller
         $messages = array(
             'same' => 'Campo nome obrigatório.'
         );
-
+        //dd($request->all());
         $validator = Validator::make(Input::all(), $rules, $messages);
         $validator->setAttributeNames($attributeNames);
         if ($validator->fails()){
@@ -67,7 +67,7 @@ class TipoEquipamentoController extends Controller
         }else{
             $tipoEquipamento = new TipoEquipamentos();
             $tipoEquipamento->nome = $request->nome;
-            $tipoEquipamento->descricao = $request->descricao;
+            $tipoEquipamento->observacao = $request->observacao;
             $tipoEquipamento->status = 'Ativo';
             $tipoEquipamento->save();
             
@@ -79,11 +79,17 @@ class TipoEquipamentoController extends Controller
 
     //Listar Tipo de Equipamento
     public function list(){
-        $tipoEquipamento = tipoEquipamentos::where('status',true)->get();
+        $tipoEquipamento = tipoEquipamentos::where('status','Ativo')->get();
         
         return Datatables::of($tipoEquipamento)
         ->editColumn('acao',function($tipoEquipamento){
             return $this->setDataButtons($tipoEquipamento);
+        })
+        ->editColumn('nome', function($tipoEquipamento){
+            return $tipoEquipamento->nome;
+        })
+        ->editColumn('observacao', function($tipoEquipamento){
+            return $tipoEquipamento->observacao;
         })
         ->escapeColumns([0])
         ->make(true);
