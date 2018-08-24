@@ -21,16 +21,11 @@ class TipoEquipamentoController extends Controller
 
     //Função para criar botões 
     private function setDataButtons(TipoEquipamentos $tipoEquipamento){
-        //Variável de status
-        if($tipoEquipamento->status)
-            $status = 'Ativo';
-        else
-            $status = 'Inativo';
-
+    
         //Pegar o Usuário logado
         $roleUsuarioLogado = Auth::user()->id;
 
-        $dados = 'data-nome="'.$tipoEquipamento->nome.'" data-observacao="'.$tipoEquipamento->observacao.'" data-status="'.$status.'"';
+        $dados = 'data-nome="'.$tipoEquipamento->nome.'" data-observacao="'.$tipoEquipamento->observacao.'" data-status="'.$tipoEquipamento->status.'"';
 
         $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
 
@@ -91,6 +86,9 @@ class TipoEquipamentoController extends Controller
         ->editColumn('observacao', function($tipoEquipamento){
             return $tipoEquipamento->observacao;
         })
+        ->editColumn('status', function($tipoEquipamento){
+            return $tipoEquipamento->status;
+        })
         ->escapeColumns([0])
         ->make(true);
     }
@@ -117,7 +115,7 @@ class TipoEquipamentoController extends Controller
             $tipoEquipamento = tipoEquipamentos::find($request->id);
             $tipoEquipamento->nome = $request->nome;
             $tipoEquipamento->observacao = $request->observacao;
-            $tipoEquipamento->status = true;
+            $tipoEquipamento->status = 'Ativo';
             $tipoEquipamento->save();
 
         }
@@ -125,7 +123,7 @@ class TipoEquipamentoController extends Controller
     //Desativando tipo de equipamento
     public function destroy(Request $request){
         $tipoEquipamento = tipoEquipamentos::find($request->id);
-        $tipoEquipamento->status = false;      
+        $tipoEquipamento->status = 'Inativo';      
         $tipoEquipamento->save();
         return response()->json($tipoEquipamento);
     }

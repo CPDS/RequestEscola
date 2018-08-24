@@ -22,7 +22,7 @@ class LocaisController extends Controller
     }
 
     //Função para criar botões 
-    private function setDataButtons(User $local){
+    private function setDataButtons(Locais $local){
         //Variável de status
         if($local->status)
             $status = 'Ativo';
