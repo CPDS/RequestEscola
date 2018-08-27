@@ -70,11 +70,6 @@
             </div>
             
             <div class="form-group col-md-6">
-                    <strong>Número</strong>
-                    <input placeholder="Número" maxlength="254" id="numero" class="form-control" name="numero" type="text">
-            </div>
-
-            <div class="form-group col-md-6">
                     <strong>Cidade</strong>
                     <input placeholder="Cidade" maxlength="254" id="cidade" class="form-control" name="cidade" type="text">
             </div>

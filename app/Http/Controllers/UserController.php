@@ -38,7 +38,7 @@ class UserController extends Controller
         else
             $tipoFuncao = 'Professor';
 
-        $dados = '"data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'"
+        $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'"
             data-endereco="'.$usuario->endereco.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'"
             data-status="'.$status.'" data-tipoFuncao="'.$tipoFuncao.'"';
 
@@ -121,7 +121,6 @@ class UserController extends Controller
             $usuario->funcao = $request->funcao;
             $usuario->telefone = $request->telefone;
             $usuario->endereco = $request->endereco;
-            $usuario->numero = $request->numero;
             $usuario->cidade = $request->cidade;
             $usuario->estado = $request->estado;
             $usuario->status = true;
