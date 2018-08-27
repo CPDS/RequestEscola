@@ -35,6 +35,7 @@
 				
 			   <thead>
 					<tr>
+						<th>Id</th>
 						<th>Nome</th>
 						<th>Observação</th>
 						<th>Status</th>
@@ -48,5 +49,6 @@
 
 @include('local.modals.criar_editar')
 @include('local.modals.visualizar')
+@include('local.modals.excluir')
 
 @endsection

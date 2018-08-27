@@ -13,8 +13,8 @@ $(document).ready(function($) {
             ajax: './locais/list',
             columns: [
             { data: null, name: 'order' },
-            { data: 'name', name: 'name' },
-            { data: 'observação', name: 'observacao'},
+            { data: 'nome', name: 'nome' },
+            { data: 'observacao', name: 'observacao'},
             { data: 'status', name: 'status'},
             { data: 'acao', name: 'acao' }
             ],
@@ -60,11 +60,12 @@ $(document).ready(function($) {
                 }
             },
             columnDefs : [
-              { targets : [1,3], sortable : false },
-              { "width": "10%", "targets": 0 },//nome
-              { "width": "14%", "targets": 1 },//observação
-              { "width": "10%", "targets": 2 },//status
-              { "width": "10%", "targets": 3 },//ação
+              { targets : [0,4], sortable : false },
+              { "width": "5%", "targets": 0 },//Id
+              { "width": "10%", "targets": 1 },//nome
+              { "width": "14%", "targets": 2 },//observação
+              { "width": "10%", "targets": 3 },//status
+              { "width": "10%", "targets": 4 },//ação
             ]
     });
 
@@ -230,7 +231,7 @@ $(document).ready(function($) {
 
     //Excluir
     $(document).on('click', '.btnExcluir', function() {
-        $('.modal-title').text('Desativar Local');
+        $('.modal-title').text('Excluir Local');
         $('.id_del').val($(this).data('id')); 
        
         jQuery('#excluir-modal').modal('show'); //Abrir o modal

@@ -38,7 +38,6 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::post('/create', ['as' => 'locais.create', 'uses' => 'LocaisController@store']);
 		Route::post('/edit',['as' => 'locais.edit', 'uses' => 'LocaisController@update']);
 		Route::post('/delete',['as' => 'locais.destroy', 'uses'=> 'LocaisController@destroy']);
-		Route::post('/ativar',['as'=>'locais.ativar', 'uses' => 'LocaisController@ativar']);
 	});
 
 	//Rotas Tipo de equipamentos
