@@ -38,8 +38,8 @@ class UserController extends Controller
         else
             $tipoFuncao = 'Professor';
 
-        $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'"
-            data-rua="'.$usuario->rua.'" data-numero="'.$usuario->numero.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'"
+        $dados = '"data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'"
+            data-endereco="'.$usuario->endereco.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'"
             data-status="'.$status.'" data-tipoFuncao="'.$tipoFuncao.'"';
 
             $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
@@ -90,7 +90,7 @@ class UserController extends Controller
             'nome' => 'required',
             'email' => 'required|email|unique:users,email',
             'senha' => 'required|min:8|same:confirmarsenha',
-            'rua' => 'required',
+            'endereco' => 'required',
             'telefone' => 'required',
             'funcao' => 'required',
             'numero' => 'required',
@@ -120,7 +120,7 @@ class UserController extends Controller
             $usuario->password = Hash::make($request->senha);
             $usuario->funcao = $request->funcao;
             $usuario->telefone = $request->telefone;
-            $usuario->rua = $request->rua;
+            $usuario->endereco = $request->endereco;
             $usuario->numero = $request->numero;
             $usuario->cidade = $request->cidade;
             $usuario->estado = $request->estado;
@@ -140,7 +140,7 @@ class UserController extends Controller
             'nome' => 'required',
             'funcao' => 'required',
             'telefone' => 'required',
-            'rua' => 'required',
+            'endereco' => 'required',
             'numero' => 'required',
             'cidade' => 'required',
             'estado' => 'required'
@@ -155,7 +155,7 @@ class UserController extends Controller
             $usuario->email = $request->email;
             $usuario->funcao = $request->funcao;
             $usuario->telefone = $request->telefone;
-            $usuario->rua = $request->rua;
+            $usuario->endereco = $request->endereco;
             $usuario->numero = $request->numero;
             $usuario->cidade = $request->cidade;
             $usuario->estado = $request->estado;

@@ -17,7 +17,7 @@ $(document).ready(function($) {
             { data: 'email', name: 'email'},
             { data: 'funcao', name: 'funcao' },
             { data: 'telefone', name: 'telefone'},
-            { data: 'rua', name: 'rua' },
+            { data: 'endereco', name: 'endereco' },
             { data: 'status', name: 'status'},
             { data: 'acao', name: 'acao' }
             ],

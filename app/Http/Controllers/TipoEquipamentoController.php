@@ -31,7 +31,7 @@ class TipoEquipamentoController extends Controller
 
         $btnEditar = ' <a data-id="'.$tipoEquipamento->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
 
-        $btnExcluir = ' <a data-id="'.$tipoEquipamento->id.'" class="btn btn-danger btnExcluir" title="Desativar" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
+        $btnExcluir = ' <a data-id="'.$tipoEquipamento->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
             
         //Caso o usuário seja o adm
         if($roleUsuarioLogado == 1){
@@ -87,7 +87,10 @@ class TipoEquipamentoController extends Controller
             return $tipoEquipamento->observacao;
         })
         ->editColumn('status', function($tipoEquipamento){
-            return $tipoEquipamento->status;
+            if($tipoEquipamento->status)
+                return " <span class='label label-success' style='font-size:14px'>Ativo</span>";
+            else
+                return " <span class='label label-default' style='font-size:14px'>Inativo</span>";
         })
         ->escapeColumns([0])
         ->make(true);

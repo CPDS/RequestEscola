@@ -65,7 +65,7 @@
               <strong>Endereço:</strong>
               <div class="input-group">
                 <span class="input-group-addon"><i class="material-icons md-18">add_location</i></span>
-                <input placeholder="Digite o endereço" maxlength="254" id="rua" class="form-control" name="rua" type="text">
+                <input placeholder="Digite o endereço" maxlength="254" id="endereco" class="form-control" name="endereco" type="text">
               </div>
             </div>
             

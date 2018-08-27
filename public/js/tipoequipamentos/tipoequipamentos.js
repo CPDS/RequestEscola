@@ -74,6 +74,13 @@ $(document).ready(function($) {
     }).draw();
 
 
+    //Visualizar
+    $(document).on('click', '.btnVisualizar', function() {
+        $('#nome-visualizar').text($(this).data('nome'));
+        $('#observacao-visualizar').text($(this).data('observacao'));        
+        jQuery('#visualizar-modal').modal('show');
+    });
+
     //Adicionar Tipo
     $(document).on('click', '.btnAdicionar', function() {
        
@@ -89,6 +96,34 @@ $(document).ready(function($) {
         jQuery('#criar_editar-modal').modal('show');
         
     });
+
+    // Editar
+    $(document).on('click', '.btnEditar', function() {
+        $('.modal-footer .btn-action').removeClass('add');
+        $('.modal-footer .btn-action').addClass('edit');
+
+        $('.modal-title').text('Editar Tipo de Equipamento');
+        $('.callout').addClass("hidden"); //ocultar a div de aviso
+        $('.callout').find("p").text(""); //limpar a div de aviso
+
+        var btnEditar = $(this);
+
+        $('#form :input').each(function(index,input){
+            $('#'+input.id).val($(btnEditar).data(input.id));
+        });
+
+        jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
+    });
+
+
+    //Excluir
+    $(document).on('click', '.btnExcluir', function() {
+        $('.modal-title').text('Excluir Tipo');
+        $('.id_del').val($(this).data('id')); 
+       
+        jQuery('#excluir-modal').modal('show'); //Abrir o modal
+    });
+
 
     //AJAX Adicionar Tipo
     $('.modal-footer').on('click', '.add', function() {
@@ -145,27 +180,7 @@ $(document).ready(function($) {
         });
     });
 
-
-    // Editar
-    $(document).on('click', '.btnEditar', function() {
-        $('.modal-footer .btn-action').removeClass('add');
-        $('.modal-footer .btn-action').addClass('edit');
-
-        $('.modal-title').text('Editar Tipo de Equipamento');
-        $('.callout').addClass("hidden"); //ocultar a div de aviso
-        $('.callout').find("p").text(""); //limpar a div de aviso
-
-        var btnEditar = $(this);
-
-        $('#form :input').each(function(index,input){
-            $('#'+input.id).val($(btnEditar).data(input.id));
-        });
-
-        jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
-    });
-
-
-    //AJAX Editar Local
+     //AJAX Editar Tipo
      $('.modal-footer').on('click', '.edit', function() {
         var dados = new FormData($("#form")[0]); //pega os dados do form
         $.ajax({
@@ -220,13 +235,6 @@ $(document).ready(function($) {
         });
     });
 
-    //Excluir
-    $(document).on('click', '.btnExcluir', function() {
-        $('.modal-title').text('Desativar Tipo');
-        $('.id_del').val($(this).data('id')); 
-       
-        jQuery('#excluir-modal').modal('show'); //Abrir o modal
-    });
 
     //Evento ajax - EXCLUIR TIPO
     $('.modal-footer').on('click', '.del', function() {

@@ -41,8 +41,8 @@
           </div>
 
           <div class="form-group">
-              <strong>Rua:</strong>
-              <span id="rua-visualizar"></span>
+              <strong>Endereço:</strong>
+              <span id="endereco-visualizar"></span>
           </div>
 
           <div class="form-group">
