@@ -14,6 +14,7 @@ $(document).ready(function($) {
             { data: null, name: 'order' },
             { data: 'nome', name: 'nome' },
             { data: 'observacao', name: 'observacao' },
+            { data: 'status', name: 'status' },
             { data: 'acao', name: 'acao' }
             ],
             createdRow : function( row, data, index ) {
@@ -57,11 +58,12 @@ $(document).ready(function($) {
                 }
             },
             columnDefs : [
-              { targets : [1,3], sortable : false },
-              { "width": "10%", "targets": 0 },//nome
-              { "width": "14%", "targets": 1 },//observação
-              { "width": "10%", "targets": 2 },//status
-              { "width": "10%", "targets": 3 },//ação
+              { targets : [0,4], sortable : false },
+              { "width": "5%", "targets": 0 },//id
+              { "width": "10%", "targets": 1 },//nome
+              { "width": "15%", "targets": 2 },//observação
+              { "width": "10%", "targets": 3 },//status
+              { "width": "10%", "targets": 4 },//ação
             ]
     });
 
