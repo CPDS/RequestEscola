@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 namespace App\Http\Controllers;
 
@@ -37,7 +37,7 @@ class LocaisController extends Controller
 
         $btnEditar = ' <a data-id="'.$local->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
 
-        $btnExcluir = ' <a data-id="'.$local->id.'" class="btn btn-danger btnExcluir" title="Desativar" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
+        $btnExcluir = ' <a data-id="'.$local->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
             
         //caso sseja usuário adm
         if($roleUsuarioLogado == 1){
@@ -70,7 +70,7 @@ class LocaisController extends Controller
         }else{
             $local = new Locais();
             $local->nome = $request->nome;
-            $local->descricao = $request->descricao;
+            $local->observacao = $request->observacao;
             $local->status = true;
             $local->save();
             
@@ -82,11 +82,23 @@ class LocaisController extends Controller
     }
     //listando os locais
     public function list(){
-        $local = Locais::where('status', true)->get();
+        $local = Locais::where('status','=', true)->get();
 
         return Datatables::of($local)
         ->editColumn('acao',function($local){
             return $this->setDataButtons($local);
+        })
+        ->editColumn('nome',function($local){
+            return $local->nome;
+        })
+        ->editColumn('observacao', function($local){
+            return $local->observacao;
+        })
+        ->editColumn('status', function($local){
+            if($local->status)
+                return " <span class='label label-success' style='font-size:14px'>Ativo</span>";
+            else
+                return " <span class='label label-default' style='font-size:14px'>Inativo</span>";
         })
         ->escapeColumns([0])
         ->make(true);
