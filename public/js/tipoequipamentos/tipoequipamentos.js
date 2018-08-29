@@ -73,7 +73,6 @@ $(document).ready(function($) {
         });
     }).draw();
 
-
     //Visualizar
     $(document).on('click', '.btnVisualizar', function() {
         $('#nome-visualizar').text($(this).data('nome'));
@@ -196,7 +195,7 @@ $(document).ready(function($) {
                 jQuery('.edit').button('reset');
             },
             success: function(data) {
-                 //Verificar os erros de preenchimento
+                //Verificar os erros de preenchimento
 
                 if ((data.errors)) {
 
@@ -256,7 +255,6 @@ $(document).ready(function($) {
                 jQuery('#excluir-modal').modal('hide'); //fechar o modal
 
                 $(function() {
-
                     iziToast.success({
                         title: 'OK',
                         message: 'Tipo Desativado com Sucesso!',

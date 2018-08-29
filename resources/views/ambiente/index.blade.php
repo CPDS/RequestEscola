@@ -33,7 +33,6 @@
 			<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 			   <thead>
 					<tr>
-						 <th>Id</th>
 						 <th>Local</th>
 						 <th>Tipo</th>
 						 <th>Descrição</th>

@@ -13,8 +13,7 @@ $(document).ready(function($) {
         ajax: './ambiente/list',
         columns: [
         { data: null, name: 'order' },
-        { data: 'id', name: 'id' },
-        { data: 'local', name: 'local' },
+        { data: 'fk_local', name: 'fk_local' },
         { data: 'tipo', name: 'tipo' },
         { data: 'descricao', name: 'descricao' },
         { data: 'numero_ambiente', name: 'numero_ambiente' },
@@ -64,13 +63,12 @@ $(document).ready(function($) {
         },
         columnDefs : [
           { targets : [0,6], sortable : false },
-          { "width": "5%", "targets": 0 }, //id
-          { "width": "5%", "targets": 1 }, //local
-          { "width": "10%", "targets": 2 },//tipo
-          { "width": "15%", "targets": 3 },//descricao
-          { "width": "5%", "targets": 4 },//num ambiente
-          { "width": "14%", "targets": 5 },//status
-          { "width": "10%", "targets": 6 },//ação
+          { "width": "5%", "targets": 0 }, //fk_local
+          { "width": "10%", "targets": 1 },//tipo
+          { "width": "15%", "targets": 2 },//descricao
+          { "width": "5%", "targets": 3 },//num_ambiente
+          { "width": "14%", "targets": 4 },//status
+          { "width": "10%", "targets": 5 },//acao
         ]
     });
 
