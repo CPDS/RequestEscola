@@ -59,7 +59,7 @@ $(document).ready(function($) {
             },
             columnDefs : [
               { targets : [0,4], sortable : false },
-              { "width": "5%", "targets": 0 },//id
+              { "width": "5%", "targets":  0 },//id
               { "width": "10%", "targets": 1 },//nome
               { "width": "15%", "targets": 2 },//observação
               { "width": "10%", "targets": 3 },//status
@@ -257,7 +257,7 @@ $(document).ready(function($) {
                 $(function() {
                     iziToast.success({
                         title: 'OK',
-                        message: 'Tipo Desativado com Sucesso!',
+                        message: 'Tipo Excluído com Sucesso!',
                     });
                 });
             },

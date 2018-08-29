@@ -27,7 +27,6 @@
 		</div>
 	</div>
 
-
 	<div class="box">
 		<div class="box-body">
 			<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -44,5 +43,7 @@
 			</table>
 		</div>	
 	</div>
-
+	
+	@include('ambiente.modals.visualizar')
+	@include('ambiente.modals.criar_editar')
 @endsection

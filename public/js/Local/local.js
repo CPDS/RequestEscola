@@ -259,7 +259,7 @@ $(document).ready(function($) {
                 $(function() {
                     iziToast.success({
                         title: 'OK',
-                        message: 'Local Desativado com Sucesso!',
+                        message: 'Local Excluído com Sucesso!',
                     });
                 });
             },

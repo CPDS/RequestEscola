@@ -62,12 +62,12 @@ $(document).ready(function($) {
             }
         },
         columnDefs : [
-          { targets : [0,6], sortable : false },
-          { "width": "5%", "targets": 0 }, //fk_local
+          { targets : [0,2,5], sortable : false },
+          { "width": "5%", "targets":  0 }, //fk_local
           { "width": "10%", "targets": 1 },//tipo
           { "width": "15%", "targets": 2 },//descricao
-          { "width": "5%", "targets": 3 },//num_ambiente
-          { "width": "14%", "targets": 4 },//status
+          { "width": "5%", "targets":  3 },//num_ambiente
+          { "width": "10%", "targets": 4 },//status
           { "width": "10%", "targets": 5 },//acao
         ]
     });
@@ -78,13 +78,22 @@ $(document).ready(function($) {
         });
     }).draw();
 
+    //Visualizar
+    $(document).on('click', '.btnVisualizar', function() {
+        $('#fk_local-visualizar').text($(this).data('fk_local'));
+        $('#tipo-visualizar').text($(this).data('tipo'));
+        $('#descricao-visualizar').text($(this).data('descricao'));
+        $('#numero_ambiente-visualizar').text($(this).data('numero_ambiente'));        
+        $('#status-visualizar').text($(this).data('status'));
+        jQuery('#visualizar-modal').modal('show');
+    });
 
     $(document).on('click', '.btnAdicionar', function() {
         alert('agora sim');
         /*$('.modal-footer .btn-action').removeClass('edit');
         $('.modal-footer .btn-action').addClass('add');
-        $('.modal-body .senha').removeClass("hidden");
-        $('.modal-title').text('Novo Usuário');
+
+        $('.modal-title').text('Novo Ambiente');
         $('.callout').addClass("hidden"); 
         $('.callout').find("p").text(""); 
 
