@@ -34,7 +34,7 @@ class AmbienteController extends Controller
         return $btnVisualizar.$btnEditar.$btnExcluir;
     }
 
-    public function listar(){
+    public function list(){
         $ambiente = Ambiente::all();
         
         return Datatables::of($ambiente)
