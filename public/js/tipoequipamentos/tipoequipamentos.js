@@ -77,6 +77,7 @@ $(document).ready(function($) {
     $(document).on('click', '.btnVisualizar', function() {
         $('#nome-visualizar').text($(this).data('nome'));
         $('#observacao-visualizar').text($(this).data('observacao'));        
+        $('#status-visualizar').text($(this).data('status'));
         jQuery('#visualizar-modal').modal('show');
     });
 
@@ -91,7 +92,7 @@ $(document).ready(function($) {
         $('.callout').find("p").text(""); 
 
         $('#form')[0].reset();
-
+        
         jQuery('#criar_editar-modal').modal('show');
         
     });

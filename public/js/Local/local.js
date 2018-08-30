@@ -80,6 +80,7 @@ $(document).ready(function($) {
     $(document).on('click', '.btnVisualizar', function() {
         $('#nome-visualizar').text($(this).data('nome'));
         $('#observacao-visualizar').text($(this).data('observacao'));        
+        $('#status-visualizar').text($(this).data('status'));
         jQuery('#visualizar-modal').modal('show');
     });
 

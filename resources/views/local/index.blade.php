@@ -35,7 +35,7 @@
 				
 			   <thead>
 					<tr>
-						<th>Id</th>
+						<th>ID</th>
 						<th>Nome</th>
 						<th>Observação</th>
 						<th>Status</th>

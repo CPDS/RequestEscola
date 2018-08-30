@@ -88,19 +88,75 @@ $(document).ready(function($) {
         jQuery('#visualizar-modal').modal('show');
     });
 
+    //Adicionar
     $(document).on('click', '.btnAdicionar', function() {
-        alert('agora sim');
-        /*$('.modal-footer .btn-action').removeClass('edit');
+       // alert('agora sim');
+        $('.modal-footer .btn-action').removeClass('edit');
         $('.modal-footer .btn-action').addClass('add');
 
-        $('.modal-title').text('Novo Ambiente');
+        $('.modal-title').text('Cadastrar novo Ambiente');
         $('.callout').addClass("hidden"); 
         $('.callout').find("p").text(""); 
 
         $('#form')[0].reset();
 
-        jQuery('#criar_editar-modal').modal('show'); */
+        jQuery('#criar_editar-modal').modal('show');
+    });
+
+    //AJAX Adicionar Local
+    $('.modal-footer').on('click', '.add', function() {
+        
+        var dados = new FormData($("#form")[0]); //pega os dados do form
+
+        $.ajax({
+            type: 'post',
+            url: "./ambiente/create",
+            data: dados,
+            processData: false,
+            contentType: false,
+            beforeSend: function(){
+                jQuery('.add').button('loading');
+            },
+            complete: function() {
+                jQuery('.add').button('reset');
+            },
+            success: function(data) {
+                 //Verificar os erros de preenchimento
+                if ((data.errors)) {
+
+                    $('.callout').removeClass('hidden'); //exibe a div de erro
+                    $('.callout').find('p').text(""); //limpa a div para erros sucessivos
+
+                    $.each(data.errors, function(nome, mensagem) {
+                            $('.callout').find("p").append(mensagem + "</br>");
+                    });
+
+                } else {
+                    
+                    $('#table').DataTable().draw(false);
+
+                    jQuery('#criar_editar-modal').modal('hide');
+
+                    $(function() {
+                        iziToast.success({
+                            title: 'OK',
+                            message: 'Ambiente Adicionado com Sucesso!',
+                        });
+                    });
+                }
+            },
+
+            error: function() {
+                jQuery('#criar_editar-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+
+        });
     });
 
 
-});
+}); //FIM DOCUMENTO
