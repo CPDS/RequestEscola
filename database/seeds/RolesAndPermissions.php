@@ -18,15 +18,15 @@ class RolesAndPermissions extends Seeder
     	//Papeis
         DB::table('roles')->insert([
             'name' => 'Administrador',
-            'guard_name' => 'usuario',
+            'guard_name' => 'web',
         ]);
          DB::table('roles')->insert([
-            'name' => 'Funcionario',
-            'guard_name' => 'usuario',
+            'name' => 'Funcionário',
+            'guard_name' => 'web',
          ]);
          DB::table('roles')->insert([
             'name' => 'Professor',
-            'guard_name' => 'usuario',
+            'guard_name' => 'web',
          ]);
 
          /*permissões por Módulos*/

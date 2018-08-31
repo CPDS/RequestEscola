@@ -15,7 +15,6 @@ class UserSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('123123'),
-			'funcao' =>	1 ,
 			'telefone' => '(73) 3526-7504',
 			'endereco' => 'Av. José Moreira Sobrinho numero 12',
 			'cidade' => 'Jequié',

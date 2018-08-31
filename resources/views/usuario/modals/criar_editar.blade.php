@@ -54,10 +54,9 @@
              <strong>Função:</strong>
                 <select name="funcao" id="funcao" class="form-control">
                   <option value='' selected disabled>Selecione ...</option>
-                  
-                  <option value="1">Administrador</option> 
-                  <option value="2">Funcionário</option>
-                  <option value="3">Professor</option> 
+                  <option value="Administrador">Administrador</option> 
+                  <option value="Funcionário">Funcionário</option>
+                  <option value="Professor">Professor</option> 
                 </select>
             </div>
 

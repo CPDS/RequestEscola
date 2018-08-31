@@ -30,17 +30,13 @@ class UserController extends Controller
         else
             $status = 'Inativo';
         
-        //Variável de Função
-        if($usuario->funcao == 1)
-            $tipoFuncao = 'Administrador';
-        else if($usuario->funcao == 2)
-            $tipoFuncao = 'Funcionário';
-        else
-            $tipoFuncao = 'Professor';
+        foreach($usuario->getRoleNames() as $tipoFuncao){
+            $funcao = $tipoFuncao;
+        }
 
         $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'"
             data-endereco="'.$usuario->endereco.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'"
-            data-status="'.$status.'" data-tipoFuncao="'.$tipoFuncao.'"';
+            data-status="'.$status.'" data-tipoFuncao="'.$funcao.'"';
 
             $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
 
@@ -72,12 +68,10 @@ class UserController extends Controller
                     return " <span class='label label-default' style='font-size:14px'>Inativo</span>";
             })
             ->editColumn('funcao', function($usuario){
-                if($usuario->funcao == 1)
-                    return "Administrador";
-                else if($usuario->funcao == 2)
-                    return "Funcionário";
-                else
-                    return "Professor";
+                foreach($usuario->getRoleNames() as $tipoFuncao){
+                    $funcao = $tipoFuncao;
+                }
+                return $funcao;
             })
             ->escapeColumns([0])
             ->make(true);
@@ -85,15 +79,13 @@ class UserController extends Controller
 
     //função para Cadastrar usuários
     public function store(Request $request){
-        //dd($request->all());
+        
         $rules = array(
             'nome' => 'required',
             'email' => 'required|email|unique:users,email',
             'senha' => 'required|min:8|same:confirmarsenha',
             'endereco' => 'required',
             'telefone' => 'required',
-            'funcao' => 'required',
-            'numero' => 'required',
             'cidade' => 'required',
             'estado' => 'required',
             'funcao' => 'required',
@@ -118,7 +110,6 @@ class UserController extends Controller
             $usuario->name = $request->nome;
             $usuario->email = $request->email;
             $usuario->password = Hash::make($request->senha);
-            $usuario->funcao = $request->funcao;
             $usuario->telefone = $request->telefone;
             $usuario->endereco = $request->endereco;
             $usuario->cidade = $request->cidade;
@@ -126,6 +117,8 @@ class UserController extends Controller
             $usuario->status = true;
 
             $usuario->save();
+            
+            $usuario->assignRole($request->funcao);
 
             $usuario->setAttribute('buttons', $this->setDataButtons($usuario));
 
@@ -137,10 +130,8 @@ class UserController extends Controller
     public function update(Request $request){ 
         $rules = array(
             'nome' => 'required',
-            'funcao' => 'required',
             'telefone' => 'required',
             'endereco' => 'required',
-            'numero' => 'required',
             'cidade' => 'required',
             'estado' => 'required'
         );
@@ -150,14 +141,19 @@ class UserController extends Controller
             return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
         }else{
             $usuario = User::find($request->id);
+            
+            foreach($usuario->getRoleNames() as $funcao)
+                $role = $funcao;
+            
+            $usuario->removeRole($role);
+
             $usuario->name = $request->nome;
             $usuario->email = $request->email;
-            $usuario->funcao = $request->funcao;
             $usuario->telefone = $request->telefone;
             $usuario->endereco = $request->endereco;
-            $usuario->numero = $request->numero;
             $usuario->cidade = $request->cidade;
             $usuario->estado = $request->estado;
+            $usuario->assignRole($request->funcao);
             $usuario->save();
 
             $usuario->setAttribute('buttons',$this->setDataButtons($usuario));
