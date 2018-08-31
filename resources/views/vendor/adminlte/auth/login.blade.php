@@ -23,7 +23,9 @@
                 </ul>
             </div>
         @endif
-
+        <div class="callout callout-danger hidden">
+            <p></p>
+        </div>
         <div class="login-box-body">
         <p class="login-box-msg"> Inicie sua sessão<!--{{ trans('adminlte_lang::message.siginsession') }}--> </p>
         <form action="{{ url('/login') }}" method="post">

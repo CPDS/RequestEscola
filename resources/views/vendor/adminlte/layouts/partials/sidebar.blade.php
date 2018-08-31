@@ -34,13 +34,14 @@
             <li class="header"><strong>MENU</strong></li>
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>Início</span></a></li>
-
+            @role('Administrador')
             <li class="treeview">
                 <a href="#"><i class='fa fa-user'></i> <span>Gestão de Usuários</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="{{ url('users') }}">Usuários</a></li>
                 </ul>
             </li>
+            @endrole
 
             <li class="treeview">
                 <a href="#"><i class='fa fa-laptop'></i> <span>Gestão de Equipamentos</span> <i class="fa fa-angle-left pull-right"></i></a>
