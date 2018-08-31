@@ -42,7 +42,7 @@
               <input placeholder="Digite a senha novamente" maxlength="32" id="confirmarsenha" class="form-control"  name="confirmarsenha" type="password">
             </div>
 
-            <div class="form-group col-xs-6">
+            <div class="form-group col-md-6">
               <strong>Telefone:</strong>
               <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
@@ -50,7 +50,7 @@
               </div>
             </div>
 
-            <div class="form-group col-xs-6">
+            <div class="form-group col-md-6">
              <strong>Função:</strong>
                 <select name="funcao" id="funcao" class="form-control">
                   <option value='' selected disabled>Selecione ...</option>
