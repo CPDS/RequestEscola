@@ -34,9 +34,11 @@ class UserController extends Controller
             $funcao = $tipoFuncao;
         }
 
-        $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$usuario->funcao.'"
+        //echo $funcao;
+        
+        $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$funcao.'"
             data-endereco="'.$usuario->endereco.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'"
-            data-status="'.$status.'" data-tipoFuncao="'.$funcao.'"';
+            data-status="'.$status.'"';
 
             $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
 
