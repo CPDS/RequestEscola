@@ -42,16 +42,17 @@
                 </ul>
             </li>
             @endrole
-
             <li class="treeview">
-                <a href="#"><i class='fa fa-laptop'></i> <span>Gestão de Equipamentos</span> <i class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a href="#">Equipamentos</a></li>
-                    <li><a href="{{ url('tipoEquipamento') }}">Tipos de Equipamentos</a></li>
-                    <li><a href="#"><i class='fa fa-calendar'></i>Reservas e Retiradas</a></li>
-                </ul>
+                 <a href="#"><i class='fa fa-laptop'></i> <span>Gestão de Equipamentos</span> <i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="#">Equipamentos</a></li>
+                         <li><a href="{{ url('tipoEquipamento') }}">Tipos de Equipamentos</a></li>
+                        <li><a href="#"><i class='fa fa-calendar'></i>Reservas e Retiradas</a></li>
+                    </ul>
             </li>
-
+            
+          
+            
             <li class="treeview">
                 <a href="#"><i class='fa fa-university'></i><span>Gestão de Ambiente</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">

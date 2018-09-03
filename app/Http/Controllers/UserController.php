@@ -59,6 +59,7 @@ class UserController extends Controller
         public function listar(){
             $usuario = User::all();
             
+            //dd($user->getPermissionsViaRoles());
             return Datatables::of($usuario)
             ->editColumn('acao',function($usuario){
                 return $this->setDataButtons($usuario);
@@ -119,9 +120,14 @@ class UserController extends Controller
             $usuario->status = true;
 
             $usuario->save();
-            
+            //setando o tipo de papel ao usuário
             $usuario->assignRole($request->funcao);
-
+            
+            /*Herdando as permissões via roles
+            foreach ($usuario->getPermissionsViaRoles() as $permissoes) {
+                $usuario->givePermissionTo($permissoes);   
+            }*/
+            
             $usuario->setAttribute('buttons', $this->setDataButtons($usuario));
 
             return response()->json($usuario);

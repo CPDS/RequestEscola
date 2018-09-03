@@ -28,9 +28,11 @@ class HomeController extends Controller
     public function index()
     {
         $usuario = Auth::user();
+        $permissoes = $usuario->getPermissionsViaRoles();
+        //dd($permissoes);
         //Verificando se o usuário esta ativo
         if($usuario->status)
-            return view('home',compact('usuario'));
+            return view('home',compact('usuario','permissoes'));
         else{
             Auth::logout();
             return view('vendor.adminlte.auth.login');
