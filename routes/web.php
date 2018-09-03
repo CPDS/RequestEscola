@@ -42,11 +42,21 @@ Route::group(['middleware' => ['auth']], function() {
 
 	//Rotas Tipo de equipamentos
 	Route::group(['prefix'=> 'tipoEquipamento', 'where' => ['id'=>'0-9+'], 'middleware' => ['role:Administrador']], function (){
-		Route::get('/',['as' => 'locais.index', 'uses' => 'TipoEquipamentoController@index']);
-		Route::get('/list',['as' => 'locais.list', 'uses' => 'TipoEquipamentoController@list']);
-		Route::post('/create', ['as' => 'locais.create', 'uses' => 'TipoEquipamentoController@store']);
-		Route::post('/edit',['as' => 'locais.edit', 'uses' => 'TipoEquipamentoController@update']);
-		Route::post('/delete',['as' => 'locais.destroy', 'uses'=> 'TipoEquipamentoController@destroy']);
+		Route::get('/',['as' => 'tipoEquipamento.index', 'uses' => 'TipoEquipamentoController@index']);
+		Route::get('/list',['as' => 'tipoEquipamento.list', 'uses' => 'TipoEquipamentoController@list']);
+		Route::post('/create', ['as' => 'tipoEquipamento.create', 'uses' => 'TipoEquipamentoController@store']);
+		Route::post('/edit',['as' => 'tipoEquipamento.edit', 'uses' => 'TipoEquipamentoController@update']);
+		Route::post('/delete',['as' => 'tipoEquipamento.destroy', 'uses'=> 'TipoEquipamentoController@destroy']);
 	});
+
+	//Rotas de equipamentos
+	Route::group(['prefix'=> 'equipamentos', 'where' => ['id'=>'0-9+'], 'middleware' => ['role:Administrador']], function (){
+		Route::get('/',['as' => 'equipamentos.index', 'uses' => 'EquipamentosController@index']);
+		Route::get('/list',['as' => 'equipamentos.list', 'uses' => 'EquipamentosController@list']);
+		Route::post('/create', ['as' => 'equipamentos.create', 'uses' => 'EquipamentosController@store']);
+		Route::post('/edit',['as' => 'equipamentos.edit', 'uses' => 'EquipamentosController@update']);
+		Route::post('/delete',['as' => 'equipamentos.destroy', 'uses'=> 'EquipamentosController@destroy']);
+	});
+
 });
 

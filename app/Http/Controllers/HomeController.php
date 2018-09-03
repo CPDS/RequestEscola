@@ -28,8 +28,7 @@ class HomeController extends Controller
     public function index()
     {
         $usuario = Auth::user();
-        //$permissoes = $usuario->getPermissionsViaRoles();
-        //dd($permissoes);
+        
         //Verificando se o usuário esta ativo
         if($usuario->status)
             return view('home');

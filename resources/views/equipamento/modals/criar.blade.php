@@ -52,26 +52,26 @@
             </div>
           </div>
 
-          <!--<div class="form-group col-md-6">
+          <div class="form-group col-md-6">
               <strong>Código:</strong>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
                   <input placeholder="Digite o codigo" maxlength="5" class="form-control" id="codigo" name="codigo" type="text">
                 </div>
-          </div>-->
+          </div>
           
-           <!-- <div class="form-group col-md-12">
+           <div class="form-group col-md-12">
                   <strong>Local:</strong>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-                        <select name="id_pavilhao" id="id_pavilhao" class="form-control">
+                        <select name="id_local" id="id_local" class="form-control">
                         <option value='' selected disabled>Selecione ...</option>
-                        @foreach($pavilhoes as $pavilhao)
-                        <option value="{{$pavilhao->id}}">{{$pavilhao->nome}}</option> 
+                        @foreach($locais as $local)
+                        <option value="{{$local->id}}">{{$local->nome}}</option> 
                         @endforeach
                         </select>
                    </div>
-            </div>-->
+            </div>
            
             <input type="hidden" id="id" name="id">
           </div> 

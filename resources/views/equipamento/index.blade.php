@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('adminlte::layouts.app')
 
 <script src ="{{ asset('js/jquery-3.1.0.js') }}" type = "text/javascript" ></script>
 <script src ="{{ asset('js/jquery.maskedinput.js') }}" type = "text/javascript" ></script>
@@ -57,11 +57,10 @@
 			</table>
 		</div>
 	</div>
-<!--
-@include(modals.equipamento.criar)
-@include(modals.equipamento.editar)
-@include(modals.equipamento.defeito)
-@include(modals.equipamento.excluir)
-@include(modals.equipamento.visualizar)
--->
+
+@include('equipamento.modals.criar')
+@include('equipamento.modals.defeito')
+@include('equipamento.modals.excluir')
+@include('equipamento.modals.visualizar')
+
 @endsection
