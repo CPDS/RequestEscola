@@ -29,22 +29,22 @@ class LocaisController extends Controller
         else
             $status = 'Inativo';
         //Pegar o usuário logado
-        $roleUsuarioLogado = Auth::user()->id;
+        $usuarioLogado = Auth::user();
         
         $dados = 'data-nome="'.$local->nome.'" data-observacao="'.$local->observacao.'" data-status="'.$status.'"';
 
         $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
-
-        $btnEditar = ' <a data-id="'.$local->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
-
-        $btnExcluir = ' <a data-id="'.$local->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
             
-        //caso sseja usuário adm
-        if($roleUsuarioLogado == 1){
-            return $btnVisualizar.$btnEditar.$btnExcluir;
+        //caso seja usuário adm
+        if($usuarioLogado->hasRole('Administrador')){
+            $btnEditar = ' <a data-id="'.$local->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
+            $btnExcluir = ' <a data-id="'.$local->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
         }else{
-            return $btnVisualizar;
+            $btnEditar = '';
+            $btnExcluir = '';
         }
+
+        return $btnVisualizar.$btnEditar.$btnExcluir;
     }
 
 
