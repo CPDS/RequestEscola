@@ -22,7 +22,7 @@
 			<br>	
 
 			<div class="pull-right">
-				<a class="btnFiltro btn btn-primary" title="Filtro Equipamento" data-toggle="tooltip"><span class="fa fa-file-pdf-o"></span> Lista de Equipamentos (PDF)</a>
+				<a class="btnFiltro btn btn-info" title="Filtro Equipamento" data-toggle="tooltip"><span class="fa fa-file-pdf-o"></span> Lista de Equipamentos (PDF)</a>
 
 				<a class="btnAdicionar btn btn-primary" title="Adicionar Equipamento" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Novo Equipamento</a>
 			</div>
@@ -35,13 +35,13 @@
 			   <thead>
 					<tr>
 						<th>ID</th>
+						<!--<th>Nº de Tombo</th>-->
+						<!--<th>Código</th>-->
 						<th>Nome</th>
-						<th>fk_tipo_equipamento</th>
-						<th>fk_local</th>
-						<th>num_tombo</th>
-						<th>codigo</th>
-						<th>status</th>
-						<th>marca</th>
+						<th>Tipo</th>
+						<!--<th>Local</th>-->
+						<th>Marca</th>
+						<th>Status</th>
 						<th>Ação</th>
 					 </tr>
 				</thead>
@@ -53,5 +53,6 @@
 	@include('equipamento.modals.defeito')
 	@include('equipamento.modals.excluir')
 	@include('equipamento.modals.visualizar')
+
 
 @endsection

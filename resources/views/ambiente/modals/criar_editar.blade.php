@@ -5,6 +5,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title"></h4>
+        <small class="modal-sub" style="color: red;"></small>
       </div> <!-- Fim de ModaL Header-->
 
       <div class="modal-body">

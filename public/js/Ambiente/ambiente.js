@@ -95,6 +95,7 @@ $(document).ready(function($) {
         $('.modal-footer .btn-action').addClass('add');
 
         $('.modal-title').text('Cadastrar novo Ambiente');
+        $('.modal-sub').text('PREENCHA TODAS AS INFORMAÇÕES CORRETAMENTE');
         $('.callout').addClass("hidden"); 
         $('.callout').find("p").text(""); 
 

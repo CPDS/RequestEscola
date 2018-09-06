@@ -91,6 +91,7 @@ $(document).ready(function($) {
         $('.modal-footer .btn-action').addClass('add');
        
         $('.modal-title').text('Novo Local');
+        $('.modal-sub').text('PREENCHA TODAS AS INFORMAÇÕES CORRETAMENTE');
         $('.callout').addClass("hidden"); 
         $('.callout').find("p").text(""); 
 

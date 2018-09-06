@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col-lg-6 col-xs-6">
         <!-- small box -->
-        <div class="small-box bg-yellow">
+        <div class="small-box bg-disabled" style="color: black;">
           <div class="inner">
             <h3>Geral</h3>
             <p>Equipamentos Total/Disponíveis: </p>

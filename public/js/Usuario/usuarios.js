@@ -268,6 +268,7 @@ $(document).ready(function($) {
         $('.modal-footer .btn-action').addClass('add');
         $('.modal-body .senha').removeClass("hidden");
         $('.modal-title').text('Novo Usuário');
+        $('.modal-sub').text('PREENCHA TODAS AS INFORMAÇÕES CORRETAMENTE');
         $('.callout').addClass("hidden"); 
         $('.callout').find("p").text(""); 
 
