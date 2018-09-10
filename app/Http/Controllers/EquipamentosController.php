@@ -21,6 +21,7 @@ class EquipamentosController extends Controller
     public function index()
     {
         $tipoequipamentos = TipoEquipamentos::where('status','Ativo')->get();
+        //dd($tipoequipamentos->all());
         $locais = Locais::where('status',true)->get();
         
         return view('equipamento.index',compact('tipoequipamentos','locais'));
@@ -57,18 +58,19 @@ class EquipamentosController extends Controller
 
     public function store(Request $request)
     {
+        //dd($request->all());
         $rules = array(
             'nome' => 'required',
-            'tipoEquipamento' => 'required',
-            'locao' => 'required',
+            'id_tipo_equipamento' => 'required',
+            'id_local' => 'required',
             'codigo' => 'required',
             'marca' => 'required',
         );
 
         $attributeNames = array(
             'nome' => 'nome',
-            'tipoEquipamento' => 'tipoEquipamento',
-            'locao' => 'locao',
+            'id_tipo_equipamento' => 'Tipo de equipamento',
+            'id_local' => 'local',
             'codigo' => 'codigo',
             'marca' => 'marca',
         );
@@ -84,9 +86,9 @@ class EquipamentosController extends Controller
         }else{
             $equipamento = new Equipamentos();
             $equipamento->nome = $request->nome;
-            $equipamento->fk_tipo_equipamento = $request->tipoEquipamento;
-            $equipamento->fk_local = $request->local;
-            $equipamento->num_tombo = $request->tombo;
+            $equipamento->fk_tipo_equipamento = $request->id_tipo_equipamento;
+            $equipamento->fk_local = $request->id_local;
+            $equipamento->num_tombo = $request->num_tombo;
             $equipamento->codigo = $request->codigo;
             $equipamento->marca = $request->marca;
             $equipamento->status = 'Ativo';
@@ -101,7 +103,29 @@ class EquipamentosController extends Controller
   
     public function list()
     {
-        //
+        $equipamento = Equipamentos::where('status','Ativo')->get();
+        
+        return Datatables::of($equipamento)
+        ->editColumn('acao', function($equipamento){
+            return $this->setDataButtons($equipamento);
+        })
+        ->editColumn('nome', function($equipamento){
+            return $equipamento->nome;
+        })
+        ->editColumn('fk_tipo_equipamento', function($equipamento){
+            return $equipamento->tipoEquipamento->nome;
+        })
+        ->editColumn('codigo', function($equipamento){
+            return $equipamento->codigo;
+        })
+        ->editColumn('marca', function($equipamento){
+            return $equipamento->marca;
+        })
+        ->editColumn('status', function($equipamento){
+            return $equipamento->status;
+        })
+        ->escapeColumns([0])
+        ->make(true);
     }
 
   

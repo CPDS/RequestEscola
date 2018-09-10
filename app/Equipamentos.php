@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Equipamentos extends Model
 {
     protected $fillable = ['fk_tipo_equipamento', 'fk_local', 'num_tombo', 'codigo', 'status', 'marca'];
@@ -15,7 +16,7 @@ class Equipamentos extends Model
 
     public function tipoEquipamento(){
     	
-    	return $this->belongsTo(tipoEquipamentos::class,'fk_tipo_equipamento');
+    	return $this->belongsTo(TipoEquipamentos::class,'fk_tipo_equipamento');
     }
 
     

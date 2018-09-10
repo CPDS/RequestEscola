@@ -12,11 +12,8 @@ $(document).ready(function($) {
         ajax: './equipamentos/list',
         columns: [
         { data: null, name: 'order' },
-        { data: 'id', name: 'id' },
         { data: 'nome', name: 'nome' },
         { data: 'fk_tipo_equipamento', name: 'fk_tipo_equipamento' },
-        { data: 'fk_local', name: 'fk_local'},
-        { data: 'num_tombo', name: 'num_tombo' },
         { data: 'codigo', name: 'codigo' },
         { data: 'status', name: 'status' },
         { data: 'marca', name: 'marca' },
@@ -63,16 +60,14 @@ $(document).ready(function($) {
             }
         },
         columnDefs : [
-          { targets : [0,5], sortable : false },
-          { "width": "5%", "targets": 0 },  //ID
-        //{ "width": "5%", "targets": 1 },  //tombo
-        //{ "width": "5%", "targets": 2 }, //codigo
+          { targets : [0,6], sortable : false },
+          { "width": "5%", "targets": 0  },  //ID
           { "width": "10%", "targets": 1 },//nome
           { "width": "10%", "targets": 2 },//tipo
-        //{ "width": "10%", "targets": 5},//local
-          { "width": "14%", "targets": 3 },//marca
-          { "width": "10%", "targets": 4 },//status
-          { "width": "14%", "targets": 5 }//ação
+          { "width": "10%", "targets": 3 },//codigo
+          { "width": "14%", "targets": 4 },//status
+          { "width": "14%", "targets": 5 },//marca
+          { "width": "14%", "targets": 6 }//acao
         ]
     });
 
@@ -141,7 +136,7 @@ $(document).ready(function($) {
         var dados = new FormData($("#form")[0]); //pega os dados do form
         $.ajax({
             type: 'post',
-            url: "./equipamento/create",
+            url: "./equipamentos/create",
             data: dados,
             processData: false,
             contentType: false,
@@ -195,7 +190,7 @@ $(document).ready(function($) {
 
         $.ajax({
             type: 'post',
-            url: "./equipamento/edit",
+            url: "./equipamentos/edit",
             data: dados,
             processData: false,
             contentType: false,
@@ -248,7 +243,7 @@ $(document).ready(function($) {
 
         $.ajax({
             type: 'post',
-            url: './equipamento/delete',
+            url: './equipamentos/delete',
             data: {
                 'id': $(".id_del").val(),
             },

@@ -35,13 +35,11 @@
 			   <thead>
 					<tr>
 						<th>ID</th>
-						<!--<th>Nº de Tombo</th>-->
-						<!--<th>Código</th>-->
 						<th>Nome</th>
 						<th>Tipo</th>
-						<!--<th>Local</th>-->
-						<th>Marca</th>
+						<th>Código</th>
 						<th>Status</th>
+						<th>Marca</th>
 						<th>Ação</th>
 					 </tr>
 				</thead>
