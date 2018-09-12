@@ -16,11 +16,6 @@
 
        <form id="form" role="form" method="post">
          <div class="row" style="width: 100%">
-         
-           <!-- <div class="form-group col-md-12">
-              <strong>Local:</strong>
-                <input placeholder="Digite o nome do Local associado" maxlength="254" id="nome" class="form-control" name="nome" type="text">
-            </div>-->
 
             <div class="form-group col-md-12">
               <strong>Tipo:</strong>
@@ -30,6 +25,19 @@
             <div class="form-group col-xs-12">
               <strong>Descrição:</strong>
              <textarea name="descricao" id="descricao" maxlength="10000" rows="5" class="form-control " style="resize: none;"></textarea>
+            </div>
+
+            <div class="form-group col-md-6">
+              <strong>Local:</strong>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                <select name="id_local" id="id_local" class="form-control">
+                  <option value='' selected disabled>Selecione ...</option>
+                    @foreach($locais as $local)
+                      <option value="{{$local->id}}">{{$local->nome}}</option> 
+                    @endforeach
+                </select>
+              </div>
             </div>
 
             <div class="form-group col-md-12">

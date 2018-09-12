@@ -15,7 +15,7 @@ $(document).ready(function($) {
         { data: null, name: 'order' },
         { data: 'fk_local', name: 'fk_local' },
         { data: 'tipo', name: 'tipo' },
-        { data: 'descricao', name: 'descricao' },
+       // { data: 'descricao', name: 'descricao' },
         { data: 'numero_ambiente', name: 'numero_ambiente' },
         { data: 'status', name: 'status' },
         { data: 'acao', name: 'acao' }
@@ -62,10 +62,11 @@ $(document).ready(function($) {
             }
         },
         columnDefs : [
-          { targets : [0,2,5], sortable : false },
-          { "width": "5%", "targets":  0 }, //fk_local
-          { "width": "10%", "targets": 1 },//tipo
-          { "width": "15%", "targets": 2 },//descricao
+          { targets : [0,5], sortable : false },
+          { "width": "5%", "targets":  0 }, //id
+          { "width": "5%", "targets":  1 }, //fk_local
+          { "width": "10%", "targets": 2 },//tipo
+        //{ "width": "15%", "targets": 3 },//descricao
           { "width": "5%", "targets":  3 },//num_ambiente
           { "width": "10%", "targets": 4 },//status
           { "width": "10%", "targets": 5 },//acao
@@ -104,7 +105,25 @@ $(document).ready(function($) {
         jQuery('#criar_editar-modal').modal('show');
     });
 
-    //AJAX Adicionar Local
+    //Editar
+    $(document).on('click', '.btnEditar', function() {
+        $('.modal-footer .btn-action').removeClass('add');
+        $('.modal-footer .btn-action').addClass('edit');
+
+        $('.modal-title').text('Editar Equipamento');
+        $('.callout').addClass("hidden"); //ocultar a div de aviso
+        $('.callout').find("p").text(""); //limpar a div de aviso
+
+        var btnEditar = $(this);
+
+        $('#form :input').each(function(index,input){
+            $('#'+input.id).val($(btnEditar).data(input.id));
+        });
+
+        jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
+    });
+
+    //AJAX Adicionar Ambiente
     $('.modal-footer').on('click', '.add', function() {
         
         var dados = new FormData($("#form")[0]); //pega os dados do form
@@ -159,5 +178,58 @@ $(document).ready(function($) {
         });
     });
 
+    //AJAX Editar Ambiente
+    $('.modal-footer').on('click', '.edit', function() {
+        var dados = new FormData($("#form")[0]); //pega os dados do form
+
+        $.ajax({
+            type: 'post',
+            url: "./ambiente/edit",
+            data: dados,
+            processData: false,
+            contentType: false,
+            beforeSend: function(){
+                jQuery('.edit').button('loading');
+            },
+            complete: function() {
+                jQuery('.edit').button('reset');
+            },
+            success: function(data) {
+                 //Verificar os erros de preenchimento
+                if ((data.errors)) {
+
+                    $('.callout').removeClass('hidden'); //exibe a div de erro
+                    $('.callout').find('p').text(""); //limpa a div para erros successivos
+
+                    $.each(data.errors, function(nome, mensagem) {
+                            $('.callout').find("p").append(mensagem + "</br>");
+                    });
+
+                } else {
+                    
+                    $('#table').DataTable().draw(false);
+
+                    jQuery('#criar_editar-modal').modal('hide');
+
+                    $(function() {
+                        iziToast.success({
+                            title: 'OK',
+                            message: 'Ambiente Atualizado com Sucesso!',
+                        });
+                    });
+
+                }
+            },
+
+            error: function() {
+                jQuery('#criar_editar').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+        });
+    });
 
 }); //FIM DOCUMENTO

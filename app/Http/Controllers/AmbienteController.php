@@ -11,6 +11,7 @@ use DataTables;
 use DB;
 use Auth;
 use App\Ambiente;
+use App\Locais;
 
 
 class AmbienteController extends Controller
@@ -18,24 +19,78 @@ class AmbienteController extends Controller
 	// 
 	
 	public function index(){
-        return view('ambiente.index');
+        $locais = Locais::where('status',true)->get();
+
+        return view('ambiente.index',compact('locais'));
     }
     
     private function setDataButtons(Ambiente $ambiente){
     	
-    	$dados = 'data-fk_local="'.$ambiente->fk_local.'" data-tipo="'.$ambiente->tipo.'" data-descricao="'.$ambiente->descricao.'" data-numero_ambiente="'.$ambiente->numero_ambiente.'"data-status="'.$status.'"'; 
+        //Pegar papel logado
+        $usuarioLogado = Auth::user();
+
+    	$dados = 'data-local="'.$ambiente->local->nome.
+        '" data-tipo="'.$ambiente->tipo.
+        '" data-descricao="'.$ambiente->descricao.
+        '" data-numero_ambiente="'.$ambiente->numero_ambiente.
+        '" data-status="'.$ambiente->status.'"'; 
     
     	$btnVisualizar = '<a class="btn btn-info btnVisualizar"  title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
 
-        $btnEditar = ' <a data-id=" " class="btn btn-primary btnEditar"  title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
 
-        $btnExcluir = ' <a data-id=" " class="btn btn-danger btnExcluir" title="Desativar" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
+        //Exibir botões para usuários administradores
+        if($usuarioLogado->hasRole('Administrador')){
+            $btnEditar = ' <a data-id="'.$ambiente->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
+            $btnExcluir = ' <a data-id="'.$ambiente->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
+        }else{
+            $btnEditar = '';
+            $btnExcluir = '';
+        }
 
         return $btnVisualizar.$btnEditar.$btnExcluir;
     }
 
+    public function store(Request $request)
+    {
+        $rules = array(
+            'tipo' => 'required',
+            'descricao' => 'required',
+            'id_local' => 'required',
+            'numero_ambiente' => 'required',
+        );
+
+        $attributeNames = array(
+            'tipo' => 'tipo',
+            'descricao' => 'descricao',
+            'id_local' => 'local',
+            'numero_ambiente' => 'numero_ambiente',
+        );
+
+        $messages = array(
+            'same' => 'Campo Obrigatório'
+        );
+
+        $validator = Validator::make(Input::all(), $rules, $messages);
+        $validator->setAttributeNames($attributeNames);
+        if ($validator->fails()){
+            return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
+        }else{
+            $ambiente = new Ambiente();
+            $ambiente->tipo = $request->tipo;
+            $ambiente->descricao = $request->descricao;
+            $ambiente->fk_local = $request->id_local;
+            $ambiente->numero_ambiente = $request->numero_ambiente;
+            $ambiente->status = 'Ativo';
+            $ambiente->save();
+
+            $ambiente->setAttribute('buttons', $this->setDataButtons($ambiente));
+            return response()->json($ambiente);
+        }
+    }
+
     public function list(){
-        $ambiente = Ambiente::all();
+        
+        $ambiente = Ambiente::where('status','Ativo')->get();
         
         return Datatables::of($ambiente)
         ->editColumn('acao',function($ambiente){
@@ -43,6 +98,9 @@ class AmbienteController extends Controller
         })
         ->editColumn('tipo', function($ambiente){
             return $ambiente->tipo;
+        })
+        ->editColumn('fk_local', function($ambiente){
+            return $ambiente->local->nome;
         })
         ->editColumn('descricao', function($ambiente){
             return $ambiente->descricao;
@@ -58,5 +116,40 @@ class AmbienteController extends Controller
         })
         ->escapeColumns([0])
         ->make(true);
+    }
+
+    public function update(Request $request)
+    {
+        $rules = array(
+            'tipo' => 'required',
+            'descricao' => 'required',
+            'id_local' => 'required',
+            'numero_ambiente' => 'required',
+        );
+
+        $attributeNames = array(
+            'tipo' => 'tipo',
+            'descricao' => 'descricao',
+            'id_local' => 'local',
+            'numero_ambiente' => 'numero_ambiente',
+        );
+
+        $messages = array(
+            'same' => 'Campo Obrigatório'
+        );
+
+        $validator = Validator::make(Input::all(), $rules, $messages);
+        $validator->setAttributeNames($attributeNames);
+        if ($validator->fails()){
+            return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
+        }else{
+            $ambiente = Ambiente::find($request->id);
+            $ambiente->tipo = $request->tipo;
+            $ambiente->descricao = $request->descricao;
+            $ambiente->fk_local = $request->id_local;
+            $ambiente->numero_ambiente = $request->numero_ambiente;
+            $ambiente->status = 'Ativo';
+            $ambiente->save();
+        }
     }
 }

@@ -32,9 +32,10 @@
 			<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 			   <thead>
 					<tr>
+						 <th>ID</th>
 						 <th>Local</th>
 						 <th>Tipo</th>
-						 <th>Descrição</th>
+						<!-- <th>Descrição</th> -->
 						 <th>Nº Ambiente</th>
 						 <th>Status</th>
 						 <th>Ação</th>

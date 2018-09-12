@@ -9,7 +9,8 @@
       <small>@yield('contentheader_description')</small>
    	</h1>
 
+   	@include('dashboards.administrador')
+	
   </section>
-
-  @include('dashboards.administrador')
+  
 @endsection
