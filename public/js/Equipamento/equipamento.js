@@ -123,7 +123,7 @@ $(document).ready(function($) {
         jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
     });
 
-     //Excluir
+    //Excluir
     $(document).on('click', '.btnExcluir', function() {
         $('.modal-title').text('Excluir Equipamento');
         $('.id_del').val($(this).data('id')); 

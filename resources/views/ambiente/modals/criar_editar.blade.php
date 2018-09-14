@@ -40,11 +40,11 @@
               </div>
             </div>
 
-            <div class="form-group col-md-12">
+            <div class="form-group col-md-18">
               <strong>Número do Ambiente:</strong>
               <div class="input-group">
                 <!--<span class="input-group-addon"><i class="material-icons md-18">looks_two</i></span>-->
-                <input placeholder="Digite o número do ambiente" maxlength="254" id="numero_ambiente" class="form-control" name="numero_ambiente" type="text">
+                <input placeholder="Digite o número" maxlength="254" id="numero_ambiente" class="form-control" name="numero_ambiente" type="text">
               </div>
             </div>
 
@@ -69,4 +69,4 @@
 
   </div> <!-- Fim de ModaL Dialog-->
 
-</div> <!-- Fim de ModaL Locais-->
+</div> <!-- Fim de ModaL Ambiente-->

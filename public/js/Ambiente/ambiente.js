@@ -13,9 +13,9 @@ $(document).ready(function($) {
         ajax: './ambiente/list',
         columns: [
         { data: null, name: 'order' },
-        { data: 'fk_local', name: 'fk_local' },
         { data: 'tipo', name: 'tipo' },
-       // { data: 'descricao', name: 'descricao' },
+        { data: 'fk_local', name: 'fk_local' },
+        { data: 'descricao', name: 'descricao' },
         { data: 'numero_ambiente', name: 'numero_ambiente' },
         { data: 'status', name: 'status' },
         { data: 'acao', name: 'acao' }
@@ -62,14 +62,14 @@ $(document).ready(function($) {
             }
         },
         columnDefs : [
-          { targets : [0,5], sortable : false },
-          { "width": "5%", "targets":  0 }, //id
-          { "width": "5%", "targets":  1 }, //fk_local
-          { "width": "10%", "targets": 2 },//tipo
-        //{ "width": "15%", "targets": 3 },//descricao
-          { "width": "5%", "targets":  3 },//num_ambiente
-          { "width": "10%", "targets": 4 },//status
-          { "width": "10%", "targets": 5 },//acao
+          { targets : [0,3,6], sortable : false },
+          { "width": "5%", "targets":  0 }, //nº
+          { "width": "10%", "targets": 1 },//tipo
+          { "width": "5%", "targets":  2 }, //fk_local
+          { "width": "15%", "targets": 3 },//descricao
+          { "width": "5%", "targets":  4 },//numero_ambiente
+          { "width": "10%", "targets": 5 },//status
+          { "width": "10%", "targets": 6 },//acao
         ]
     });
 
@@ -81,9 +81,9 @@ $(document).ready(function($) {
 
     //Visualizar
     $(document).on('click', '.btnVisualizar', function() {
-        $('#fk_local-visualizar').text($(this).data('fk_local'));
         $('#tipo-visualizar').text($(this).data('tipo'));
         $('#descricao-visualizar').text($(this).data('descricao'));
+        $('#local-visualizar').text($(this).data('local'));
         $('#numero_ambiente-visualizar').text($(this).data('numero_ambiente'));        
         $('#status-visualizar').text($(this).data('status'));
         jQuery('#visualizar-modal').modal('show');
@@ -110,7 +110,7 @@ $(document).ready(function($) {
         $('.modal-footer .btn-action').removeClass('add');
         $('.modal-footer .btn-action').addClass('edit');
 
-        $('.modal-title').text('Editar Equipamento');
+        $('.modal-title').text('Editar Ambiente');
         $('.callout').addClass("hidden"); //ocultar a div de aviso
         $('.callout').find("p").text(""); //limpar a div de aviso
 
@@ -121,6 +121,13 @@ $(document).ready(function($) {
         });
 
         jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
+    });
+
+     //Excluir
+    $(document).on('click', '.btnExcluir', function() {
+        $('.modal-title').text('Desativar Ambiente');
+        $('.id_del').val($(this).data('id')); 
+        jQuery('#excluir-modal').modal('show'); //Abrir o modal
     });
 
     //AJAX Adicionar Ambiente
@@ -223,6 +230,44 @@ $(document).ready(function($) {
 
             error: function() {
                 jQuery('#criar_editar').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+        });
+    });
+
+    //Evento ajax - Desativar AMBIENTE
+    $('.modal-footer').on('click', '.del', function() {
+        
+        $.ajax({
+            type: 'post',
+            url: './ambiente/delete',
+            data: {
+                'id': $(".id_del").val(),
+            },
+            beforeSend: function(){
+                jQuery('.del').button('loading');
+            },
+            complete: function() {
+                jQuery('.del').button('reset');
+            },
+            success: function(data) {
+                $('#table').DataTable().row('#item-' + data.id).remove().draw(); //remove a linha e ordena
+                jQuery('#excluir-modal').modal('hide'); //fechar o modal
+
+                $(function() {
+
+                    iziToast.success({
+                        title: 'OK',
+                        message: 'Ambiente Desativado com Sucesso!',
+                    });
+                });
+            },
+            error: function() {
+                jQuery('#excluir-modal').modal('hide'); //fechar o modal
 
                 iziToast.error({
                     title: 'Erro Interno',

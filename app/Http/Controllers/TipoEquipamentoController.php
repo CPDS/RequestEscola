@@ -120,7 +120,6 @@ class TipoEquipamentoController extends Controller
             $tipoEquipamento->observacao = $request->observacao;
             $tipoEquipamento->status = 'Ativo';
             $tipoEquipamento->save();
-
         }
     }
     //Desativando tipo de equipamento

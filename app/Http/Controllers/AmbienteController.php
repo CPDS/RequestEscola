@@ -12,6 +12,7 @@ use DB;
 use Auth;
 use App\Ambiente;
 use App\Locais;
+use Hash;
 
 
 class AmbienteController extends Controller
@@ -26,8 +27,10 @@ class AmbienteController extends Controller
     
     private function setDataButtons(Ambiente $ambiente){
     	
-        //Pegar papel logado
-        $usuarioLogado = Auth::user();
+        if($ambiente->status)
+            $status = 'Ativo';
+        else
+            $status = 'Inativo';
 
     	$dados = 'data-local="'.$ambiente->local->nome.
         '" data-tipo="'.$ambiente->tipo.
@@ -35,19 +38,18 @@ class AmbienteController extends Controller
         '" data-numero_ambiente="'.$ambiente->numero_ambiente.
         '" data-status="'.$ambiente->status.'"'; 
     
-    	$btnVisualizar = '<a class="btn btn-info btnVisualizar"  title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
+    	$btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
 
+        $btnEditar = ' <a data-id="'.$ambiente->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
 
-        //Exibir botões para usuários administradores
-        if($usuarioLogado->hasRole('Administrador')){
-            $btnEditar = ' <a data-id="'.$ambiente->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
-            $btnExcluir = ' <a data-id="'.$ambiente->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
-        }else{
-            $btnEditar = '';
-            $btnExcluir = '';
-        }
-
-        return $btnVisualizar.$btnEditar.$btnExcluir;
+        $btnExcluir = ' <a data-id="'.$ambiente->id.'" class="btn btn-danger btnExcluir" title="Desativar" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
+        
+        if(!$ambiente->status){
+                $btnAtivar = ' <a data-id="'.$ambiente->id.'" class="btn btn-warning btnAtivar" '. $dados .' title="Ativar Usúário" data-toggle="tooltip" ><i class="fa fa-user-plus"> </i></a>';
+                return $btnVisualizar.$btnEditar.$btnAtivar;
+            }else{
+                return $btnVisualizar.$btnEditar.$btnExcluir;
+            }
     }
 
     public function store(Request $request)
@@ -60,10 +62,9 @@ class AmbienteController extends Controller
         );
 
         $attributeNames = array(
-            'tipo' => 'tipo',
-            'descricao' => 'descricao',
+            'descricao' => 'descrição',
             'id_local' => 'local',
-            'numero_ambiente' => 'numero_ambiente',
+            'numero_ambiente' => 'número do ambiente',
         );
 
         $messages = array(
@@ -90,23 +91,15 @@ class AmbienteController extends Controller
 
     public function list(){
         
-        $ambiente = Ambiente::where('status','Ativo')->get();
+        $ambiente = Ambiente::all();
+        //$ambiente = Ambiente::where('status','Ativo')->get();
         
         return Datatables::of($ambiente)
         ->editColumn('acao',function($ambiente){
             return $this->setDataButtons($ambiente);
         })
-        ->editColumn('tipo', function($ambiente){
-            return $ambiente->tipo;
-        })
         ->editColumn('fk_local', function($ambiente){
             return $ambiente->local->nome;
-        })
-        ->editColumn('descricao', function($ambiente){
-            return $ambiente->descricao;
-        })
-        ->editColumn('numero_ambiente', function($ambiente){
-            return $ambiente->numero_ambiente;
         })
         ->editColumn('status', function($ambiente){
             if($ambiente->status)
@@ -128,10 +121,9 @@ class AmbienteController extends Controller
         );
 
         $attributeNames = array(
-            'tipo' => 'tipo',
-            'descricao' => 'descricao',
+            'descricao' => 'descrição',
             'id_local' => 'local',
-            'numero_ambiente' => 'numero_ambiente',
+            'numero_ambiente' => 'número do ambiente',
         );
 
         $messages = array(
@@ -140,6 +132,7 @@ class AmbienteController extends Controller
 
         $validator = Validator::make(Input::all(), $rules, $messages);
         $validator->setAttributeNames($attributeNames);
+
         if ($validator->fails()){
             return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
         }else{
@@ -150,6 +143,22 @@ class AmbienteController extends Controller
             $ambiente->numero_ambiente = $request->numero_ambiente;
             $ambiente->status = 'Ativo';
             $ambiente->save();
+
+            $ambiente->setAttribute('buttons',$this->setDataButtons($ambiente));
+            return response()->json($ambiente);
         }
+    }
+
+    public function destroy($request)
+    {
+        $ambiente = Ambiente::find($request->id);
+        $ambiente->status = 'Inativo';
+        $ambiente->save();
+        return response()->json($ambiente);
+    }
+
+    public function ativar(Request $request)
+    {
+        //
     }
 }
