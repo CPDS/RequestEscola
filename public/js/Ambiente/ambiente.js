@@ -15,7 +15,7 @@ $(document).ready(function($) {
         { data: null, name: 'order' },
         { data: 'tipo', name: 'tipo' },
         { data: 'fk_local', name: 'fk_local' },
-        { data: 'descricao', name: 'descricao' },
+        //{ data: 'descricao', name: 'descricao' },
         { data: 'numero_ambiente', name: 'numero_ambiente' },
         { data: 'status', name: 'status' },
         { data: 'acao', name: 'acao' }
@@ -62,14 +62,14 @@ $(document).ready(function($) {
             }
         },
         columnDefs : [
-          { targets : [0,3,6], sortable : false },
-          { "width": "5%", "targets":  0 }, //nº
-          { "width": "10%", "targets": 1 },//tipo
-          { "width": "5%", "targets":  2 }, //fk_local
-          { "width": "15%", "targets": 3 },//descricao
-          { "width": "5%", "targets":  4 },//numero_ambiente
-          { "width": "10%", "targets": 5 },//status
-          { "width": "10%", "targets": 6 },//acao
+          { targets : [0,5], sortable : false },
+          { "width": "5%" , "targets":  0 }, //nº
+          { "width": "10%", "targets":  1 }, //tipo
+          { "width": "5%" , "targets":  2 }, //fk_local
+      //  { "width": "15%", "targets":  3 },  //descricao
+          { "width": "5%" , "targets":  3 }, //numero_ambiente
+          { "width": "5%" , "targets":  4 }, //status
+          { "width": "10%", "targets":  5 }, //acao
         ]
     });
 
@@ -128,6 +128,13 @@ $(document).ready(function($) {
         $('.modal-title').text('Desativar Ambiente');
         $('.id_del').val($(this).data('id')); 
         jQuery('#excluir-modal').modal('show'); //Abrir o modal
+    });
+
+    //Ativar
+    $(document).on('click', '.btnAtivar', function() {
+        $('.modal-title').text('Ativar Ambiente');
+        $('.id_ativ').val($(this).data('id')); 
+        jQuery('#ativar-modal').modal('show'); //Abrir o modal
     });
 
     //AJAX Adicionar Ambiente
@@ -274,6 +281,45 @@ $(document).ready(function($) {
                     message: 'Operação Cancelada!',
                 });
             },
+        });
+    });
+
+    //Evento ajax - ATIVAR AMBIENTE
+    $('.modal-footer').on('click', '.ativ', function() {
+        $.ajax({
+            type: 'post',
+            url: './ambiente/ativar',
+            data: {
+                'id': $(".id_ativ").val(),
+            },
+            beforeSend: function(){
+                jQuery('.ativ').button('loading');
+            },
+            complete: function() {
+                jQuery('.ativ').button('reset');
+            },
+            success: function(data) {
+                $('#table').DataTable().row('#item-' + data.id).remove().draw(); //remove a linha e ordena
+                jQuery('#ativar-modal').modal('hide'); //fechar o modal
+
+                $(function() {
+
+                    iziToast.success({
+                        title: 'OK',
+                        message: 'Ambiente Ativado com Sucesso!',
+                    });
+                });
+            },
+            error: function() {
+
+                jQuery('#ativar-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+
         });
     });
 

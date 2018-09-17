@@ -35,7 +35,7 @@
 						 <th>ID</th>
 						 <th>Tipo</th>
 						 <th>Local</th>
-						 <th>Descrição</th>
+						<!-- <th>Descrição</th> -->
 						 <th>Nº Ambiente</th>
 						 <th>Status</th>
 						 <th>Ação</th>
@@ -48,4 +48,5 @@
 	@include('ambiente.modals.visualizar')
 	@include('ambiente.modals.criar_editar')
 	@include('ambiente.modals.excluir')
+	@include('ambiente.modals.ativar')
 @endsection
