@@ -126,7 +126,8 @@ $(document).ready(function($) {
      //Excluir
     $(document).on('click', '.btnExcluir', function() {
         $('.modal-title').text('Desativar Ambiente');
-        $('.id_del').val($(this).data('id')); 
+        $('.id_del').val($(this).data('id'));
+
         jQuery('#excluir-modal').modal('show'); //Abrir o modal
     });
 
@@ -247,8 +248,8 @@ $(document).ready(function($) {
     });
 
     //Evento ajax - Desativar AMBIENTE
-    $('.modal-footer').on('click', '.del', function() {
-        
+     $('.modal-footer').on('click', '.del', function() {
+
         $.ajax({
             type: 'post',
             url: './ambiente/delete',
@@ -274,6 +275,7 @@ $(document).ready(function($) {
                 });
             },
             error: function() {
+
                 jQuery('#excluir-modal').modal('hide'); //fechar o modal
 
                 iziToast.error({

@@ -183,5 +183,4 @@ class UserController extends Controller
         $usuario->save();
         return response()->json($usuario);
     }
-
 }

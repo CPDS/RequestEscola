@@ -38,8 +38,8 @@
 						<th>Nome</th>
 						<th>Tipo</th>
 						<th>Código</th>
-						<th>Status</th>
 						<th>Marca</th>
+						<th>Status</th>
 						<th>Ação</th>
 					 </tr>
 				</thead>

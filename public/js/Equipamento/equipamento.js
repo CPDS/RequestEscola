@@ -15,8 +15,8 @@ $(document).ready(function($) {
         { data: 'nome', name: 'nome' },
         { data: 'fk_tipo_equipamento', name: 'fk_tipo_equipamento' },
         { data: 'codigo', name: 'codigo' },
-        { data: 'status', name: 'status' },
         { data: 'marca', name: 'marca' },
+        { data: 'status', name: 'status' },
         { data: 'acao', name: 'acao' }
         ],
         createdRow : function( row, data, index ) {
@@ -65,8 +65,8 @@ $(document).ready(function($) {
           { "width": "10%", "targets": 1 },//nome
           { "width": "10%", "targets": 2 },//tipo
           { "width": "10%", "targets": 3 },//codigo
-          { "width": "14%", "targets": 4 },//status
-          { "width": "14%", "targets": 5 },//marca
+          { "width": "14%", "targets": 4 },//marca
+          { "width": "14%", "targets": 5 },//status
           { "width": "14%", "targets": 6 }//acao
         ]
     });
@@ -131,9 +131,10 @@ $(document).ready(function($) {
     });
 
     //AJAX Adicionar Equipamento
-     $('.modal-footer').on('click', '.add', function() {
-        //alert("OK");
+    $('.modal-footer').on('click', '.add', function() {
+        
         var dados = new FormData($("#form")[0]); //pega os dados do form
+
         $.ajax({
             type: 'post',
             url: "./equipamentos/create",
@@ -151,7 +152,7 @@ $(document).ready(function($) {
                 if ((data.errors)) {
 
                     $('.callout').removeClass('hidden'); //exibe a div de erro
-                    $('.callout').find('p').text(""); //limpa a div para erros successivos
+                    $('.callout').find('p').text(""); //limpa a div para erros sucessivos
 
                     $.each(data.errors, function(nome, mensagem) {
                             $('.callout').find("p").append(mensagem + "</br>");
@@ -169,7 +170,6 @@ $(document).ready(function($) {
                             message: 'Equipamento Adicionado com Sucesso!',
                         });
                     });
-
                 }
             },
 
@@ -181,6 +181,7 @@ $(document).ready(function($) {
                     message: 'Operação Cancelada!',
                 });
             },
+
         });
     });
 

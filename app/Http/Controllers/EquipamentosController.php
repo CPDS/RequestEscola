@@ -122,7 +122,7 @@ class EquipamentosController extends Controller
             return $equipamento->marca;
         })
         ->editColumn('status', function($equipamento){
-            return $equipamento->status;
+             return " <span class='label label-success' style='font-size:15px'>Ativo</span>";
         })
         ->escapeColumns([0])
         ->make(true);
@@ -132,10 +132,15 @@ class EquipamentosController extends Controller
     public function update(Request $request)
     {
         //
+        
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         //
+        $equipamento = Equipamentos::find($request->id);
+        $equipamento->status = 'Inativo';
+        $equipamento->save();
+        return response()->json($equipamento);
     }
 }
