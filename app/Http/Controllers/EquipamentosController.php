@@ -39,9 +39,9 @@ class EquipamentosController extends Controller
     '" data-local="'.$equipamento->local->nome.
     '" data-tombo="'.$equipamento->num_tombo.
     '" data-codigo="'.$equipamento->codigo.
-    '" data-marca="'.$equipamento->marca;
+    '" data-marca="'.$equipamento->marca.'"';
     
-    $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
+    $btnVisualizar = '<a class="btn btn-info btnVisualizar" '.$dados.' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
     
     //Exibir botões para usuários administradores
     if($usuarioLogado->hasRole('Administrador')){
@@ -51,7 +51,7 @@ class EquipamentosController extends Controller
         $btnEditar = '';
         $btnExcluir = '';
     }
-    
+
     return $btnVisualizar.$btnEditar.$btnExcluir;
         
     }

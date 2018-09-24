@@ -82,7 +82,7 @@ $(document).ready(function($) {
         $('#nome-visualizar').text($(this).data('nome'));
         $('#id_tipo_equipamento-visualizar').text($(this).data('id_tipo_equipamento'));
         $('#marca-visualizar').text($(this).data('marca'));
-        $('#num_tombo-visualizar').text($(this).data('num_tombo'));
+        $('#num_tombo-visualizar').text($(this).data('tombo'));
         $('#codigo-visualizar').text($(this).data('codigo'));
         $('#local-visualizar').text($(this).data('local'));
         $('#status-visualizar').text($(this).data('status'));

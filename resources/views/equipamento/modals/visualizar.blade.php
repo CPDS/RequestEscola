@@ -14,19 +14,10 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-              <strong>Tipo de equipamento:</strong>
-              <span id="id_tipo_equipamento-visualizar"></span>
-            </div>
 
             <div class="form-group">
               <strong>Marca:</strong>
               <span id="marca-visualizar"></span>
-            </div>
-
-            <div class="form-group">
-              <strong>Descrição:</strong>
-              <span id="descricao-visualizar"></span>
             </div>
 
             <div class="form-group">
