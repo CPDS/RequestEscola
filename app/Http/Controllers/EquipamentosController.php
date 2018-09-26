@@ -16,8 +16,7 @@ use App\Equipamentos;
 
 
 class EquipamentosController extends Controller
-{
-    
+{   
     public function index()
     {
         $tipoequipamentos = TipoEquipamentos::where('status','Ativo')->get();
@@ -30,30 +29,29 @@ class EquipamentosController extends Controller
     //Função para criar botões 
     private function setDataButtons(Equipamentos $equipamento){
        
-    //Pegar papel logado
-    $usuarioLogado = Auth::user();
-    
-    $dados = 'data-nome="'.$equipamento->nome.
-    '" data-tipoEquipamento="'.$equipamento->tipoEquipamento->nome.
-    '" data-status="'.$equipamento->status.
-    '" data-local="'.$equipamento->local->nome.
-    '" data-tombo="'.$equipamento->num_tombo.
-    '" data-codigo="'.$equipamento->codigo.
-    '" data-marca="'.$equipamento->marca.'"';
-    
-    $btnVisualizar = '<a class="btn btn-info btnVisualizar" '.$dados.' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
-    
-    //Exibir botões para usuários administradores
-    if($usuarioLogado->hasRole('Administrador')){
-        $btnEditar = ' <a data-id="'.$equipamento->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
-        $btnExcluir = ' <a data-id="'.$equipamento->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
-    }else{
-        $btnEditar = '';
-        $btnExcluir = '';
-    }
-
-    return $btnVisualizar.$btnEditar.$btnExcluir;
+        //Pegar papel logado
+        $usuarioLogado = Auth::user();
         
+        $dados = 'data-nome="'.$equipamento->nome.
+        '" data-tipoEquipamento="'.$equipamento->tipoEquipamento->nome.
+        '" data-status="'.$equipamento->status.
+        '" data-local="'.$equipamento->local->nome.
+        '" data-tombo="'.$equipamento->num_tombo.
+        '" data-codigo="'.$equipamento->codigo.
+        '" data-marca="'.$equipamento->marca.'"';
+        
+        $btnVisualizar = '<a class="btn btn-info btnVisualizar" '.$dados.' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
+        
+        //Exibir botões para usuários administradores
+        if($usuarioLogado->hasRole('Administrador')){
+            $btnEditar = ' <a data-id="'.$equipamento->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
+            $btnExcluir = ' <a data-id="'.$equipamento->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
+        }else{
+            $btnEditar = '';
+            $btnExcluir = '';
+        }
+
+        return $btnVisualizar.$btnEditar.$btnExcluir;
     }
 
     public function store(Request $request)
@@ -101,7 +99,7 @@ class EquipamentosController extends Controller
     }
 
   
-    public function list()
+   public function list()
     {
         $equipamento = Equipamentos::where('status','Ativo')->get();
         
@@ -131,8 +129,43 @@ class EquipamentosController extends Controller
   
     public function update(Request $request)
     {
-        //
-        
+        $rules = array(
+            'nome' => 'required',
+            'id_tipo_equipamento' => 'required',
+            'id_local' => 'required',
+            'codigo' => 'required',
+            'marca' => 'required',
+        );
+
+        $attributeNames = array(
+            'nome' => 'nome',
+            'id_tipo_equipamento' => 'Tipo de equipamento',
+            'id_local' => 'local',
+            'codigo' => 'codigo',
+            'marca' => 'marca',
+        );
+
+        $validator = Validator::make(Input::all(), $rules);
+        $validator->setAttributeNames($attributeNames);
+
+        if ($validator->fails()){
+            return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
+        }
+        else{
+
+            $equipamento = Equipamentos::find($request->id);
+            $equipamento->nome = $request->nome;
+            $equipamento->fk_tipo_equipamento = $request->id_tipo_equipamento;
+            $equipamento->fk_local = $request->id_local;
+            $equipamento->num_tombo = $request->num_tombo;
+            $equipamento->codigo = $request->codigo;
+            $equipamento->marca = $request->marca;
+        // $equipamento->status = 'Ativo';
+            $equipamento->save();
+
+            $equipamento->setAttribute('buttons', $this->setDataButtons($equipamento));
+            return response()->json($equipamento);
+        }
     }
 
     public function destroy(Request $request)

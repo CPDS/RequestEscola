@@ -60,7 +60,6 @@
                 <input placeholder="Digite o codigo" maxlength="5" class="form-control" id="codigo" name="codigo" type="text">
               </div>
             </div>
-
             
             <div class="form-group col-md-12">
               <strong>Marca:</strong>
