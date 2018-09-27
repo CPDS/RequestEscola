@@ -17,9 +17,8 @@ class UserSeeder extends Seeder
             'password' => Hash::make('123123'),
 			'telefone' => '(73) 3526-7504',
 			'endereco' => 'Av. José Moreira Sobrinho numero 12',
-			'cidade' => 'Jequié',
-			'estado' => 'Bahia',
-            'status' => 1,
+			'fk_cidade' => 3387,
+            'status' => 1
         ]);
     }
 }

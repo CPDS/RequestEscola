@@ -33,4 +33,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function cidade(){
+        return $this->belongsTo(Cidade::class,'fk_cidade');
+    }
+
 }

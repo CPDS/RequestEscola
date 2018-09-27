@@ -89,6 +89,8 @@ $(document).ready(function($) {
         $('#funcao-visualizar').text($(this).data('funcao'));
         $('#telefone-visualizar').text($(this).data('telefone'));
         $('#endereco-visualizar').text($(this).data('endereco'));
+        $('#cidade-visualizar').text($(this).data('cidade'));
+        $('#estado-visualizar').text($(this).data('estado'));
         $('#status-visualizar').text($(this).data('status'));
         
         jQuery('#visualizar-modal').modal('show');

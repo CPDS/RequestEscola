@@ -20,9 +20,9 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('telefone');
             $table->string('endereco');
-            $table->string('cidade');
-            $table->string('estado');
+            $table->integer('fk_cidade');
             $table->boolean('status');
+            $table->foreign('fk_cidade')->references('id')->on('cidades');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -72,7 +72,7 @@
             <div class="form-group col-md-6">
               <strong>Estado</strong>
                 <select id="estado" class="form-control selectEstado" name="estado" >
-                  <option value='' selected disabled>Selecione..</option>
+                  <option value=''disabled selected>Selecione..</option>
                   @foreach($estados as $estado)
                     <option value="{{$estado->id}}">{{$estado->nome}}</option> 
                   @endforeach

@@ -45,6 +45,16 @@
           </div>
 
           <div class="form-group">
+              <strong>Cidade:</strong>
+              <span id="cidade-visualizar"></span>
+          </div>
+
+          <div class="form-group">
+              <strong>Estado:</strong>
+              <span id="estado-visualizar"></span>
+          </div>
+
+          <div class="form-group">
               <strong>Status:</strong>
               <span id="status-visualizar"></span>
           </div>

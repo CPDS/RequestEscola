@@ -27,6 +27,7 @@ class UserController extends Controller
 
     //Função para criar botões 
     private function setDataButtons(User $usuario){
+    
         //Variável de status
         if($usuario->status)
             $status = 'Ativo';
@@ -38,11 +39,14 @@ class UserController extends Controller
         }
 
         
-        $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$funcao.'"
-            data-endereco="'.$usuario->endereco.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'"
-            data-status="'.$status.'"';
+            $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$funcao.'"
+                data-endereco="'.$usuario->endereco.'" data-cidade="'.$usuario->cidade->id .'" data-estado="'.$usuario->cidade->estado->id.'"
+                data-status="'.$status.'"';
+            $dados_visualizar = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$funcao.'"
+                data-endereco="'.$usuario->endereco.'" data-cidade="'.$usuario->cidade->nome .'" data-estado="'.$usuario->cidade->estado->nome.'"
+                data-status="'.$status.'"';
 
-            $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
+            $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados_visualizar .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
 
             $btnEditar = ' <a data-id="'.$usuario->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
 
@@ -117,8 +121,7 @@ class UserController extends Controller
             $usuario->password = Hash::make($request->senha);
             $usuario->telefone = $request->telefone;
             $usuario->endereco = $request->endereco;
-            $usuario->cidade = $request->cidade;
-            $usuario->estado = $request->estado;
+            $usuario->fk_cidade = $request->cidade;
             $usuario->status = true;
 
             $usuario->save();
@@ -161,8 +164,7 @@ class UserController extends Controller
             $usuario->email = $request->email;
             $usuario->telefone = $request->telefone;
             $usuario->endereco = $request->endereco;
-            $usuario->cidade = $request->cidade;
-            $usuario->estado = $request->estado;
+            $usuario->fk_cidade = $request->cidade;
             $usuario->assignRole($request->funcao);
             $usuario->save();
 
