@@ -70,15 +70,20 @@
             </div>
             
             <div class="form-group col-md-6">
-                    <strong>Cidade</strong>
-                    <input placeholder="Cidade" maxlength="254" id="cidade" class="form-control" name="cidade" type="text">
+              <strong>Estado</strong>
+                <select id="estado" class="form-control selectEstado" name="estado" >
+                  <option value='' selected disabled>Selecione..</option>
+                  @foreach($estados as $estado)
+                    <option value="{{$estado->id}}">{{$estado->nome}}</option> 
+                  @endforeach
+                </select>
             </div>
-
             <div class="form-group col-md-6">
-                    <strong>Estado</strong>
-                    <input placeholder="Estado" maxlength="254" id="estado" class="form-control" name="estado" type="text">
+                <strong>Cidade</strong>
+                 <select id="cidade" class="form-control" name="cidade">
+                 </select>
             </div>
-
+            
             <input type="hidden" id="id" name="id">
 
         </div> 

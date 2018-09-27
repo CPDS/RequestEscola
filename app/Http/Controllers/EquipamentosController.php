@@ -33,6 +33,14 @@ class EquipamentosController extends Controller
         $usuarioLogado = Auth::user();
         
         $dados = 'data-nome="'.$equipamento->nome.
+        '" data-tipoEquipamento="'.$equipamento->fk_tipo_equipamento.
+        '" data-status="'.$equipamento->status.
+        '" data-local="'.$equipamento->fk_local.
+        '" data-tombo="'.$equipamento->num_tombo.
+        '" data-codigo="'.$equipamento->codigo.
+        '" data-marca="'.$equipamento->marca.'"';
+
+        $dados_visualizar = 'data-nome="'.$equipamento->nome.
         '" data-tipoEquipamento="'.$equipamento->tipoEquipamento->nome.
         '" data-status="'.$equipamento->status.
         '" data-local="'.$equipamento->local->nome.
@@ -40,11 +48,11 @@ class EquipamentosController extends Controller
         '" data-codigo="'.$equipamento->codigo.
         '" data-marca="'.$equipamento->marca.'"';
         
-        $btnVisualizar = '<a class="btn btn-info btnVisualizar" '.$dados.' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
+        $btnVisualizar = '<a class="btn btn-info btnVisualizar" '.$dados_visualizar.' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
         
         //Exibir botões para usuários administradores
         if($usuarioLogado->hasRole('Administrador')){
-            $btnEditar = ' <a data-id="'.$equipamento->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
+            $btnEditar = ' <a data-id="'.$equipamento->id.'" class="btn btn-primary btnEditar" '.$dados.' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
             $btnExcluir = ' <a data-id="'.$equipamento->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
         }else{
             $btnEditar = '';

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Auth;
 use App\User;
+use Response;
 
 
 class HomeController extends Controller
@@ -33,8 +34,10 @@ class HomeController extends Controller
         if($usuario->status)
             return view('home');
         else{
+            echo "<script>alert('Usuário $usuario->name desabilitado! Favor entrar em contato com o Administrador do sistema!');</script>";
             Auth::logout();
             return view('vendor.adminlte.auth.login');
+
         }
     }
 }

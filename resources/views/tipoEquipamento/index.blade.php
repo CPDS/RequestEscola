@@ -22,7 +22,9 @@
 			<br>
 
 			<div class="pull-right">
-				<a class="btn btn-primary btnAdicionar" title="Novo Tipo" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Tipo</a>
+				@role('Administrador')
+					<a class="btn btn-primary btnAdicionar" title="Novo Tipo" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Tipo</a>
+				@endrole
 			</div>
 
 		</div>

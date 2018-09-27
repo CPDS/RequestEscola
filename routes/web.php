@@ -17,6 +17,7 @@ Route::group(['middleware' => ['auth']], function() {
 			Route::post('/edit', ['as' => 'users.update', 'uses' => 'UserController@update']);
 			Route::post('/delete', ['as' => 'users.destroy', 'uses' => 'UserController@destroy',]);
 			Route::post('/ativar', ['as' => 'users.ativar', 'uses' => 'UserController@ativar',]);
+			Route::get('/cidade/{estado}',['as' => 'user.cidade','uses' => 'UserController@selectCidade']);
 		});
 
 		//Rotas de Ambiente
@@ -55,6 +56,8 @@ Route::group(['middleware' => ['auth']], function() {
 			Route::post('/edit',['as' => 'equipamentos.edit', 'uses' => 'EquipamentosController@update'])->middleware('role:Administrador');
 			Route::post('/delete',['as' => 'equipamentos.destroy', 'uses'=> 'EquipamentosController@destroy'])->middleware('role:Administrador');
 		});
+
+		
 	}
 	catch(Exeption $e){
 		echo 'exceção '.$e->getMessage();

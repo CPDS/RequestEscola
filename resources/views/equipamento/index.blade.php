@@ -23,8 +23,9 @@
 
 			<div class="pull-right">
 				<a class="btnFiltro btn btn-info" title="Filtro Equipamento" data-toggle="tooltip"><span class="fa fa-file-pdf-o"></span> Lista de Equipamentos (PDF)</a>
-
-				<a class="btnAdicionar btn btn-primary" title="Adicionar Equipamento" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Novo Equipamento</a>
+				@role('Administrador')
+					<a class="btnAdicionar btn btn-primary" title="Adicionar Equipamento" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Novo Equipamento</a>
+				@endrole
 			</div>
 		</div>
 	</div>

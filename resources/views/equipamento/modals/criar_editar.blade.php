@@ -23,7 +23,7 @@
               <strong>Tipo de equipamento: *</strong>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-bars"></i></span>
-                  <select name="id_tipo_equipamento" id="id_tipo_equipamento" class="form-control">
+                  <select name="id_tipo_equipamento" id="tipoequipamento" class="form-control">
                     <option value='' selected disabled>Selecione ...</option>
                     @foreach($tipoequipamentos as $tipoequipamento)
                       <option value="{{$tipoequipamento->id}}">{{$tipoequipamento->nome}}</option> 
@@ -36,7 +36,7 @@
               <strong>Número de Tombo:</strong>
               <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
-                <input placeholder="Digite o numero de tombo" maxlength="8" class="form-control" id="num_tombo" name="num_tombo" type="text">
+                <input placeholder="Digite o numero de tombo" maxlength="8" class="form-control" id="tombo" name="num_tombo" type="text">
               </div>
             </div>
 
@@ -44,7 +44,7 @@
               <strong>Local:</strong>
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-                <select name="id_local" id="id_local" class="form-control">
+                <select name="id_local" id="local" class="form-control">
                   <option value='' selected disabled>Selecione ...</option>
                     @foreach($locais as $local)
                       <option value="{{$local->id}}">{{$local->nome}}</option> 

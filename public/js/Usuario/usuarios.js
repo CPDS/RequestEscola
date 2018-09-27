@@ -277,6 +277,24 @@ $(document).ready(function($) {
         jQuery('#criar_editar-modal').modal('show'); 
     });
 
+    //Select de Estado e Cidade
+    $(document).on('change','.selectEstado', function(){
+        //recuperando id do select de estado
+        var id = $("#estado option:selected").val();
+        //variavel que adiciona as opções
+        var option = '';
+        $.getJSON('./users/cidade/'+id, function(dados){
+            //Atibuindo valores à variavel com os dados da consulta
+            $.each(dados.cidades, function(i,cidade){
+                option += '<option value="'+cidade.id+'">'+cidade.nome+'</option>';
+            });
+            //passando para o select de cidades
+            $('#cidade').html(option).show();
+        });
+        
+    });
+
+
     //Evento ajax - ADICIONAR USUÁRIO
     $('.modal-footer').on('click', '.add', function() {
     var dados = new FormData($("#form")[0]); //pega os dados do form

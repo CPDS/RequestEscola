@@ -12,6 +12,8 @@ use DB;
 use Auth;
 use App\User;
 use Hash;
+use App\Estado;
+use App\Cidade;
 
 class UserController extends Controller
 {
@@ -19,7 +21,8 @@ class UserController extends Controller
     
     public function index()
     {
-        return view('usuario.index');
+        $estados = Estado::select('nome','id')->get();
+        return view('usuario.index',compact('estados'));
     }
 
     //Função para criar botões 
@@ -34,7 +37,6 @@ class UserController extends Controller
             $funcao = $tipoFuncao;
         }
 
-        //echo $funcao;
         
         $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$funcao.'"
             data-endereco="'.$usuario->endereco.'" data-cidade="'.$usuario->cidade .'" data-estado="'.$usuario->estado.'"
@@ -182,5 +184,27 @@ class UserController extends Controller
         $usuario->status = true;
         $usuario->save();
         return response()->json($usuario);
+    }
+
+    //Select Cidade
+    public function selectCidade(Request $request){
+        //consulta no banco
+        $dados_cidades = Cidade::where('fk_estado',$request->estado)
+        ->select('id','nome')
+        ->orderBy('nome')
+        ->get();
+
+        //Array de cidade
+        $cidades = array();
+        foreach($dados_cidades as $dados_cidade){
+            array_push($cidades,[
+                'id' => $dados_cidade->id,
+                'nome' => $dados_cidade->nome
+            ]);
+        }
+
+        //retornando para o javascript
+        return response()->json(['cidades' => $cidades]);
+        
     }
 }
