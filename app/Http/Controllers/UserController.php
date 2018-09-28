@@ -38,7 +38,6 @@ class UserController extends Controller
             $funcao = $tipoFuncao;
         }
 
-        
             $dados = 'data-nome="'.$usuario->name.'" data-email="'.$usuario->email.'" data-telefone="'.$usuario->telefone.'" data-funcao="'.$funcao.'"
                 data-endereco="'.$usuario->endereco.'" data-cidade="'.$usuario->cidade->id .'" data-estado="'.$usuario->cidade->estado->id.'"
                 data-status="'.$status.'"';
@@ -49,9 +48,10 @@ class UserController extends Controller
             $btnVisualizar = '<a class="btn btn-info btnVisualizar" '. $dados_visualizar .' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
 
             $btnEditar = ' <a data-id="'.$usuario->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
-
+            if(Auth::user()->id == $usuario->id)
+                $btnExcluir = ' <a data-id="'.$usuario->id.'" class="btn btn-danger btnExcluir" disabled title="Desativar" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
+            else
             $btnExcluir = ' <a data-id="'.$usuario->id.'" class="btn btn-danger btnExcluir" title="Desativar" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
-            
             //caso status do úsuario seja inativo
             if(!$usuario->status){
                 $btnAtivar = ' <a data-id="'.$usuario->id.'" class="btn btn-warning btnAtivar" '. $dados .' title="Ativar Usúário" data-toggle="tooltip" ><i class="fa fa-user-plus"> </i></a>';
@@ -175,10 +175,13 @@ class UserController extends Controller
 
     //desativar Funcionário
     public function destroy(Request $request){
-        $usuario = User::find($request->id);
-        $usuario->status = false;      
-        $usuario->save();
-        return response()->json($usuario);
+        if(Auth::user()->id != $request->id){
+            $usuario = User::find($request->id);
+            $usuario->status = false;      
+            $usuario->save();
+            return response()->json($usuario);
+        }
+        return false;
     }
     //Ativar Usuário
     public function ativar(Request $request){

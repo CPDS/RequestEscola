@@ -17,7 +17,6 @@ $(document).ready(function($) {
             { data: 'email', name: 'email'},
             { data: 'funcao', name: 'funcao' },
             { data: 'telefone', name: 'telefone'},
-            { data: 'endereco', name: 'endereco' },
             { data: 'status', name: 'status'},
             { data: 'acao', name: 'acao' }
             ],
@@ -63,14 +62,13 @@ $(document).ready(function($) {
                 }
             },
             columnDefs : [
-              { targets : [0,7], sortable : false },
+              { targets : [0,6], sortable : false },
               { "width": "5%", "targets": 0 }, //nº
               { "width": "10%", "targets": 1 },//nome
               { "width": "10%", "targets": 2 },//email
               { "width": "6%", "targets": 3 },//função
-              { "width": "6%", "targets": 3 },//telefone
-              { "width": "14%", "targets": 4 },//Rua
-              { "width": "14%", "targets": 5 },//status
+              { "width": "6%", "targets": 4 },//telefone
+              { "width": "5%", "targets": 5 },//status
               { "width": "10%", "targets": 6 },//ação
             ]
     });
@@ -108,11 +106,24 @@ $(document).ready(function($) {
 
         var btnEditar = $(this);
 
-        $('#form :input').each(function(index,input){
-            $('#'+input.id).val($(btnEditar).data(input.id));
+         //recuperando id do estado no botão
+         var id = btnEditar.data('estado');
+         
+         //variavel que adiciona as opções
+         var option = '';
+        $.getJSON('./users/cidade/'+id, function(dados){
+             //Atibuindo valores à variavel com os dados da consulta
+             $.each(dados.cidades, function(i,cidade){
+                 option += '<option value="'+cidade.id+'">'+cidade.nome+'</option>';
+             });
+             //passando para o select de cidades
+             $('#cidade').html(option).show();
+             //preenchendo formulário
+             $('#form :input').each(function(index,input){
+                $('#'+input.id).val($(btnEditar).data(input.id));
+             });
         });
-
-        
+ 
         jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
     });
 

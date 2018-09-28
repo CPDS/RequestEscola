@@ -54,12 +54,16 @@ class EquipamentosController extends Controller
         if($usuarioLogado->hasRole('Administrador')){
             $btnEditar = ' <a data-id="'.$equipamento->id.'" class="btn btn-primary btnEditar" '.$dados.' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
             $btnExcluir = ' <a data-id="'.$equipamento->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
+            if($equipamento->status != 'Defeito')
+                $btnDefeito = ' <a  data-id="'.$equipamento->id.'" class="btn btn-warning btnDefeito" title="Informar Defeito" data-toggle="tooltip" ><i class="fa fa-exclamation-triangle"></i> </a>';
+            else
+                $btnDefeito = '';
         }else{
             $btnEditar = '';
             $btnExcluir = '';
         }
 
-        return $btnVisualizar.$btnEditar.$btnExcluir;
+        return $btnVisualizar.$btnEditar.$btnExcluir.$btnDefeito;
     }
 
     public function store(Request $request)
@@ -109,7 +113,7 @@ class EquipamentosController extends Controller
   
    public function list()
     {
-        $equipamento = Equipamentos::where('status','Ativo')->get();
+        $equipamento = Equipamentos::where('status','!=','Inativo')->get();
         
         return Datatables::of($equipamento)
         ->editColumn('acao', function($equipamento){
@@ -128,7 +132,13 @@ class EquipamentosController extends Controller
             return $equipamento->marca;
         })
         ->editColumn('status', function($equipamento){
-             return " <span class='label label-success' style='font-size:15px'>Ativo</span>";
+            if($equipamento->status == "Ativo")
+                return "<span class='label label-success' style='font-size:14px'>Ativo</span>";
+            if($equipamento->status == "Em Manutencao")
+                return "<span class='label label-warning' style='font-size:14px'>Em Manutenção</span>";
+            if($equipamento->status == "Defeito")
+                return "<span class='label label-danger' style='font-size:14px'>Com defeito</span>";
+
         })
         ->escapeColumns([0])
         ->make(true);
