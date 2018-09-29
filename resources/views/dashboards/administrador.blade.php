@@ -52,7 +52,7 @@
           <div class="icon">
             <i class="glyphicon glyphicon-thumbs-down"></i>
           </div>
-          <a href="#" class="small-box-footer">Exibir <i class="fa fa-arrow-circle-right"></i></a>
+          <a href="{{ url('equipamentos') }}" class="small-box-footer">Exibir <i class="fa fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -97,7 +97,7 @@
           <div class="icon">
           	<i class="glyphicon glyphicon-ok"></i>
           </div>
-          <a href="#" class="small-box-footer">Exibir <i class="fa fa-arrow-circle-right"></i></a>
+          <a href="{{ url('equipamentos') }}" class="small-box-footer">Exibir <i class="fa fa-arrow-circle-right"></i></a>
         </div>
     	</div>
     </div>
