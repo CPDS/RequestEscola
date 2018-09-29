@@ -10,7 +10,7 @@
 <script src="{{ asset('js/iziToast.min.js') }}"></script>
 
 <script src=" {{ asset('js/Equipamento/equipamento.js') }} "> </script>
-
+<script src="{{asset('js/jquery.maskedinput.js') }}"></script>
 @section('main-content')
 
 	<div class="row">

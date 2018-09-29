@@ -293,4 +293,8 @@ $(document).ready(function($) {
         jQuery('#filtro_relatorio-modal').modal('hide');
     });
 
+    //Filtro para Numero de tombo e para Código
+    $("#tombo").mask("999.999");
+    $("#codigo").mask("aa-999");
+
 }); //FIM DOCUMENTO

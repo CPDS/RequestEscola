@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="{{ asset('plugins/datatables/dataTables.bootstrap.css') }}">
 <link rel="stylesheet" href="{{ asset('css/iziToast.min.css') }}">
 <script src="{{ asset('js/iziToast.min.js') }}"></script>
-
+<script src="{{ asset('js/jquery.maskedinput.js') }}"></script>
 <script src=" {{ asset('js/Usuario/usuarios.js') }} "> </script>
 
 @section('main-content')

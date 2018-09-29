@@ -363,4 +363,8 @@ $(document).ready(function($) {
             },
         });
     });
+
+     //Filtro para Telefone
+     $("#telefone").mask("9999-9999");
+     
 });
