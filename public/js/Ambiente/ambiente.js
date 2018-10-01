@@ -325,4 +325,7 @@ $(document).ready(function($) {
         });
     });
 
+    //Validação de dados
+    $("#numero_ambiente").mask("999");
+
 }); //FIM DOCUMENTO

@@ -365,6 +365,6 @@ $(document).ready(function($) {
     });
 
      //Filtro para Telefone
-     $("#telefone").mask("9999-9999");
+     $("#telefone").mask("(99) 99999-9999");
      
 });
