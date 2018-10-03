@@ -57,7 +57,11 @@ Route::group(['middleware' => ['auth']], function() {
 			Route::post('/delete',['as' => 'equipamentos.destroy', 'uses'=> 'EquipamentosController@destroy'])->middleware('role:Administrador');
 		});
 
-		
+		//Rotas de Manutenção
+		Route::group(['prefix'=> 'manutencoes', 'where' => ['id'=>'0-9+'], 'middleware' => ['role:Administrador|Funcionário']], function (){
+			Route::get('/',['as' => 'manutencao.index', 'uses' => 'ManutencoesController@index']);
+		});
+
 	}
 	catch(Exeption $e){
 		echo 'exceção '.$e->getMessage();
