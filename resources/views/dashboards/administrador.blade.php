@@ -34,7 +34,7 @@
           <div class="icon">
            	<i class="fa fa-calendar-check-o"></i>
           </div>
-          <a href="#" class="small-box-footer">Exibir reserva(s) <i class="fa fa-arrow-circle-right"></i></a>
+          <a href="{{url('reserva-ambiente')}}" class="small-box-footer">Exibir reserva(s) <i class="fa fa-arrow-circle-right"></i></a>
         </div>
       </div>
     </div>

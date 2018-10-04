@@ -8,7 +8,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function() {
-	try{
 		//Rotas de Usuário
 		Route::group(['prefix'=> 'users', 'where'=>['id'=>'0-9+'],'middleware' => ['role:Administrador']], function () {
 			Route::get('', ['as' => 'users.index', 'uses' => 'UserController@index']);
@@ -62,9 +61,17 @@ Route::group(['middleware' => ['auth']], function() {
 			Route::get('/',['as' => 'manutencao.index', 'uses' => 'ManutencoesController@index']);
 		});
 
-	}
-	catch(Exeption $e){
-		echo 'exceção '.$e->getMessage();
-	}
+		//Rotas de Reservas de ambiente
+		Route::group(['prefix'=> 'reserva-ambiente', 'where' => ['id'=>'0-9+']], function (){
+			Route::get('/',['as' => 'reserva-ambiente.index', 'uses' => 'ReservaAmbienteController@index']);
+			Route::get('/list',['as' => 'reserva-ambiente.list', 'uses' => 'ReservaAmbienteController@list']);
+			Route::post('/create', ['as' => 'resereva-ambiente.create', 'uses' => 'ReservaAmbienteController@store'])->middleware('role:Administrador');
+			Route::post('/edit',['as' => 'reserva-ambiente.edit', 'uses' => 'ReservaAmbienteController@update'])->middleware('role:Administrador');
+			Route::post('/delete',['as' => 'reserva-ambiente.destroy', 'uses'=> 'ReservaAmbienteController@destroy'])->middleware('role:Administrador');
+		});
+
+
+	
+	
 });
 

@@ -57,7 +57,7 @@
                 <a href="#"><i class='fa fa-university'></i><span>Gestão de Ambiente</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="{{ url('ambiente') }}">Ambientes</a></li>
-                    <li><a href="#"><i class='fa fa-calendar'></i>Reservas de Ambiente</a></li>
+                    <li><a href="{{url('reserva-ambiente')}}"><i class='fa fa-calendar'></i>Reservas de Ambiente</a></li>
                 </ul>
             </li>
 
