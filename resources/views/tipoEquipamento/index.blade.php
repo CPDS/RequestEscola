@@ -16,7 +16,7 @@
 	<div class="row">
 		<div class="col-lg-12 margin-tb">
 			<div class="pull-left">
-				<h2><i class='fa fa-tasks'></i> Tipos de Equipamentos</h2>
+				<h2><i class='fa fa-tasks'></i>  @yield('contentheader_title', 'Tipos de Equipamentos')</h2>
 			</div>
 
 			<br>

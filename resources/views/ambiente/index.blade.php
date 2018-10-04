@@ -16,7 +16,7 @@
 	<div class="row">
 		<div class="col-lg-12 margin-tb">
 			<div class="pull-left">
-				<h2><i class="fa fa-university"></i> Gestão de Ambiente</h2>
+				<h2><i class="fa fa-university"></i> @yield('contentheader_title', 'Gestão de Ambiente')</h2>
 			</div>
 
 			<br>

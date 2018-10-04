@@ -1,7 +1,21 @@
+@section('main-content')
+  
+  <section class="content-header">
+   
+    <h1>
+      <span class='glyphicon glyphicon-stats'></span>
+      @yield('contentheader_title', 'Painel de Controle')
+      
+      <small>
+        @yield('contentheader_description')
+      </small>
+    </h1>
 
-<section class="content">
-    <!-- Small boxes (Stat box) -->
-    <!-- row -->
+  </section>
+  
+
+  <!-- Small boxes (Stat box) -->
+  <!-- row -->
     <div class="row">
      <br><br>
     </div>
@@ -32,7 +46,7 @@
             <br>
           </div>
           <div class="icon">
-           	<i class="fa fa-calendar-check-o"></i>
+            <i class="fa fa-calendar-check-o"></i>
           </div>
           <a href="#" class="small-box-footer">Exibir reserva(s) <i class="fa fa-arrow-circle-right"></i></a>
         </div>
@@ -75,7 +89,7 @@
     <div class="row">
       <div class="col-lg-6 col-xs-6">
         <!-- small box -->
-       	<div class="small-box bg-aqua">
+        <div class="small-box bg-aqua">
           <div class="inner">
             <h3>X</h3>
             <p>Retirada(s) de equipamento em andamento</p>
@@ -87,18 +101,18 @@
         </div>
       </div>
       <!-- ./col -->
-    	<div class="col-lg-6 col-xs-6">
-       	<!-- small box -->
-       	<div class="small-box bg-green">
-         	<div class="inner">
-         		<h3>X</h3>
-         		<p>Laboratório(s) em uso</p>
+      <div class="col-lg-6 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-green">
+          <div class="inner">
+            <h3>X</h3>
+            <p>Laboratório(s) em uso</p>
           </div>
           <div class="icon">
-          	<i class="glyphicon glyphicon-ok"></i>
+            <i class="glyphicon glyphicon-ok"></i>
           </div>
           <a href="{{ url('equipamentos') }}" class="small-box-footer">Exibir <i class="fa fa-arrow-circle-right"></i></a>
         </div>
-    	</div>
+      </div>
     </div>
-  </section>
+@endsection
