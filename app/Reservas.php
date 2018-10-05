@@ -13,10 +13,6 @@ class Reservas extends Model
     	return $this->belongsToMany(Equipamentos::class);
     }
 
-    public function ambiente(){
-
-    	return $this->belongsTo(Ambiente::class, 'fk_ambiente');
-    }
 
     public function usuario(){
 

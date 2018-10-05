@@ -173,4 +173,6 @@ class AmbienteController extends Controller
         $ambiente->save();
         return response()->json($ambiente);
     }
+
+    
 }
