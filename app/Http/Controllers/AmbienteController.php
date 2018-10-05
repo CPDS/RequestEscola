@@ -42,8 +42,8 @@ class AmbienteController extends Controller
         {
             $btnEditar = ' <a data-id="'.$ambiente->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
             $btnExcluir = ' <a data-id="'.$ambiente->id.'" class="btn btn-danger btnExcluir" title="Desativar" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
-             if($ambiente->status == 'Inativo')
-             {
+            if($ambiente->status == 'Inativo')
+            {
                 $btnAtivar = ' <a data-id="'.$ambiente->id.'" class="btn btn-warning btnAtivar" '. $dados .' title="Ativar Ambiente" data-toggle="tooltip" ><i class="fa fa-plus"> </i></a>';
                 return $btnVisualizar.$btnEditar.$btnAtivar;
             }

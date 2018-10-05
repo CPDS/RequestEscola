@@ -69,10 +69,12 @@ Route::group(['middleware' => ['auth']], function() {
 		//Rotas de Reservas de ambiente
 		Route::group(['prefix'=> 'reserva-ambiente', 'where' => ['id'=>'0-9+']], function (){
 			Route::get('/',['as' => 'reserva-ambiente.index', 'uses' => 'ReservaAmbienteController@index']);
-			Route::get('/list',['as' => 'reserva-ambiente.list', 'uses' => 'ReservaAmbienteController@list']);
-			Route::post('/create', ['as' => 'resereva-ambiente.create', 'uses' => 'ReservaAmbienteController@store'])->middleware('role:Administrador');
-			Route::post('/edit',['as' => 'reserva-ambiente.edit', 'uses' => 'ReservaAmbienteController@update'])->middleware('role:Administrador');
-			Route::post('/delete',['as' => 'reserva-ambiente.destroy', 'uses'=> 'ReservaAmbienteController@destroy'])->middleware('role:Administrador');
+			Route::get('/reservados',['as' => 'reserva-ambiente.reservados', 'uses' => 'ReservaAmbienteController@reservados']);
+			Route::get('/atendidos',['as' => 'reserva-ambiente.atendidos', 'uses' => 'ReservaAmbienteController@atendidos']);
+			Route::post('/create', ['as' => 'resereva-ambiente.create', 'uses' => 'ReservaAmbienteController@store'])->middleware('role:Administrador|Funcionário');
+			Route::post('/edit',['as' => 'reserva-ambiente.edit', 'uses' => 'ReservaAmbienteController@update'])->middleware('role:Administrador|Funcionário');
+			Route::post('/finalizar',['as' => 'reserva-ambiente.finalizar', 'uses'=> 'ReservaAmbienteController@finalizar'])->middleware('role:Administrador|Funcionário');
+			Route::post('/delete',['as' => 'reserva-ambiente.destroy', 'uses'=> 'ReservaAmbienteController@destroy']);
 		});
 
 

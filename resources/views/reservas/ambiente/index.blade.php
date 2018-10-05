@@ -22,6 +22,7 @@
 				@role('Administrador|Funcionário')
 					<a class="btnRelatorio btn btn-sm btn-primary" title="Relatorio reservas" data-toggle="tooltip"><i class="fa fa-download"></i> Relatório de reservas</a>
 				@endrole
+				<a class="btnAdicionar btn btn-primary" title="Cadastrar Reserva" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Nova Reserva</a>
 			</div>
 
 		</div>
@@ -44,7 +45,7 @@
 					<tr>
 						 <th>No</th>
 						 <th>Ambiente</th>
-						 <th>Solicitante</th>
+						 <th>Responsável</th>
 						 <th>Data</th>
 						 <th>Turno</th>
 						 <th>Status</th>
@@ -71,7 +72,7 @@
 					<tr>
 						 <th>No</th>
 						 <th>Ambiente</th>
-						 <th>Solicitante</th>
+						 <th>Responsável</th>
 						 <th>Data</th>
 						 <th>Turno</th>
 						 <th>Status</th>

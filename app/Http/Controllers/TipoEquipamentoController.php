@@ -23,7 +23,7 @@ class TipoEquipamentoController extends Controller
     private function setDataButtons(TipoEquipamentos $tipoEquipamento){
     
         //Pegar o Usuário logado
-        $roleUsuarioLogado = Auth::user()->id;
+        $roleUsuarioLogado = Auth::user();
 
         $dados = 'data-nome="'.$tipoEquipamento->nome.'" data-observacao="'.$tipoEquipamento->observacao.'" data-status="'.$tipoEquipamento->status.'"';
 
@@ -34,7 +34,7 @@ class TipoEquipamentoController extends Controller
         $btnExcluir = ' <a data-id="'.$tipoEquipamento->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
             
         //Caso o usuário seja o adm
-        if($roleUsuarioLogado == 1){
+        if($roleUsuarioLogado->hasRole('Administrador')){
             return $btnVisualizar.$btnEditar.$btnExcluir;
         }else{
             return $btnVisualizar;

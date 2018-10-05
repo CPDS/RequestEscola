@@ -54,15 +54,15 @@ class EquipamentosController extends Controller
         if($usuarioLogado->hasRole('Administrador')){
             $btnEditar = ' <a data-id="'.$equipamento->id.'" class="btn btn-primary btnEditar" '.$dados.' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
             $btnExcluir = ' <a data-id="'.$equipamento->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
-            if($equipamento->status != 'Defeito')
+            
+            if($equipamento->status != "Defeito")
                 $btnDefeito = ' <a  data-id="'.$equipamento->id.'" class="btn btn-warning btnDefeito" title="Informar Defeito" data-toggle="tooltip" ><i class="fa fa-exclamation-triangle"></i> </a>';
-            else
-                $btnDefeito = '';
         }else{
             $btnEditar = '';
             $btnExcluir = '';
+            $btnDefeito = '';
         }
-
+        //$btnDefeito = '';
         return $btnVisualizar.$btnEditar.$btnExcluir.$btnDefeito;
     }
 
