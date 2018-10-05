@@ -13,40 +13,40 @@
 
 @section('main-content')
 
-	<div class="row">
-		<div class="col-lg-12 margin-tb">
-			<div class="pull-left">
-				<h2><i class="fa fa-location-arrow"></i> Locais</h2>
-			</div>
-
-			<br>
-
-			@role('Administrador')
-			<div class="pull-right">
-				<a class="btn btn-primary btnAdicionar" title="Novo Local" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Local</a>
-			</div>
-			@endrole
+<div class="row">
+	<div class="col-lg-12 margin-tb">
+		<div class="pull-left">
+			<h2><i class="fa fa-location-arrow"></i> Locais</h2>
 		</div>
-	</div>
 
-	
-	<div class="box">
-		<div class="box-body">
-			<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
-				
-			   <thead>
-					<tr>
-						<th>ID</th>
-						<th>Nome</th>
-						<th>Observação</th>
-						<th>Status</th>
-						<th>Ação</th>
-					 </tr>
-				</thead>
-				 
-			</table>
+		<br>
+
+		@role('Administrador')
+		<div class="pull-right">
+			<a class="btn btn-primary btnAdicionar" title="Novo Local" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Local</a>
 		</div>
+		@endrole
 	</div>
+</div>
+
+
+<div class="box">
+	<div class="box-body">
+		<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+			
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Nome</th>
+					<th>Observação</th>
+					<th>Status</th>
+					<th>Ação</th>
+				</tr>
+			</thead>
+			
+		</table>
+	</div>
+</div>
 
 @include('local.modals.criar_editar')
 @include('local.modals.visualizar')
