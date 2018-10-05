@@ -2,11 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use App\Http\Requests;
+use Illuminate\Support\Facades\Input;
 use App\Manutencoes;
-use App\Http\Controllers\Controller;
-use App\Equipamentos;
 use App\User;
+use App\Reservas;
+use App\Equipamentos;
+use App\TipoEquipamentos;
+use App\Pavilhao;
 use Carbon\Carbon;
+use Mail;
+use Response;
+use Datatables;
+use DB;
+use Hash;
+use Auth;
+use Validator;
 
 class ManutencoesController extends Controller
 {
@@ -23,8 +35,8 @@ class ManutencoesController extends Controller
         return view('manutencao.index', compact('equipamentos','usuario'));
     }
 
-     private function setDataButtons(Manutencoes $manutencao){
-       
+    private function setDataButtons(Manutencoes $manutencao){
+
         //Pegar papel logado
         $usuarioLogado = Auth::user();
         
@@ -46,45 +58,48 @@ class ManutencoesController extends Controller
         
         //Exibir botões para usuários administradores
         if($usuarioLogado->hasRole('Administrador')){
+
             $btnEditar = ' <a data-id="'.$manutencao->id.'" class="btn btn-primary btnEditar" '.$dados.' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
-            $btnExcluir = ' <a data-id="'.$manutencao->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
-            /*if($manutencao->status != 'Defeito')
-                $btnDefeito = ' <a  data-id="'.$manutencao->id.'" class="btn btn-warning btnDefeito" title="Informar Defeito" data-toggle="tooltip" ><i class="fa fa-exclamation-triangle"></i> </a>';
+            /*$btnExcluir = ' <a data-id="'.$manutencao->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';*/
+
+            if($manutencao->status != 'Ativo')
+                $btnConserto = ' <a  data-id="'.$manutencao->id.'" class="btn btn-success btnConserto" title="Conserto" data-toggle="tooltip" ><i class="fa fa-cog"></i> </a>';
             else
-                $btnDefeito = '';*/
-        }else{
+                $btnConserto = '';
+        }
+        else{
             $btnEditar = '';
             $btnExcluir = '';
         }
 
-        return $btnVisualizar.$btnEditar.$btnExcluir/*.$btnDefeito*/;
+        return $btnVisualizar.$btnEditar.$btnConserto;
     }
 
     public function list()
     {
         $manutencao = Manutencoes::with('usuario')
-	                ->with('equipamento')
-	                ->where('id_usuario', Auth::user()->id)
-	                ->where('status', 'Ativo')
-	                ->get();
+        ->with('equipamento')
+        ->where('id_usuario', Auth::user()->id)
+        ->where('status', 'Ativo')
+        ->get();
         return Datatables::of($manutencao)
-            ->editColumn('acao', function ($manutencao) {
-                return $this->setDataButtons($manutencao);
-            })/*
-            ->editColumn('tombo', function ($manutencao) {
-                return $manutencao->equipamento->num_tombo;
-            })
-            ->editColumn('status', function($manutencao){
-                $status = $manutencao->status;
-                return "<span class='label label-success' style='font-size:14px'>Ativo</span>";
-            })
-            ->editColumn('id_equipamento', function ($manutencao) {
-                return $manutencao->id_equipamento;
-            })
-            ->editColumn('data', function ($manutencao) {
-                return date('d/m/Y', strtotime($manutencao->data));
-            })*/
-            ->make(true);
+        ->editColumn('acao', function ($manutencao) {
+            return $this->setDataButtons($manutencao);
+        })
+        ->editColumn('tombo', function ($manutencao) {
+            return $manutencao->equipamento->num_tombo;
+        })
+        ->editColumn('status', function($manutencao){
+            $status = $manutencao->status;
+            return "<span class='label label-success' style='font-size:14px'>Ativo</span>";
+        })
+        ->editColumn('id_equipamento', function ($manutencao) {
+            return $manutencao->id_equipamento;
+        })
+        ->editColumn('data', function ($manutencao) {
+            return date('d/m/Y', strtotime($manutencao->data));
+        })
+        ->make(true);
     }
 /*
     public function store(Request $request)
