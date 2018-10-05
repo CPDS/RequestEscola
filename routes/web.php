@@ -59,7 +59,11 @@ Route::group(['middleware' => ['auth']], function() {
 
 		//Rotas de Manutenção
 		Route::group(['prefix'=> 'manutencoes', 'where' => ['id'=>'0-9+'], 'middleware' => ['role:Administrador|Funcionário']], function (){
-			Route::get('/',['as' => 'manutencao.index', 'uses' => 'ManutencoesController@index']);
+			Route::get('/',['as' => 'manutencoes.index', 'uses' => 'ManutencoesController@index']);
+			Route::get('/list',['as' => 'manutencoes.list', 'uses' => 'ManutencoesController@list']);
+			Route::post('/create', ['as' => 'manutencoes.create', 'uses' => 'ManutencoesController@store'])->middleware('role:Administrador');
+			Route::post('/edit',['as' => 'manutencoes.edit', 'uses' => 'ManutencoesController@update'])->middleware('role:Administrador');
+			Route::post('/delete',['as' => 'manutencoes.destroy', 'uses'=> 'ManutencoesController@destroy'])->middleware('role:Administrador');
 		});
 
 		//Rotas de Reservas de ambiente
