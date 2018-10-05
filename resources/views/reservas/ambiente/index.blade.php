@@ -20,7 +20,6 @@
 
 			<div class="pull-right">
 				@role('Administrador|Funcionário')
-					<a class="btnReservaExterna btn btn-sm btn-warning" title="Nova Reserva Externa" data-toggle="tooltip"><span class="fa fa-external-link"></span> Reserva Externa</a>
 					<a class="btnRelatorio btn btn-sm btn-primary" title="Relatorio reservas" data-toggle="tooltip"><i class="fa fa-download"></i> Relatório de reservas</a>
 				@endrole
 			</div>
