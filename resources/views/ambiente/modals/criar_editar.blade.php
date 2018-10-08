@@ -24,7 +24,10 @@
 
             <div class="form-group col-xs-12">
               <strong>Descrição:</strong>
-             <textarea name="descricao" id="descricao" maxlength="10000" rows="5" class="form-control " style="resize: none;"></textarea>
+             <div class="input-group">
+                  <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                  <textarea placeholder="Digite a descrição do defeito" maxlength="254" class="form-control" id="descricao" name="descricao" type="text"></textarea> 
+              </div> 
             </div>
 
             <div class="form-group col-md-6">

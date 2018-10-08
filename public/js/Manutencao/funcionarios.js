@@ -11,13 +11,13 @@ $(document).ready(function($) {
         deferRender: true,
         ajax: './manutencoes/list',
         columns: [
-            { data: null, name: 'order' },
-            { data: 'tombo', name: 'tombo' },
-            { data: 'data', name: 'data' },
-            { data: 'usuario.nome', name: 'usuario.nome' },
-            { data: 'destino', name: 'destino' },
-            { data: 'status', name: 'status' },
-            { data: 'acao', name: 'acao' }
+        { data: null, name: 'order' },
+        { data: 'tombo', name: 'tombo' },
+        { data: 'data', name: 'data' },
+        { data: 'usuario.nome', name: 'usuario.nome' },
+        { data: 'destino', name: 'destino' },
+        { data: 'status', name: 'status' },
+        { data: 'acao', name: 'acao' }
         ],
         createdRow : function( row, data, index ) {
             row.id = "item-" + data.id;   
@@ -60,14 +60,14 @@ $(document).ready(function($) {
             }
         },
         columnDefs : [
-            { targets : [0,6], sortable : false },
-            { "width": "5%", "targets": 0  },
-            { "width": "10%", "targets": 1 },
-            { "width": "10%", "targets": 2 },
-            { "width": "10%", "targets": 3 },
-            { "width": "14%", "targets": 4 },
-            { "width": "14%", "targets": 5 },
-            { "width": "14%", "targets": 6 }
+        { targets : [0,6], sortable : false },
+        { "width": "5%", "targets": 0  },
+        { "width": "10%", "targets": 1 },
+        { "width": "10%", "targets": 2 },
+        { "width": "10%", "targets": 3 },
+        { "width": "14%", "targets": 4 },
+        { "width": "14%", "targets": 5 },
+        { "width": "14%", "targets": 6 }
         ]
     });
 

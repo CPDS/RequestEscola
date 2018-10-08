@@ -14,59 +14,59 @@
 
 @section('main-content')
 
-	<div class="row">
-		<div class="col-lg-12 margin-tb">
-			
-			<div class="pull-left">
-				<h2><i class="fa fa-wrench"></i> @yield('contentheader_title', 'Equipamentos em Manutenção')</h2>
-			</div>
+<div class="row">
+	<div class="col-lg-12 margin-tb">
 		
-			<br>
+		<div class="pull-left">
+			<h2><i class="fa fa-wrench"></i> @yield('contentheader_title', 'Equipamentos em Manutenção')</h2>
+		</div>
+		
+		<br>
+		
+		<div class="pull-right">
+			<!--@permission('manutencao-create')-->
+			<a class="btnAdicionar btn btn-primary" title="Cadastrar Manutenção" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Cadastrar Manutenção  de Equipamentos</a>
+			<!--@endpermission-->
+		</div>
+
+	</div>
+</div>
+
+<div class="box">
+	<div class="box-body">
+		<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 			
-			<div class="pull-right">
-				<!--@permission('manutencao-create')-->
-				<a class="btnAdicionar btn btn-primary" title="Cadastrar Manutenção" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Cadastrar Manutenção  de Equipamentos</a>
-				<!--@endpermission-->
-			</div>
-
-		</div>
-	</div>
-
-	<div class="box">
-		<div class="box-body">
-			<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
-				
-			   <thead>
+			<thead>
 				<tr>
-					 <th>Nº</th>
-					 <th>Tombo</th>
-					 <th>Data da Solicitação</th>
-					 <th>Solicitante</th>
-					 <th>Local de Destino</th>
-					 <th>Status</th>
-					 <th>Ação</th>
+					<th>Nº</th>
+					<th>Tombo</th>
+					<th>Data da Solicitação</th>
+					<th>Solicitante</th>
+					<th>Local de Destino</th>
+					<th>Status</th>
+					<th>Ação</th>
 				</tr>
-				</thead>
-				 
-			</table>
-		</div>
+			</thead>
+			
+		</table>
 	</div>
+</div>
 
-	<!-- Modal Inserir/Editar Manutenção -->
-	@include('manutencao.criar_editar')
-	<!-- Fim Modal Inserir/Editar Manutenção -->
-	
-	<!-- Modal Visualizar Manutenção -->
-	@include('manutencao.visualizar')
-	<!-- Fim Modal Visualizar Manutenção -->
+<!-- Modal Inserir/Editar Manutenção -->
+@include('manutencao.criar_editar')
+<!-- Fim Modal Inserir/Editar Manutenção -->
 
-	<!-- Modal Confirmar Conserto -->
-	@include('manutencao.conserto')
+<!-- Modal Visualizar Manutenção -->
+@include('manutencao.visualizar')
+<!-- Fim Modal Visualizar Manutenção -->
+
+<!-- Modal Confirmar Conserto -->
+@include('manutencao.conserto')
 <!--
- Fim Modal Confirmar Conserto -->
+	Fim Modal Confirmar Conserto -->
 
 	<!-- Modal Confirmar Manutenção -->
 	@include('manutencao.manutencao')
 	<!-- Fim Modal Confirmar Manutenção -->
-   
-@endsection
+	
+	@endsection
