@@ -61,13 +61,13 @@ $(document).ready(function($) {
         },
         columnDefs : [
         { targets : [0,6], sortable : false },
-        { "width": "5%", "targets": 0  },
-        { "width": "10%", "targets": 1 },
-        { "width": "10%", "targets": 2 },
-        { "width": "10%", "targets": 3 },
-        { "width": "14%", "targets": 4 },
-        { "width": "14%", "targets": 5 },
-        { "width": "14%", "targets": 6 }
+        {  "width": "5%" , "targets": 0 },
+        {  "width": "10%", "targets": 1 },
+        {  "width": "10%", "targets": 2 },
+        {  "width": "10%", "targets": 3 },
+        {  "width": "14%", "targets": 4 },
+        {  "width": "14%", "targets": 5 },
+        {  "width": "14%", "targets": 6 }
         ]
     });
 

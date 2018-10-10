@@ -23,13 +23,13 @@
               <span class="input-group-addon"><i class="fa fa-tag"></i></span>
               <select name="id_equipamento" id="id_equipamento" class="form-control">
                 <option value='' selected disabled>Selecione ...</option>
-                @foreach($equipamentos as $equipamento)
-                @if($equipamento->num_tombo != '')
-                <option value="{{$equipamento->id}}">{{$equipamento->num_tombo}}</option>
-                @else
-                <option value="{{$equipamento->id}}">{{$equipamento->codigo}}</option>
-                @endif
-                @endforeach
+                  @foreach($equipamentos as $equipamento)
+                    @if($equipamento->num_tombo != '')
+                      <option value="{{$equipamento->id}}">{{$equipamento->num_tombo}}</option>
+                    @else
+                      <option value="{{$equipamento->id}}">{{$equipamento->codigo}}</option>
+                    @endif
+                  @endforeach
               </select>
             </div>
           </div>
@@ -46,7 +46,7 @@
             <strong> Descrição sumária do defeito:</strong>
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-              <textarea placeholder="Digite a descrição do defeito" maxlength="254" class="form-control" id="descricao" name="descricao" type="text"></textarea> 
+              <textarea placeholder="Digite a descrição do defeito" maxlength="254" class="form-control" id="descricao" name="descricao" type="text" style="resize: none;"></textarea> 
             </div> 
           </div>
           

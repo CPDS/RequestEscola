@@ -25,7 +25,7 @@
 		
 		<div class="pull-right">
 			<!--@permission('manutencao-create')-->
-			<a class="btnAdicionar btn btn-primary" title="Cadastrar Manutenção" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Cadastrar Manutenção  de Equipamentos</a>
+			<a class="btnAdicionar btn btn-primary" title="Cadastrar Manutenção" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Adicionar</a>
 			<!--@endpermission-->
 		</div>
 
@@ -53,20 +53,20 @@
 </div>
 
 <!-- Modal Inserir/Editar Manutenção -->
-@include('manutencao.criar_editar')
+@include('manutencao.funcionarios.criar_editar')
 <!-- Fim Modal Inserir/Editar Manutenção -->
 
 <!-- Modal Visualizar Manutenção -->
-@include('manutencao.visualizar')
+@include('manutencao.funcionarios.visualizar')
 <!-- Fim Modal Visualizar Manutenção -->
 
 <!-- Modal Confirmar Conserto -->
-@include('manutencao.conserto')
+@include('manutencao.funcionarios.conserto')
 <!--
 	Fim Modal Confirmar Conserto -->
 
 	<!-- Modal Confirmar Manutenção -->
-	@include('manutencao.manutencao')
+	@include('manutencao.funcionarios.manutencao')
 	<!-- Fim Modal Confirmar Manutenção -->
 	
 	@endsection

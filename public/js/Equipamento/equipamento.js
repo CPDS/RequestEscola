@@ -281,7 +281,7 @@ $(document).ready(function($) {
 
     //Filtro para o relatorio
     $(document).on('click', '.btnFiltro', function() {
-        alert('OK');
+        alert('em construção...');
         /*
         $('.modal-title').text('Lista de Equipamentos');
         

@@ -26,7 +26,7 @@
             <strong>Observação:</strong>
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-              <textarea placeholder="Digite a descrição do defeito" maxlength="254" class="form-control" id="observacao" name="observacao" type="text"></textarea> 
+              <textarea placeholder="Descreva o local" maxlength="254" class="form-control" id="observacao" name="observacao" type="text" style="resize: none;"></textarea> 
             </div> 
           </div>
           

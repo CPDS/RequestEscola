@@ -32,7 +32,7 @@ class ManutencoesController extends Controller
     	$equipamentos = Equipamentos::where('status','Ativo')->get();
     	$usuario = User::where('status',true)->get();
 
-        return view('manutencao.index', compact('equipamentos','usuario'));
+        return view('manutencao.funcionarios.index', compact('equipamentos','usuario'));
     }
 
     private function setDataButtons(Manutencoes $manutencao){
