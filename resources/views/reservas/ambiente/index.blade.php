@@ -22,7 +22,7 @@
 				@role('Administrador|Funcionário')
 					<a class="btnRelatorio btn btn-sm btn-primary" title="Relatorio reservas" data-toggle="tooltip"><i class="fa fa-download"></i> Relatório de reservas</a>
 				@endrole
-				<a class="btnAdicionar btn btn-primary" title="Cadastrar Reserva" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Nova Reserva</a>
+				<a class="btnAdicionar btn btn-primary" title="Cadastrar Reserva" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Adicionar</a>
 			</div>
 
 		</div>

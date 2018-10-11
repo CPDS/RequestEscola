@@ -22,7 +22,7 @@
 			<br>	
 
 			<div class="pull-right">
-				<a class="btn btn-primary btnAdicionar" title="Novo Usuário" data-toggle="tooltip"><span class="fa fa- fa-user-plus"></span> Novo Usuário</a>
+				<a class="btn btn-primary btnAdicionar" title="Cadastrar Usuário" data-toggle="tooltip"><span class="fa fa- fa-user-plus"></span> Adicionar</a>
 			</div>
 		</div>
 	</div>

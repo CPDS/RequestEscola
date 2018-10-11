@@ -22,7 +22,7 @@
 			<br>
 
 			<div class="pull-right">
-				<a class="btn btn-primary btnAdicionar" title="Novo Ambiente" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Ambiente</a>
+				<a class="btn btn-primary btnAdicionar" title="Cadastrar Ambiente" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Adicionar</a>
 			</div>
 		</div>
 	</div>

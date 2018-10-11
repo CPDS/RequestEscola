@@ -43,7 +43,7 @@
             </div>
           </div>
 
-          <div class="form-group col-md-18">
+          <div class="form-group col-md-6">
             <strong>Número do Ambiente:</strong>
             <div class="input-group">
               <!--<span class="input-group-addon"><i class="material-icons md-18">looks_two</i></span>-->

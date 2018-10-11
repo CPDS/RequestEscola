@@ -17,7 +17,7 @@
         <form id="form" role="form" method="post" enctype="multipart/form-data">
          <div class="row" style="width: 100%">
 
-          <div class="form-group col-md-12 tombo">
+          <div class="form-group col-md-6 tombo">
             <strong>Nº de Tombo ou Código:</strong>
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-tag"></i></span>
@@ -34,7 +34,7 @@
             </div>
           </div>
 
-          <div class="form-group col-md-12">
+          <div class="form-group col-md-6">
             <strong>Local de Destino:</strong>
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>

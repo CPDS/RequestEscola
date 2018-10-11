@@ -23,7 +23,7 @@
 
 			<div class="pull-right">
 				@role('Administrador')
-					<a class="btn btn-primary btnAdicionar" title="Novo Tipo" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Tipo</a>
+					<a class="btn btn-primary btnAdicionar" title="Cadastrar Tipo" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Adicionar</a>
 				@endrole
 			</div>
 

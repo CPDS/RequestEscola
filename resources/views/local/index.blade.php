@@ -23,7 +23,7 @@
 
 		@role('Administrador')
 		<div class="pull-right">
-			<a class="btn btn-primary btnAdicionar" title="Novo Local" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Novo Local</a>
+			<a class="btn btn-primary btnAdicionar" title="Cadastrar Local" data-toggle="tooltip"><span class="fa fa- fa-plus"></span> Adicionar</a>
 		</div>
 		@endrole
 	</div>
