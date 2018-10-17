@@ -90,7 +90,7 @@ class UserController extends Controller
     public function store(Request $request){
         
         $rules = array(
-            'nome' => 'required',
+            'nome' => 'required|alpha',
             'email' => 'required|email|unique:users,email',
             'senha' => 'required|min:8|same:confirmarsenha',
             'endereco' => 'required',
@@ -103,10 +103,11 @@ class UserController extends Controller
         $attributeNames = array(
             'confirmarsenha' => 'confirmar senha',
             'funcao' => 'função',
+            'nome' => 'Nome Completo' 
         );
 
         $messages = array(
-            'same' => 'Essas senhas não coincidem.'
+            'same' => 'Essas senhas não coincidem.',
         );
 
         $validator = Validator::make(Input::all(), $rules, $messages);
@@ -142,11 +143,14 @@ class UserController extends Controller
     //Função para atualizar dados do Usuário
     public function update(Request $request){ 
         $rules = array(
-            'nome' => 'required',
+            'nome' => 'required|alpha',
             'telefone' => 'required',
             'endereco' => 'required',
             'cidade' => 'required',
             'estado' => 'required'
+        );
+        $attributeNames = array(
+            'nome' => 'Nome Completo'
         );
         $validator = Validator::make(Input::all(), $rules);
         
