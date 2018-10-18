@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="{{ asset('plugins/datatables/dataTables.bootstrap.css') }}">
 <link rel="stylesheet" href="{{ asset('css/iziToast.min.css') }}">
 <script src="{{ asset('js/iziToast.min.js') }}"></script>
+<script src=" {{ asset('js/Reserva/Ambiente/ambiente.js') }} "> </script>
 
 
 @section('main-content')
@@ -85,6 +86,7 @@
 		<!--Fim de Tabela de Retirados-->
 	</div>
 
+	@include('reservas.ambiente.modals.criar_editar')
 
 
 @endsection
