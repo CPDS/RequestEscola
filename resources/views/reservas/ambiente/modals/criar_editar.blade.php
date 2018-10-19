@@ -20,86 +20,71 @@
 		 <div class="form-group col-md-6">
             <strong>Data Inicial</strong>
             <div class="input-group">
-			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-              <input class="form-control" id="data_inicial" name="data_inicial" type="date">
+			  <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+              	<input class="form-control" id="data_inicial" name="data_inicial" type="date">
             </div>
           </div>
 
 		  <div class="form-group col-md-6">
             <strong>Hora Inicial:</strong>
             <div class="input-group">
-			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-              <input class="form-control" id="hora_inicial" name="hora_inicial" type="time">
+			  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+              	<input class="form-control" id="hora_inicial" name="hora_inicial" type="time">
             </div>
           </div>
 
 		  <div class="form-group col-md-6">
-            <strong>Data :</strong>
+            <strong>Data Final</strong>
             <div class="input-group">
-			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-              <input placeholder="Digite um email" maxlength="254" class="form-control" id="email" name="email" type="text">
+			  <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+              	<input class="form-control"  id="data_final" name="data_final" type="date">
             </div>
           </div>
 		  
-
 		  <div class="form-group col-md-6">
-            <strong>Solicitante:</strong>
+            <strong>Hora Final</strong>
             <div class="input-group">
-			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-              <input placeholder="Digite um email" maxlength="254" class="form-control" id="email" name="email" type="text">
+			  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+              	<input class="form-control" id="hora_final" name="hora_final" type="time">
             </div>
           </div>
-           
-          <div class="form-group col-md-6">
-            <strong>Funcionário Responsável:</strong>
+        
+		<div class="form-group col-md-12">
+			<strong>Solicitante</strong>
+			<div class="input-group">
+				<span class="input-group-addon"><input title="Proprio Usuário Logado" type="checkbox" id="ch_usuario_logado" name="ch_usuario_logado"/> </span>
+				<input maxlength="254" id="solicitante" class="form-control" name="solicitante" type="text">
+			</div>
+		</div>
+          <div class="form-group col-md-12">
+            <strong>Funcionário Responsável </strong>
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-              <input placeholder="Digite o nome completo do usuário" maxlength="254" id="nome" class="form-control" name="nome" type="text">
+              <input maxlength="254" id="responsavel" readonly="true" class="form-control" name="responsavel" type="text">
             </div>
           </div>
-
-         
 
           
           <div class="form-group col-md-6">
             <strong>Telefone:</strong>
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-              <input placeholder="Digite o telefone" id="telefone" maxlength="254" class="form-control" name="telefone" type="text">
+              <input id="telefone" maxlength="254" readonly="true" class="form-control" name="telefone" type="text">
             </div>
           </div>
 
           <div class="form-group col-md-6">
-           <strong>Função:</strong>
-           <select name="funcao" id="funcao" class="form-control">
+           <strong>Ambiente</strong>
+           <select name="ambiente" id="ambiente" class="form-control">
             <option value='' selected disabled>Selecione ...</option>
-            <option value="Administrador">Administrador</option> 
-            <option value="Funcionário">Funcionário</option>
-            <option value="Professor">Professor</option> 
           </select>
         </div>
 
-        <div class="form-group col-md-12">
-          <strong>Endereço:</strong>
-          <div class="input-group">
-            <span class="input-group-addon"><i class="material-icons md-18">add_location</i></span>
-            <input placeholder="Digite o endereço" maxlength="254" id="endereco" class="form-control" name="endereco" type="text">
-          </div>
-        </div>
-        
-        <div class="form-group col-md-6">
-          <strong>Estado</strong>
-          <select id="estado" class="form-control selectEstado" name="estado" >
-            <option value=''disabled selected>Selecione..</option>
-           
-          </select>
-        </div>
-        <div class="form-group col-md-6">
-          <strong>Cidade</strong>
-          <select id="cidade" class="form-control" name="cidade">
-          </select>
-        </div>
-        
+		<div class="form-group col-md-12">
+			<strong>Observações</strong>
+			<textarea class="form-control" rows="3" width="100%" maxlength="254" id="observacao" class="form-control" name="observacao"></textarea> 
+		</div>
+
         <input type="hidden" id="id" name="id">
 
       </div> 

@@ -149,7 +149,14 @@ $(document).ready(function($) {
             cell.innerHTML = tabela.page.info().page * tabela.page.info().length + i + 1;
         });
     }).draw();
-
+    
+    //Ação checkbox do solicitante
+    $(document).on('click','#ch_usuario_logado', function() {
+        if($('#ch_usuario_logado').is(':checked'))
+            $('#solicitante').prop("disabled",true);
+        else
+            $('#solicitante').prop("disabled",false);
+    });
 
     //Visualizar
     $(document).on('click', '.btnVisualizar', function() {
