@@ -132,6 +132,60 @@ $(document).ready(function($) {
         jQuery('#conserto-modal').modal('show'); //Abrir o modal
     });
 
+    //AJAX Adicionar Manutenção
+    $('.modal-footer').on('click', '.add', function() {
+    var dados = new FormData($("#form")[0]); //pega os dados do form
+        console.log(dados);
+        $.ajax({
+            type: 'post',
+            url: "./manutencoes/create",
+            data: dados,
+            processData: false,
+            contentType: false,
+            
+            beforeSend: function(){
+                jQuery('.add').button('loading');
+            },
 
+            complete: function() {
+                jQuery('.add').button('reset');
+            },
+
+            success: function(data) {
+                //Verificar os erros de preenchimento
+                if ((data.errors)) {
+
+                    $('.callout').removeClass('hidden'); //exibe a div de erro
+                    $('.callout').find('p').text(""); //limpa a div para erros successivos
+
+                    $.each(data.errors, function(nome, mensagem) {
+                            $('.callout').find("p").append(mensagem + "</br>");
+                    });
+                }
+                else{
+                    
+                    $('#table').DataTable().draw(false);
+
+                    jQuery('#criar_editar-modal').modal('hide');
+
+                    $(function() {
+                        iziToast.success({
+                            title: 'OK',
+                            message: 'Manutenção Adicionada com Sucesso!',
+                        });
+                    });
+                }
+            },
+
+            error: function() {
+                jQuery('#criar_editar-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+        });
+    });
 
 }); //Fim do Documento

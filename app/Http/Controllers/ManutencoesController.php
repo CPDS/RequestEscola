@@ -14,7 +14,7 @@ use App\Pavilhao;
 use Carbon\Carbon;
 use Mail;
 use Response;
-use Datatables;
+use DataTables;
 use DB;
 use Hash;
 use Auth;
@@ -40,48 +40,50 @@ class ManutencoesController extends Controller
         //Pegar papel logado
         $usuarioLogado = Auth::user();
         
-        $dados = 'data-data="'.$manutencao->data.
-        '" data-descricao="'.$manutencao->descricao.
-        '" data-destino="'.$manutencao->destino.
-        '" data-usuario="'.$manutencao->fk_usuario.
-        '" data-equipamento="'.$manutencao->fk_equipamento.
-        '" data-status="'.$manutencao->status.'"';
-
-        $dados_visualizar = 'data-data="'.$manutencao->data.
+        $dados = 'data-tombo="'.$manutencao->equipamento->num_tombo.
+        '" data-tipo_equipamento="'.$manutencao->equipamento->id_tipo_equipamento.
+        '" data-data="'.date('d/m/Y',strtotime($manutencao->data)).
         '" data-descricao="'.$manutencao->descricao.
         '" data-destino="'.$manutencao->destino.
         '" data-usuario="'.$manutencao->usuario->nome.
-        '" data-equipamento="'.$manutencao->equipamento->nome.
+        '" data-status="'.$manutencao->status.'"';
+
+        $dados_visualizar = 'data-tombo="'.$manutencao->equipamento->num_tombo.
+        '" data-tipo_equipamento="'.$manutencao->equipamento->id_tipo_equipamento.
+        '" data-data="'.date('d/m/Y',strtotime($manutencao->data)).
+        '" data-descricao="'.$manutencao->descricao.
+        '" data-destino="'.$manutencao->destino.
+        '" data-usuario="'.$manutencao->usuario->nome.
         '" data-status="'.$manutencao->status.'"';
         
         $btnVisualizar = '<a class="btn btn-info btnVisualizar" '.$dados_visualizar.' title="Visualizar" data-toggle="tooltip"><i class="fa fa-eye"></i></a>';
         
+        
         //Exibir botões para usuários administradores
         if($usuarioLogado->hasRole('Administrador')){
-
             $btnEditar = ' <a data-id="'.$manutencao->id.'" class="btn btn-primary btnEditar" '.$dados.' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
+            $btnConserto = ' <a  data-id="'.$manutencao->id.'" class="btn btn-success btnConserto" title="Conserto" data-toggle="tooltip" ><i class="fa fa-cog"></i> </a>';
             /*$btnExcluir = ' <a data-id="'.$manutencao->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';*/
 
-            if($manutencao->status != 'Ativo')
-                $btnConserto = ' <a  data-id="'.$manutencao->id.'" class="btn btn-success btnConserto" title="Conserto" data-toggle="tooltip" ><i class="fa fa-cog"></i> </a>';
+            if($manutencao->status == 'Ativo')
+                return $btnVisualizar.$btnEditar.$btnConserto;
             else
                 $btnConserto = '';
         }
         else{
             $btnEditar = '';
             $btnExcluir = '';
-        }
-
-        return $btnVisualizar.$btnEditar.$btnConserto;
+        } 
     }
 
     public function list()
     {
         $manutencao = Manutencoes::with('usuario')
         ->with('equipamento')
-        ->where('id_usuario', Auth::user()->id)
+        //->where('id_usuario', Auth::user()->id)
         ->where('status', 'Ativo')
         ->get();
+
         return Datatables::of($manutencao)
         ->editColumn('acao', function ($manutencao) {
             return $this->setDataButtons($manutencao);
@@ -101,26 +103,23 @@ class ManutencoesController extends Controller
         })
         ->make(true);
     }
-/*
+
     public function store(Request $request)
     {
-    	$rules = array(
-           'destino' => 'required',
+        $rules = array(
            'id_equipamento' => 'required',
            'descricao' => 'required',
-        );
+       );
 
-        $attributeNames = array(
-        	'descricao' => 'descrição',
-        );
+        $validator = Validator::make(Input::all(), $rules);
 
-         if ($validator->fails())
+        if ($validator->fails())
             return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
-       
         else{ 
-			$dataAtual = Carbon::now();
 
-			$manutencao = new Manutencao();
+            $dataAtual = Carbon::now(); //pega a hora atual do PC
+            
+            $manutencao = new Manutencao();
             $manutencao->id_equipamento = $request->id_equipamento;
             $manutencao->descricao = $request->descricao;
             $manutencao->id_usuario = Auth::user()->id;
@@ -128,9 +127,13 @@ class ManutencoesController extends Controller
             $manutencao->destino = $request->destino;
             $manutencao->status = "Ativo";
 
-            $equipamento = Equipamento::find($request->id_equipamento);
-            $equipamento->status = "Em Manutencao";
+            $manutencao->save();
+            //$equipamento->save();
+            $manutencao->setAttribute('buttons', $this->setDataButtons($manutencao));
+
+            return response()->json();
+
         }
     }
-    */
+    
 }
