@@ -62,7 +62,7 @@ $(document).ready(function($) {
             }
         },
         columnDefs : [
-          { targets : [0,5], sortable : false },
+          { targets : [0,6], sortable : false },
           { "width": "5%" , "targets":  0 }, //nº
           { "width": "10%", "targets":  1 }, //ambiente
           { "width": "5%" , "targets":  2 }, //Responsavel
@@ -137,7 +137,7 @@ $(document).ready(function($) {
             }
         },
         columnDefs : [
-          { targets : [0,5], sortable : false },
+          { targets : [0,6], sortable : false },
           { "width": "5%" , "targets":  0 }, //nº
           { "width": "10%", "targets":  1 }, //ambiente
           { "width": "5%" , "targets":  2 }, //Responsavel

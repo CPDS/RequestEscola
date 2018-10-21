@@ -49,6 +49,7 @@
 						 <th>Responsável</th>
 						 <th>Data</th>
 						 <th>Turno</th>
+						 <th>Status</th>
 						 <th>Ação</th>
 					 </tr>
 				</thead>	 

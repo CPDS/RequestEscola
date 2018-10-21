@@ -13,6 +13,6 @@ class AmbienteReserva extends Model
 
     public function ambiente(){
 
-    	return $this->belongsTo(User::class, 'fk_ambiente');
+    	return $this->belongsTo(Ambiente::class, 'fk_ambiente');
     }
 }

@@ -75,6 +75,7 @@ class ReservaAmbienteController extends Controller
         ->where('fk_reserva',$reservas->id)
         ->first();
 
+        //dd($ambientes->solicitante);
         //Recuperando data e hora final da reserva e convertendo o formato
         $data_final = date('d/m/Y',strtotime($reservas->data_final));
         $hora_final = date('H:i',strtotime($reservas->data_final));
@@ -91,7 +92,8 @@ class ReservaAmbienteController extends Controller
         '" data-data_final="'.$data_final.
         '" data-hora_final="'.$hora_final.
         '" data-descricao="'.$reservas->observacao.
-        '" data-telefone="'.$reservas->usuario->telefone.'"';
+        '" data-telefone="'.$reservas->usuario->telefone.
+        '" data-solicitante="'.$ambientes->solicitante.'"';
 
     
         $btnVisualizar = '<a class="btn btn-sm btn-info btnVisualizar" '.$dadosVisualizar.' title="Visualizar" data-toggle="tooltip" ><i class="fa fa-eye"></i></a>';
@@ -162,10 +164,24 @@ class ReservaAmbienteController extends Controller
         return Datatables::of($reservas)
         ->editColumn('acao', function($reservas){
             return $this->setDataButtons($reservas);
-                //return 'Acao';
         })
         ->editColumn('turno', function($reservas){
             return $this->turno($reservas);
+        })
+        ->editColumn('ambiente', function($reservas){
+            $ambientes = AmbienteReserva::with('ambiente')
+            ->where('fk_reserva',$reservas->id)
+            ->first();
+            return $ambientes->ambiente->tipo;
+        })
+        ->editColumn('responsavel', function($reservas){
+            return $reservas->usuario->name;
+        })
+        ->editColumn('data', function($reservas){
+            return date('d/m/Y',strtotime($reservas->data_inicial));
+        })
+        ->editColumn('status', function($reservas){
+            return $reservas->status;
         })
         ->escapeColumns([0])
         ->make(true);

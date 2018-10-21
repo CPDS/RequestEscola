@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ambiente extends Model
 {
-    public $fillable = ['fk_local', 'tipo', 'descricao', 'numero_ambiente', 'status'];
+    //public $fillable = ['fk_local', 'tipo', 'descricao', 'numero_ambiente', 'status'];
 
     public function local(){
 
