@@ -10,11 +10,13 @@ use Response;
 use DataTables;
 use DB;
 use Auth;
-use App\Ambiente;
-use App\Locais;
-use App\AmbienteReserva;
 use Hash;
-use App\Reservas;
+use App\{
+    Reservas,
+    Ambiente,
+    Locais,
+    AmbienteReserva
+};
 
 class ReservaAmbienteController extends Controller
 {
@@ -24,14 +26,7 @@ class ReservaAmbienteController extends Controller
         return view('reservas.ambiente.index');
     }
 
-    //Botões
-    private function setDataButtons(Reservas $reservas){
-        
-        //recuperando ambientes reservados
-        $ambientes = AmbienteReserva::where('status',true)
-        ->where('tipo',true)
-        ->where('fk_reserva',$reservas->id)
-        ->first();
+    private function turno(Reservas $reservas){
 
         //Recuperando data e hora final da reserva e convertendo o formato
         $data_final = date('d/m/Y',strtotime($reservas->data_final));
@@ -40,6 +35,7 @@ class ReservaAmbienteController extends Controller
         //recuperando hora inicial da reserva
         $hora_inicial = date('H:i',strtotime($reservas->data_inicial));
         
+
         /*Turnos
             Manhã: 07:30 às 11:20
             Tarde: 14:00 às 18:00
@@ -58,17 +54,34 @@ class ReservaAmbienteController extends Controller
 
         //Comparação de horario por turno
         if($hora_inicial >= $manha_inicio && $hora_final <= $manha_final)
-            $turno = 'Manhã';
-        else if($hora_inicial >= $tarde_inicio && $hora_final <= $tarde_final)
-            $turno = 'Tarde';
-        else if($hora_inicial >= $noite_inicio && $hora_final <= $noite_final)
-            $turno = 'Noite';
-        else if($hora_inicial >= $manha_inicio && $hora_final <= $tarde_final)
-            $turno = 'Manhã e Tarde';
-        else if($hora_inicial >= $tarde_inicio && $hora_final <= $noite_final)
-            $turno = 'Tarde e Noite';
+            return 'Manhã';
+        if($hora_inicial >= $tarde_inicio && $hora_final <= $tarde_final)
+            return 'Tarde';
+        if($hora_inicial >= $noite_inicio && $hora_final <= $noite_final)
+            return 'Noite';
+        if($hora_inicial >= $manha_inicio && $hora_final <= $tarde_final)
+            return 'Manhã e Tarde';
+        if($hora_inicial >= $tarde_inicio && $hora_final <= $noite_final)
+            return 'Tarde e Noite';
         else
-            $turno = 'Manhã, Tarde e Noite';
+            return 'Manhã, Tarde e Noite';
+    }
+    //Botões
+    private function setDataButtons(Reservas $reservas){
+        
+        //recuperando ambientes reservados
+        $ambientes = AmbienteReserva::where('status',true)
+        ->where('tipo',true)
+        ->where('fk_reserva',$reservas->id)
+        ->first();
+
+        //Recuperando data e hora final da reserva e convertendo o formato
+        $data_final = date('d/m/Y',strtotime($reservas->data_final));
+        $hora_final = date('H:i',strtotime($reservas->data_final));
+       
+        //recuperando hora inicial da reserva
+        $hora_inicial = date('H:i',strtotime($reservas->data_inicial));
+        
 
         //conteudo da reserva
         $dadosVisualizar = 'data-id="'.$reservas->id.
@@ -88,8 +101,9 @@ class ReservaAmbienteController extends Controller
         $btnEditar = '';
         
         //Botões para colaboradores (Administradores e funcionários)
-        if(Auth::user()->hasRole('Administrador|Funcionário'))
+        if(Auth::user()->hasRole('Administrador|Funcionário')){
             $btnEditar = ' <a  data-id="'.$reservas->id.'" class="btn btn-sm btn-primary btnEditar" title="Editar" data-toggle="tooltip" ><i class="fa fa- fa-pencil-square-o"></i></a>';
+        }
         
         
         return $btnVisualizar . $btnEditar . $btnExcluir;
@@ -107,18 +121,42 @@ class ReservaAmbienteController extends Controller
         //
     }
 
-    //listar ambientes reservados
-    public function reservados(){
+    //listar ambientes reservados e atendidos
+    public function list(Request $request){
         //Capiturar Usuário Logado
         $usuario_logado = Auth::user();
-        //Consulta para Colaboradores
-        if($usuario_logado->hasRole('Administrador|Funcionário')){
-            $reservas = Reservas::where('status','Reservado')
-            ->get();
-        }else{//Consulta para professores
-            $reservas = Reservas::with('usuario')
-            ->where('status','Reservado')
-            ->get();
+
+        //Verificar de qual tabela é a consulta
+        switch ($request->tabela) {
+            case 1:
+                //Consulta para Colaboradores
+                if($usuario_logado->hasRole('Administrador|Funcionário')){
+                    $reservas = Reservas::where('status','Reservado')
+                    ->orwhere('status','Expirado')
+                    ->get();
+                }else{//Consulta para professores
+                    $reservas = Reservas::with('usuario')
+                    ->where('status','Reservado')
+                    ->orwhere('status','Expirado')
+                    ->get();
+                } 
+            break;
+
+            case 2:
+                //Consulta para Colaboradores
+                if($usuario_logado->hasRole('Administrador|Funcionário')){
+                    $reservas = Reservas::where('status','Ocupado')
+                    ->get();
+                }else{//Consulta para professores
+                    $reservas = Reservas::with('usuario')
+                    ->where('status','Ocupado')
+                    ->get();
+                }
+            break;
+            
+            default:
+                # code...
+                break;
         }
         
         return Datatables::of($reservas)
@@ -126,15 +164,14 @@ class ReservaAmbienteController extends Controller
             return $this->setDataButtons($reservas);
                 //return 'Acao';
         })
+        ->editColumn('turno', function($reservas){
+            return $this->turno($reservas);
+        })
         ->escapeColumns([0])
         ->make(true);
     }
 
-    //Listar ambientes reservados que estão em uso 
-    public function atendidos(){
-
-    }
-
+   
     //Finalizar Reserva de ambiente
     public function finalizar(Request $request)
     {

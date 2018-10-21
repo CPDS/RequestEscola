@@ -90,7 +90,7 @@ class UserController extends Controller
     public function store(Request $request){
         
         $rules = array(
-            'nome' => 'required|alpha',
+            'nome' => 'required',
             'email' => 'required|email|unique:users,email',
             'senha' => 'required|min:8|same:confirmarsenha',
             'endereco' => 'required',
@@ -143,7 +143,7 @@ class UserController extends Controller
     //Função para atualizar dados do Usuário
     public function update(Request $request){ 
         $rules = array(
-            'nome' => 'required|alpha',
+            'nome' => 'required',
             'telefone' => 'required',
             'endereco' => 'required',
             'cidade' => 'required',

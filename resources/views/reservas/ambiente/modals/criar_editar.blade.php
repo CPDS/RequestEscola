@@ -52,8 +52,8 @@
 		<div class="form-group col-md-12">
 			<strong>Solicitante</strong>
 			<div class="input-group">
-				<span class="input-group-addon"><input title="Proprio Usuário Logado" type="checkbox" id="ch_usuario_logado" name="ch_usuario_logado"/> </span>
-				<input maxlength="254" id="solicitante" class="form-control" name="solicitante" type="text">
+				<span class="input-group-addon"><input title="Proprio Usuário Logado" data-nome="{{Auth::user()->name}}" checked type="checkbox" id="ch_usuario_logado" name="ch_usuario_logado"/> </span>
+				<input maxlength="254" id="solicitante" readonly="true" class="form-control" name="solicitante" type="text">
 			</div>
 		</div>
           <div class="form-group col-md-12">

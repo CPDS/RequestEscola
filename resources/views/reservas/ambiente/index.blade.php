@@ -23,7 +23,7 @@
 				@role('Administrador|Funcionário')
 					<a class="btnRelatorio btn btn-sm btn-primary" title="Relatorio reservas" data-toggle="tooltip"><i class="fa fa-download"></i> Relatório de reservas</a>
 				@endrole
-				<a class="btnAdicionar btn btn-primary" title="Cadastrar Reserva" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Adicionar</a>
+				<a class="btnAdicionar btn btn-primary" data-nome="{{Auth::user()->name}}" data-telefone="{{Auth::user()->telefone}}" data-id="{{Auth::user()->id}}" title="Cadastrar Reserva" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Adicionar</a>
 			</div>
 
 		</div>
@@ -49,7 +49,6 @@
 						 <th>Responsável</th>
 						 <th>Data</th>
 						 <th>Turno</th>
-						 <th>Status</th>
 						 <th>Ação</th>
 					 </tr>
 				</thead>	 

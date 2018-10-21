@@ -10,12 +10,13 @@ $(document).ready(function($) {
         processing: true,
         serverSide: true,
         deferRender: true,
-        ajax: './reserva-ambiente/reservados',
+        ajax: './reserva-ambiente/list/1',
         columns: [
         { data: null, name: 'order' },
-        { data: 'tipo', name: 'tipo' },
-        { data: 'name', name: 'name' },
-        { data: 'numero_ambiente', name: 'numero_ambiente' },
+        { data: 'ambiente', name: 'ambiente' },
+        { data: 'responsavel', name: 'responsavel' },
+        { data: 'data', name: 'data' },
+        { data: 'turno', name: 'turno' },
         { data: 'status', name: 'status' },
         { data: 'acao', name: 'acao' }
         ],
@@ -63,11 +64,12 @@ $(document).ready(function($) {
         columnDefs : [
           { targets : [0,5], sortable : false },
           { "width": "5%" , "targets":  0 }, //nº
-          { "width": "10%", "targets":  1 }, //tipo
-          { "width": "5%" , "targets":  2 }, //Nome
-          { "width": "5%" , "targets":  3 }, //numero_ambiente
-          { "width": "5%" , "targets":  4 }, //status
-          { "width": "10%", "targets":  5 }, //acao
+          { "width": "10%", "targets":  1 }, //ambiente
+          { "width": "5%" , "targets":  2 }, //Responsavel
+          { "width": "5%" , "targets":  3 }, //data
+          { "width": "5%" , "targets":  4 }, //turno
+          { "width": "5%" , "targets":  5 }, //Status
+          { "width": "10%", "targets":  6 }, //acao
         ]
     });
 
@@ -83,12 +85,13 @@ $(document).ready(function($) {
         processing: true,
         serverSide: true,
         deferRender: true,
-        ajax: './reserva-ambiente/atendidos',
+        ajax: './reserva-ambiente/list/2',
         columns: [
         { data: null, name: 'order' },
-        { data: 'tipo', name: 'tipo' },
-        { data: 'name', name: 'name' },
-        { data: 'numero_ambiente', name: 'numero_ambiente' },
+        { data: 'ambiente', name: 'ambiente' },
+        { data: 'responsavel', name: 'responsavel' },
+        { data: 'data', name: 'data' },
+        { data: 'turno', name: 'turno' },
         { data: 'status', name: 'status' },
         { data: 'acao', name: 'acao' }
         ],
@@ -136,11 +139,12 @@ $(document).ready(function($) {
         columnDefs : [
           { targets : [0,5], sortable : false },
           { "width": "5%" , "targets":  0 }, //nº
-          { "width": "10%", "targets":  1 }, //tipo
-          { "width": "5%" , "targets":  2 }, //Nome
-          { "width": "5%" , "targets":  3 }, //numero_ambiente
-          { "width": "5%" , "targets":  4 }, //status
-          { "width": "10%", "targets":  5 }, //acao
+          { "width": "10%", "targets":  1 }, //ambiente
+          { "width": "5%" , "targets":  2 }, //Responsavel
+          { "width": "5%" , "targets":  3 }, //data
+          { "width": "5%" , "targets":  4 }, //turno
+          { "width": "5%" , "targets":  5 }, //Status
+          { "width": "10%", "targets":  6 }, //acao
         ]
     });
 
@@ -152,10 +156,14 @@ $(document).ready(function($) {
     
     //Ação checkbox do solicitante
     $(document).on('click','#ch_usuario_logado', function() {
-        if($('#ch_usuario_logado').is(':checked'))
-            $('#solicitante').prop("disabled",true);
-        else
-            $('#solicitante').prop("disabled",false);
+        if($('#ch_usuario_logado').is(':checked')){
+            $('#solicitante').prop("readonly",true);
+            $('#solicitante').val($(this).data('nome'));
+        }
+        else{
+            $('#solicitante').prop("readonly",false);
+            $('#solicitante').val('');
+        }
     });
 
     //Visualizar
@@ -181,6 +189,9 @@ $(document).ready(function($) {
         $('.callout').find("p").text(""); 
 
         $('#form')[0].reset();
+        $('#solicitante').val($("#ch_usuario_logado").data('nome'));
+        $('#responsavel').val($(this).data('nome'));
+        $('#telefone').val($(this).data('telefone'));
 
         jQuery('#criar_editar-modal').modal('show');
     });
@@ -402,6 +413,6 @@ $(document).ready(function($) {
     });
 
     //Validação de dados
-    $("#numero_ambiente").mask("999");
+    //$("#numero_ambiente").mask("999");
 
 }); //FIM DOCUMENTO
