@@ -6,15 +6,15 @@ $(document).ready(function($) {
     });
 
     //tabela de Reserva
-	var tabela = $('#reserva-table').DataTable({
+	var tabela = $('#reserva').DataTable({
         processing: true,
         serverSide: true,
         deferRender: true,
-        ajax: './reserva-ambiente/list/1',
+        ajax: './reserva-ambiente/reservados',
         columns: [
         { data: null, name: 'order' },
         { data: 'ambiente', name: 'ambiente' },
-        { data: 'responsavel', name: 'responsavel' },
+        { data: 'solicitante', name: 'solicitante' },
         { data: 'data', name: 'data' },
         { data: 'turno', name: 'turno' },
         { data: 'status', name: 'status' },
@@ -81,15 +81,15 @@ $(document).ready(function($) {
 
 
     //tabela de Atendidos
-	var tabela = $('#atendidos-table').DataTable({
+	var tabela = $('#atendidos').DataTable({
         processing: true,
         serverSide: true,
         deferRender: true,
-        ajax: './reserva-ambiente/list/2',
+        ajax: './reserva-ambiente/atendidos',
         columns: [
         { data: null, name: 'order' },
         { data: 'ambiente', name: 'ambiente' },
-        { data: 'responsavel', name: 'responsavel' },
+        { data: 'solicitante', name: 'solicitante' },
         { data: 'data', name: 'data' },
         { data: 'turno', name: 'turno' },
         { data: 'status', name: 'status' },

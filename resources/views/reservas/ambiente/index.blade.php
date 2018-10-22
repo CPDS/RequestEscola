@@ -40,13 +40,13 @@
 	      </h3>
 	   </div><!-- /.box-header -->
 		<div class="box-body">
-			<table id="reserva-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+			<table id="reserva" class="table table-striped table-bordered" cellspacing="0" width="100%">
 				
 			   <thead>
 					<tr>
 						 <th>No</th>
 						 <th>Ambiente</th>
-						 <th>Responsável</th>
+						 <th>Solicitante</th>
 						 <th>Data</th>
 						 <th>Turno</th>
 						 <th>Status</th>
@@ -67,7 +67,7 @@
 	      </h3>
 	   </div><!-- /.box-header -->
 		<div class="box-body">
-			<table id="atendidos-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+			<table id="atendidos" class="table table-striped table-bordered" cellspacing="0" width="100%">
 				
 			   <thead>
 					<tr>

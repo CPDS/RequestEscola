@@ -93,7 +93,7 @@ class ReservaAmbienteController extends Controller
         '" data-hora_final="'.$hora_final.
         '" data-descricao="'.$reservas->observacao.
         '" data-telefone="'.$reservas->usuario->telefone.
-        '" data-solicitante="'.$ambientes->solicitante.'"';
+        '" data-responsavel="'.$reservas->usuario->name.'"';
 
     
         $btnVisualizar = '<a class="btn btn-sm btn-info btnVisualizar" '.$dadosVisualizar.' title="Visualizar" data-toggle="tooltip" ><i class="fa fa-eye"></i></a>';
@@ -124,43 +124,67 @@ class ReservaAmbienteController extends Controller
     }
 
     //listar ambientes reservados e atendidos
-    public function list(Request $request){
+    public function reservados(){
+        //Capiturar Usuário Logado
+        $usuario_logado = Auth::user();
+        
+        //Consulta para Colaboradores
+        if($usuario_logado->hasRole('Administrador|Funcionário')){
+            $reservas = Reservas::where('status','Reservado')
+            ->orwhere('status','Expirado')
+            ->get();
+        }else{//Consulta para professores
+            $reservas = Reservas::where('fk_usuario',$usuario_logado->id)
+            ->where('status','Reservado')
+            ->orwhere('status','Expirado')
+            ->get();
+        }
+        //dados de ambiente
+           
+        return Datatables::of($reservas)
+        ->editColumn('acao', function($reservas){
+            return $this->setDataButtons($reservas);
+        })
+        ->editColumn('turno', function($reservas){
+            return $this->turno($reservas);
+        })
+        ->editColumn('ambiente', function($reservas){
+             $ambientes = AmbienteReserva::with('ambiente')
+            ->where('fk_reserva',$reservas->id)
+            ->first();
+            return $ambientes->ambiente->tipo;
+        })
+        ->editColumn('solicitante', function($reservas){
+             $ambientes = AmbienteReserva::with('ambiente')
+            ->where('fk_reserva',$reservas->id)
+            ->first();
+            return $ambientes->solicitante;
+        })
+        ->editColumn('data', function($reservas){
+            return date('d/m/Y',strtotime($reservas->data_inicial));
+        })
+        ->editColumn('status', function($reservas){
+            return $reservas->status;
+        })
+        ->escapeColumns([0])
+        ->make(true);
+    }
+
+    public function atendidos(){
         //Capiturar Usuário Logado
         $usuario_logado = Auth::user();
 
-        //Verificar de qual tabela é a consulta
-        switch ($request->tabela) {
-            case 1:
-                //Consulta para Colaboradores
-                if($usuario_logado->hasRole('Administrador|Funcionário')){
-                    $reservas = Reservas::where('status','Reservado')
-                    ->orwhere('status','Expirado')
-                    ->get();
-                }else{//Consulta para professores
-                    $reservas = Reservas::with('usuario')
-                    ->where('status','Reservado')
-                    ->orwhere('status','Expirado')
-                    ->get();
-                } 
-            break;
-
-            case 2:
-                //Consulta para Colaboradores
-                if($usuario_logado->hasRole('Administrador|Funcionário')){
-                    $reservas = Reservas::where('status','Ocupado')
-                    ->get();
-                }else{//Consulta para professores
-                    $reservas = Reservas::with('usuario')
-                    ->where('status','Ocupado')
-                    ->get();
-                }
-            break;
-            
-            default:
-                # code...
-                break;
+         //Consulta para Colaboradores
+        if($usuario_logado->hasRole('Administrador|Funcionário')){
+            $reservas = Reservas::where('status','Ocupado')
+            ->get();
+        }else{//Consulta para professores
+            $reservas = Reservas::with('usuario')
+            ->where('fk_usuario',$usuario_logado->id)
+            ->where('status','Ocupado')
+            ->get();
         }
-        
+
         return Datatables::of($reservas)
         ->editColumn('acao', function($reservas){
             return $this->setDataButtons($reservas);
@@ -174,8 +198,11 @@ class ReservaAmbienteController extends Controller
             ->first();
             return $ambientes->ambiente->tipo;
         })
-        ->editColumn('responsavel', function($reservas){
-            return $reservas->usuario->name;
+        ->editColumn('solicitante', function($reservas){
+             $ambientes = AmbienteReserva::with('ambiente')
+            ->where('fk_reserva',$reservas->id)
+            ->first();
+            return $ambientes->solicitante;
         })
         ->editColumn('data', function($reservas){
             return date('d/m/Y',strtotime($reservas->data_inicial));
@@ -185,8 +212,8 @@ class ReservaAmbienteController extends Controller
         })
         ->escapeColumns([0])
         ->make(true);
-    }
 
+    }
    
     //Finalizar Reserva de ambiente
     public function finalizar(Request $request)
