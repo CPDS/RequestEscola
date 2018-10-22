@@ -11,6 +11,10 @@
 
 <script src="{{ asset('js/jquery.maskedinput.js') }}"></script>
 <script src=" {{ asset('js/Manutencao/funcionarios.js') }} "> </script>
+<<<<<<< HEAD
+
+=======
+>>>>>>> 973c7997fee0a391119f2e7c8c67dff820444692
 
 
 @section('main-content')

@@ -106,34 +106,9 @@ class ManutencoesController extends Controller
 
     public function store(Request $request)
     {
-        $rules = array(
-           'id_equipamento' => 'required',
-           'descricao' => 'required',
-       );
+        //
 
-        $validator = Validator::make(Input::all(), $rules);
+       
 
-        if ($validator->fails())
-            return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
-        else{ 
-
-            $dataAtual = Carbon::now(); //pega a hora atual do PC
-            
-            $manutencao = new Manutencao();
-            $manutencao->id_equipamento = $request->id_equipamento;
-            $manutencao->descricao = $request->descricao;
-            $manutencao->id_usuario = Auth::user()->id;
-            $manutencao->data = $dataAtual->toDateTimeString();
-            $manutencao->destino = $request->destino;
-            $manutencao->status = "Ativo";
-
-            $manutencao->save();
-            //$equipamento->save();
-            $manutencao->setAttribute('buttons', $this->setDataButtons($manutencao));
-
-            return response()->json();
-
-        }
     }
-    
 }

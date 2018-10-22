@@ -171,7 +171,7 @@ $(document).ready(function($) {
                     $(function() {
                         iziToast.success({
                             title: 'OK',
-                            message: 'Manutenção Adicionada com Sucesso!',
+                            message: 'em construção'/*'Manutenção Adicionada com Sucesso!'*/,
                         });
                     });
                 }
