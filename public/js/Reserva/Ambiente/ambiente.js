@@ -198,6 +198,7 @@ $(document).ready(function($) {
         $('#solicitante').prop("readonly",true);
         $('#responsavel').val($(this).data('nome'));
         $('#telefone').val($(this).data('telefone'));
+        $('#telefone').prop("readonly",true);
 
         jQuery('#criar_editar-modal').modal('show');
     });

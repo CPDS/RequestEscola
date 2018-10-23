@@ -69,7 +69,7 @@
             <strong>Telefone:</strong>
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-              <input id="telefone" maxlength="254" readonly="true" class="form-control" name="telefone" type="text">
+              <input id="telefone" maxlength="254" readonly class="form-control" name="telefone" type="text">
             </div>
           </div>
 

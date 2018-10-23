@@ -24,6 +24,7 @@ class ReservaAmbienteController extends Controller
     public function index()
     {
         $ambientes = Ambiente::where('status','Ativo')->get();
+        //dd($ambientes);
         return view('reservas.ambiente.index', compact('ambientes'));
     }
 
@@ -115,21 +116,26 @@ class ReservaAmbienteController extends Controller
     //Criar Reserva
     public function store(Request $request)
     {
-        dd($request->all());
         $rules = array(
-            'horario_inicial' => 'required',
-            'horario_final' => 'required',
-            'data_reserva' => 'required',
-            'id_sala' => 'required',
-            'id_local_retira_entrega' => 'required',
+            'hora_inicial' => 'required',
+            'hora_final' => 'required',
+            'data_inicial' => 'required',
+            'data_final' => 'required',
+            'solicitante' => 'required',
+            'responsavel' => 'required',
+            'telefone' => 'required',
+            'ambiente' => 'required',
         );
 
         $attributeNames = array(
-            'horario_inicial' => 'Horário Inicial',
-            'horario_final' => 'Horário Final',
-            'data_reserva' => 'data da aula',
-            'id_sala' => 'Sala',
-            'id_local_retira_entrega' => 'Local de retirada e entrega',
+            'hora_inicial' => 'Horário Inicial',
+            'hora_final' => 'Horário Final',
+            'data_inicial' => 'Data Inicial',
+            'data_final' => 'Data Final',
+            'solicitante' => 'Solicitante',
+            'responsavel' => 'Responsável',
+            'telefone' => 'Telefone',
+            'ambiente' => 'Ambiente',
         );
 
         $validator = Validator::make(Input::all(), $rules);
@@ -137,7 +143,32 @@ class ReservaAmbienteController extends Controller
 
         if ($validator->fails())
                 return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
-        
+        else{
+            //data e hora de  retirada
+            $data_retirada = $request->data_inicial.' '.$request->hora_inicial.':00';
+            //Data de reserva convertida
+            $data_retirada_str = date('Y-m-d H:i:s',strtotime($data_retirada));
+            //Data e hora de  Entrega
+            $data_entrega = $request->data_final.' '.$request->hora_final.':00';
+            //Data da entrega convertida
+            $data_entrega_str = date('Y-m-d H:i:s',strtotime($data_retirada));
+            //data da reserva menos uma semana
+            $data_reserva_7dias = date('Y-m-d H:i:s',strtotime($data_retirada.'- 1 week'));
+
+            if($data_retirada_str < $data_reserva_7dias)
+                return Response::json(array('errors' => ['A data do agendamento deve ter antecedência superior a 7 dias']));
+            if($data_entrega_str < $data_retirada_str)
+                return Response::json(array('errors' => ['A data do agendamento deve superior a data de retirada do ambiente']));
+
+            if($request->ch_usuario_logado)
+                $solicitante = $telefone = null;
+            else{
+                $solicitante = $request->solicitante;
+                $telefone = $request->telefone;
+            }
+            
+                
+        }
     }
 
     //Atualizar pedido
