@@ -238,7 +238,7 @@ $(document).ready(function($) {
 
         $.ajax({
             type: 'post',
-            url: "./ambiente/create",
+            url: "./reserva-ambiente/create",
             data: dados,
             processData: false,
             contentType: false,

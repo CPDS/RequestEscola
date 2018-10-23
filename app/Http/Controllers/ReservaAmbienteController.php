@@ -115,13 +115,35 @@ class ReservaAmbienteController extends Controller
     //Criar Reserva
     public function store(Request $request)
     {
-        //
+        dd($request->all());
+        $rules = array(
+            'horario_inicial' => 'required',
+            'horario_final' => 'required',
+            'data_reserva' => 'required',
+            'id_sala' => 'required',
+            'id_local_retira_entrega' => 'required',
+        );
+
+        $attributeNames = array(
+            'horario_inicial' => 'Horário Inicial',
+            'horario_final' => 'Horário Final',
+            'data_reserva' => 'data da aula',
+            'id_sala' => 'Sala',
+            'id_local_retira_entrega' => 'Local de retirada e entrega',
+        );
+
+        $validator = Validator::make(Input::all(), $rules);
+        $validator->setAttributeNames($attributeNames);
+
+        if ($validator->fails())
+                return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
+        
     }
 
     //Atualizar pedido
     public function update(Request $request)
     {
-        //
+
     }
 
     //listar ambientes reservados e atendidos
@@ -133,11 +155,13 @@ class ReservaAmbienteController extends Controller
         if($usuario_logado->hasRole('Administrador|Funcionário')){
             $reservas = Reservas::where('status','Reservado')
             ->orwhere('status','Expirado')
+            ->orwhere('status','Cancelada')
             ->get();
         }else{//Consulta para professores
             $reservas = Reservas::where('fk_usuario',$usuario_logado->id)
             ->where('status','Reservado')
             ->orwhere('status','Expirado')
+            ->orwhere('status','Cancelada')
             ->get();
         }
         //dados de ambiente
@@ -165,7 +189,15 @@ class ReservaAmbienteController extends Controller
             return date('d/m/Y',strtotime($reservas->data_inicial));
         })
         ->editColumn('status', function($reservas){
-            return $reservas->status;
+            $status = $reservas->status;
+                if($status == 'Reservado')
+                    return "<span class='label label-warning' style='font-size:14px'>Reservado</span>";
+                if($status == 'Cancelada')
+                    return "<span class='label label-danger' style='font-size:14px'>Cancelada</span>";
+                else{
+                    return "<span class='label label-warning' style='font-size:14px'>Expirado</span>";
+                }
+                
         })
         ->escapeColumns([0])
         ->make(true);
@@ -178,11 +210,13 @@ class ReservaAmbienteController extends Controller
          //Consulta para Colaboradores
         if($usuario_logado->hasRole('Administrador|Funcionário')){
             $reservas = Reservas::where('status','Ocupado')
+            ->orwhere('status','Finalizada')
             ->get();
         }else{//Consulta para professores
             $reservas = Reservas::with('usuario')
             ->where('fk_usuario',$usuario_logado->id)
             ->where('status','Ocupado')
+            ->orwhere('status','Finalizada')
             ->get();
         }
 
@@ -209,7 +243,12 @@ class ReservaAmbienteController extends Controller
             return date('d/m/Y',strtotime($reservas->data_inicial));
         })
         ->editColumn('status', function($reservas){
-            return $reservas->status;
+            $status = $reservas->status;
+            if($status == 'Ocupado')
+                return "<span class='label label-primary' style='font-size:14px'>Ocupado</span>";
+            else{
+                return "<span class='label label-success' style='font-size:14px'>Finalizada</span>";
+            }
         })
         ->escapeColumns([0])
         ->make(true);
