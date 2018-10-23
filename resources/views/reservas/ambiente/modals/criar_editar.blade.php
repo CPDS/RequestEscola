@@ -53,7 +53,7 @@
 			<strong>Solicitante</strong>
 			<div class="input-group">
 				<span class="input-group-addon"><input title="Proprio Usuário Logado" data-nome="{{Auth::user()->name}}" checked type="checkbox" id="ch_usuario_logado" name="ch_usuario_logado"/> </span>
-				<input maxlength="254" id="solicitante" readonly="true" class="form-control" name="solicitante" type="text">
+				<input maxlength="254" id="solicitante" readonly class="form-control" name="solicitante" type="text">
 			</div>
 		</div>
           <div class="form-group col-md-12">
@@ -77,6 +77,9 @@
            <strong>Ambiente</strong>
            <select name="ambiente" id="ambiente" class="form-control">
             <option value='' selected disabled>Selecione ...</option>
+            @foreach($ambientes as $ambiente)
+              <option value='{{$ambiente->id}}'>{{$ambiente->descricao}}</option>
+            @endforeach
           </select>
         </div>
 

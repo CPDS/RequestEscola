@@ -23,7 +23,8 @@ class ReservaAmbienteController extends Controller
   
     public function index()
     {
-        return view('reservas.ambiente.index');
+        $ambientes = Ambiente::where('status','Ativo')->get();
+        return view('reservas.ambiente.index', compact('ambientes'));
     }
 
     private function turno(Reservas $reservas){

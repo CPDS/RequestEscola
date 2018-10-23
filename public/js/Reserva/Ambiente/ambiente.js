@@ -6,7 +6,7 @@ $(document).ready(function($) {
     });
 
     //tabela de Reserva
-	var tabela = $('#reserva').DataTable({
+	var tabela_reservas = $('#reserva').DataTable({
         processing: true,
         serverSide: true,
         deferRender: true,
@@ -73,15 +73,15 @@ $(document).ready(function($) {
         ]
     });
 
-    tabela.on('draw.dt', function() {
-        tabela.column(0, { search: 'applied', order: 'applied' }).nodes().each(function(cell, i) {
-            cell.innerHTML = tabela.page.info().page * tabela.page.info().length + i + 1;
+    tabela_reservas.on('draw.dt', function() {
+        tabela_reservas.column(0, { search: 'applied', order: 'applied' }).nodes().each(function(cell, i) {
+            cell.innerHTML = tabela_reservas.page.info().page * tabela_reservas.page.info().length + i + 1;
         });
     }).draw();
 
 
     //tabela de Atendidos
-	var tabela = $('#atendidos').DataTable({
+	var tabela_atendidos = $('#atendidos').DataTable({
         processing: true,
         serverSide: true,
         deferRender: true,
@@ -148,9 +148,9 @@ $(document).ready(function($) {
         ]
     });
 
-    tabela.on('draw.dt', function() {
-        tabela.column(0, { search: 'applied', order: 'applied' }).nodes().each(function(cell, i) {
-            cell.innerHTML = tabela.page.info().page * tabela.page.info().length + i + 1;
+    tabela_atendidos.on('draw.dt', function() {
+        tabela_atendidos.column(0, { search: 'applied', order: 'applied' }).nodes().each(function(cell, i) {
+            cell.innerHTML = tabela_atendidos.page.info().page * tabela_atendidos.page.info().length + i + 1;
         });
     }).draw();
     
@@ -159,10 +159,15 @@ $(document).ready(function($) {
         if($('#ch_usuario_logado').is(':checked')){
             $('#solicitante').prop("readonly",true);
             $('#solicitante').val($(this).data('nome'));
+            $('#telefone').prop("readonly",true);
+            $('#telefone').val($('.btnAdicionar').data('telefone'));
         }
         else{
             $('#solicitante').prop("readonly",false);
             $('#solicitante').val('');
+            $('#telefone').prop("readonly",false);
+            $('#telefone').val('');
+            
         }
     });
 
@@ -190,6 +195,7 @@ $(document).ready(function($) {
 
         $('#form')[0].reset();
         $('#solicitante').val($("#ch_usuario_logado").data('nome'));
+        $('#solicitante').prop("readonly",true);
         $('#responsavel').val($(this).data('nome'));
         $('#telefone').val($(this).data('telefone'));
 
@@ -413,6 +419,6 @@ $(document).ready(function($) {
     });
 
     //Validação de dados
-    //$("#numero_ambiente").mask("999");
+    $("#telefone").mask("(99) 99999-9999");
 
 }); //FIM DOCUMENTO

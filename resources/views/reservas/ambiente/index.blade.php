@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="{{ asset('css/iziToast.min.css') }}">
 <script src="{{ asset('js/iziToast.min.js') }}"></script>
 <script src=" {{ asset('js/Reserva/Ambiente/ambiente.js') }} "> </script>
+<script src=" {{ asset('js/jquery.maskedinput.js') }} "> </script>
 
 
 @section('main-content')
