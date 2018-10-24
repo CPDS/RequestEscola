@@ -29,7 +29,7 @@
 				@role('Administrador|Funcionário')
 					<a class="btnRelatorio btn btn-sm btn-primary" title="Relatorio reservas" data-toggle="tooltip"><i class="fa fa-download"></i> Relatório de reservas</a>
 				@endrole
-				<a class="btnAdicionar btn btn-primary" data-nome="{{Auth::user()->name}}" data-telefone="{{Auth::user()->telefone}}" data-id="{{Auth::user()->id}}" title="Cadastrar Reserva" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Adicionar</a>
+				<a class="btnAdicionar btn btn-sm btn-primary" data-nome="{{Auth::user()->name}}" data-telefone="{{Auth::user()->telefone}}" data-id="{{Auth::user()->id}}" title="Cadastrar Reserva" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span> Adicionar</a>
 			</div>
 
 		</div>
@@ -61,35 +61,6 @@
 					</thead>	 
 				</table>
 			</div>
-		</div>
-		<!--Fim de Tabela de Reservados-->
-		<br>
-		<!--Tabela de Retirados-->
-		<div class="box box-solid box-success">
-			<div class="box-header">
-				<h3 class="box-title">
-				<strong>Retiradas</strong>
-					<span>(Aguardando Devolução)</span>
-				</h3>
-			</div><!-- /.box-header -->
-				<div class="box-body">
-					<table id="atendidos" class="table table-striped table-bordered" cellspacing="0" width="100%">
-						
-					<thead>
-							<tr>
-								<th>No</th>
-								<th>Ambiente</th>
-								<th>Responsável</th>
-								<th>Data</th>
-								<th>Turno</th>
-								<th>Status</th>
-								<th>Ação</th>
-							</tr>
-						</thead>
-						
-					</table>
-				</div>
-				<!--Fim de Tabela de Retirados-->
 		</div>
 	@else
 		<div class="box">

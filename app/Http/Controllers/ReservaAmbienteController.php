@@ -101,10 +101,9 @@ class ReservaAmbienteController extends Controller
     
         $btnVisualizar = '<a class="btn btn-sm btn-info btnVisualizar" '.$dadosVisualizar.' title="Visualizar" data-toggle="tooltip" ><i class="fa fa-eye"></i></a>';
         
+        //botões
         $btnEditar = '';
         $btnFeedback = '';
-        
-        $btnRetirar = '';
         $btnFinalizar = '';
         $btnExcluir= '';
         $btnCancelar = '';
@@ -115,14 +114,10 @@ class ReservaAmbienteController extends Controller
         }else if($reservas->fk_usuario == Auth::user()->id)
             $btnExcluir = ' <a data-id="'.$reservas->id.'" class="btn btn-sm btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';            
 
-        
-        
         //Botões para colaboradores (Administradores e funcionários)
         if(Auth::user()->hasRole('Administrador|Funcionário')){
             if($reservas->status == 'Reservado' || $reservas->status == 'Em uso')
                 $btnEditar = ' <a  data-id="'.$reservas->id.'" class="btn btn-sm btn-primary btnEditar" title="Editar" data-toggle="tooltip" ><i class="fa fa- fa-pencil-square-o"></i></a>';
-            if($reservas->status == 'Reservado')
-                $btnRetirar = ' <a  class="btn btn-sm btn-success btnRetirar" data-id="'. $reservas->id .'" title="Retirar" data-toggle="tooltip" ><i class="glyphicon glyphicon-export"></i></a>';
             if($reservas->status == 'Em uso')
                 $btnFinalizar = ' <a   class="btn btn-sm btn-success btnFinalizar" data-id="'. $reservas->id .'" title="Finalizar" data-toggle="tooltip" ><i class="glyphicon glyphicon-import"></i></a>';
         }
@@ -133,7 +128,6 @@ class ReservaAmbienteController extends Controller
         //retornando todos os botões 
         return $btnVisualizar .
          $btnEditar .
-         $btnRetirar.
          $btnFinalizar.
          $btnFeedback.
          $btnCancelar .
@@ -233,7 +227,7 @@ class ReservaAmbienteController extends Controller
 
     }
     /*  listar ambientes reservados e atendidos
-        para colaboradores e  professores
+        para colaboradores e professores
     */
     public function list(){
         //Capiturar Usuário Logado
@@ -241,11 +235,11 @@ class ReservaAmbienteController extends Controller
         
         //Consulta para Colaboradores
         if($usuario_logado->hasRole('Administrador|Funcionário')){
-            $reservas = Reservas::where('status','Reservado')
-            ->orwhere('status','Cancelada')
+            $reservas = Reservas::where('status','!=', 'Inativo')
             ->get();
         }else{//Consulta para professores
             $reservas = Reservas::where('fk_usuario',$usuario_logado->id)
+            ->where('status', '!=', 'Inativo')
             ->get();
         }
         //dados de ambiente
@@ -276,23 +270,17 @@ class ReservaAmbienteController extends Controller
             $status = $reservas->status;
                 if($status == 'Reservado')
                     return "<span class='label label-warning' style='font-size:14px'>Reservado</span>";
-                
-                //Status para professor
-                if(Auth::user()->hasRole('Professor')){
-                    if($status == 'Em uso')
-                        return "<span class='label label-primary' style='font-size:14px'>Em uso</span>";
-                    if($status == 'Expirado'){
-                        return "<span class='label label-warning' style='font-size:14px'>Expirado</span>";
-                    }
-                    if($status == 'Cancelada')
-                        return "<span class='label label-danger' style='font-size:14px'>Cancelada</span>";
-                    //reserva já finalizada
-                    if($reservas->feedback == null)
-                        return "<span class='label label-danger' style='font-size:14px'>Finalizada</span>";
-                    else
-                        return "<span class='label label-success' style='font-size:14px'>Finalizada</span>";
-                }
-                
+                if($status == 'Em uso')
+                     return "<span class='label label-primary' style='font-size:14px'>Em uso</span>";
+                if($status == 'Expirado')
+                     return "<span class='label label-warning' style='font-size:14px'>Expirado</span>";
+                if($status == 'Cancelada')
+                    return "<span class='label label-danger' style='font-size:14px'>Cancelada</span>";  
+                //reserva já finalizada
+                if($reservas->feedback == null)
+                    return "<span class='label label-danger' style='font-size:14px'>Finalizada</span>";
+                else
+                    return "<span class='label label-success' style='font-size:14px'>Finalizada</span>"; 
         })
         ->escapeColumns([0])
         ->make(true);

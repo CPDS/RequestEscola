@@ -70,8 +70,6 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::group(['prefix'=> 'reserva-ambiente', 'where' => ['id'=>'0-9+']], function (){
 			Route::get('/',['as' => 'reserva-ambiente.index', 'uses' => 'ReservaAmbienteController@index']);
 			Route::get('/list',['as' => 'reserva-ambiente.list', 'uses' => 'ReservaAmbienteController@list']);
-			Route::get('/atendidos',['as' => 'reserva-ambiente.atendidos', 'uses' => 'ReservaAmbienteController@atendidos'])->middleware('role:Administrador|Funcionário');
-			Route::get('/liberar',['as' => 'reserva-ambiente.liberar', 'uses' => 'ReservaAmbienteController@liberar'])->middleware('role:Administrador|Funcionário');
 			Route::post('/create', ['as' => 'resereva-ambiente.create', 'uses' => 'ReservaAmbienteController@store']);
 			Route::post('/edit',['as' => 'reserva-ambiente.edit', 'uses' => 'ReservaAmbienteController@update'])->middleware('role:Administrador|Funcionário');
 			Route::post('/finalizar',['as' => 'reserva-ambiente.finalizar', 'uses'=> 'ReservaAmbienteController@finalizar'])->middleware('role:Administrador|Funcionário');

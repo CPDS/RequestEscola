@@ -101,7 +101,7 @@
     <button type="button" class="edit btn btn-action btn-success" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> &nbsp Aguarde...">
       <span class="glyphicon glyphicon-floppy-disk"> Salvar</span>
     </button>
-    <button type="button" class="btn btn-danger" data-dismiss="modal">
+    <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">
       <span class='glyphicon glyphicon-remove'></span> Cancelar
     </button>
   </div> <!-- Fim de ModaL Footer-->
