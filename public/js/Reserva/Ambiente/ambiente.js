@@ -273,7 +273,7 @@ $(document).ready(function($) {
         $('#telefone').val($(this).data('telefone'));
         $('#telefone').prop("readonly",true);
 
-        jQuery('#criar_editar-modal').modal('show');
+        jQuery('#criar-modal').modal('show');
     });
 
     //Editar
@@ -281,17 +281,11 @@ $(document).ready(function($) {
         $('.modal-footer .btn-action').removeClass('add');
         $('.modal-footer .btn-action').addClass('edit');
 
-        $('.modal-title').text('Editar Reserva');
+        $('.modal-title').text('Editar Reserva de Ambiente');
         $('.callout').addClass("hidden"); //ocultar a div de aviso
         $('.callout').find("p").text(""); //limpar a div de aviso
-
-        var btnEditar = $(this);
-
-        $('#form :input').each(function(index,input){
-            $('#'+input.id).val($(btnEditar).data(input.id));
-        });
-
-        jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
+ 
+        jQuery('#editar-modal').modal('show'); //Abrir o modal
     });
 
     //Retirar
@@ -337,7 +331,7 @@ $(document).ready(function($) {
                     
                     $('#table').DataTable().draw(false);
 
-                    jQuery('#criar_editar-modal').modal('hide');
+                    jQuery('#criar-modal').modal('hide');
                     
                     $(function() {
                         iziToast.success({
@@ -351,7 +345,7 @@ $(document).ready(function($) {
             },
 
             error: function() {
-                jQuery('#criar_editar-modal').modal('hide'); //fechar o modal
+                jQuery('#criar-modal').modal('hide'); //fechar o modal
 
                 iziToast.error({
                     title: 'Erro Interno',

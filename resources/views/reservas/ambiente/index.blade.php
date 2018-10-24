@@ -111,7 +111,10 @@
 		</div>
 	@endrole
 
-	@include('reservas.ambiente.modals.criar_editar')
+	@include('reservas.ambiente.modals.criar')
+	@role('Administrador|Funcionário')
+		@include('reservas.ambiente.modals.editar')
+	@endrole
 
 
 @endsection

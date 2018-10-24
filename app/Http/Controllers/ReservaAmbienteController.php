@@ -276,8 +276,6 @@ class ReservaAmbienteController extends Controller
             $status = $reservas->status;
                 if($status == 'Reservado')
                     return "<span class='label label-warning' style='font-size:14px'>Reservado</span>";
-                if($status == 'Cancelada')
-                    return "<span class='label label-danger' style='font-size:14px'>Cancelada</span>";
                 
                 //Status para professor
                 if(Auth::user()->hasRole('Professor')){
@@ -286,6 +284,8 @@ class ReservaAmbienteController extends Controller
                     if($status == 'Expirado'){
                         return "<span class='label label-warning' style='font-size:14px'>Expirado</span>";
                     }
+                    if($status == 'Cancelada')
+                        return "<span class='label label-danger' style='font-size:14px'>Cancelada</span>";
                     //reserva já finalizada
                     if($reservas->feedback == null)
                         return "<span class='label label-danger' style='font-size:14px'>Finalizada</span>";
@@ -304,6 +304,7 @@ class ReservaAmbienteController extends Controller
         $reservas = Reservas::where('status','Em uso')
         ->orwhere('status','Finalizada')
         ->orwhere('status','Expirado')
+        ->orwhere('status','Cancalada')
         ->get();
         
 
@@ -337,6 +338,8 @@ class ReservaAmbienteController extends Controller
                 return "<span class='label label-danger' style='font-size:14px'>Expirado</span>";
             if($status == 'Finalizada' && $reservas->feedbak == null)
                 return "<span class='label label-danger' style='font-size:14px'>Finalizada</span>";
+            if($status == 'Cancelada')
+                return "<span class='label label-danger' style='font-size:14px'>Cancelada</span>";
             else{
                 return "<span class='label label-success' style='font-size:14px'>Finalizada</span>";
             }

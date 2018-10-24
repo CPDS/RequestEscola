@@ -1,4 +1,4 @@
-<div id="criar_editar-modal" class="modal fade" role="dialog" data-backdrop="static">
+<div id="criar-modal" class="modal fade" role="dialog" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
 
