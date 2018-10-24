@@ -101,14 +101,86 @@ class ManutencoesController extends Controller
         ->editColumn('data', function ($manutencao) {
             return date('d/m/Y', strtotime($manutencao->data));
         })
+        ->escapeColumns([0])
         ->make(true);
     }
 
     public function store(Request $request)
     {
         //
+        $rules = array(
+         'id_equipamento' => 'required',
+         'descricao' => 'required',
+        );
 
-       
+        $validator = Validator::make(Input::all(), $rules);
 
+        if ($validator->fails())
+            return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
+
+        else{
+           
+           $dataAtual = Carbon::now(); //pega a hora atual do PC
+
+           $manutencao = new Manutencoes();
+           $manutencao->id_equipamento = $request->id_equipamento;
+           $manutencao->descricao = $request->descricao;
+           $manutencao->id_usuario = Auth::user()->id;
+           $manutencao->data = $dataAtual->toDateTimeString();
+           $manutencao->destino = $request->destino;
+           $manutencao->status = "Ativo";
+
+           $equipamento = Equipamentos::find($request->id_equipamento);
+           $equipamento->status = "Em Manutencao";
+           $flag_email=false;
+          /* $manutencao->save();
+           $equipamento->save();
+           $manutencao->setAttribute('buttons', $this->setDataButtons($manutencao));
+
+           return response()->json();*/
+        }
     }
+
+    public function update(Request $request)
+    {
+        /*
+        $rules = array(
+            'descricao' => 'required',
+        );
+        
+        $validator = Validator::make(Input::all(), $rules);
+        
+        if ($validator->fails())
+            return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
+        else
+        {
+            $manutencao = Manutencao::find($request->id);
+            $manutencao->descricao = $request->descricao;
+            $manutencao->id_usuario = Auth::user()->id;
+            $manutencao->destino = $request->destino;
+            $manutencao->status = "Ativo";
+            $manutencao->save();
+
+            $manutencao->setAttribute('buttons', $this->setDataButtons($manutencao));
+
+            return response()->json();
+        }
+        */
+    }
+
+
+    public function conserto(Request $request) {
+      
+        /*
+        $manutencao = Manutencao::find($request->id);
+        $manutencao->status = "Inativo";
+        $equipamento = Equipamento::find($manutencao->id_equipamento);
+        $equipamento->status = "Ativo";
+        $equipamento->save();
+        $manutencao->save();
+
+        return response()->json($manutencao);
+        */
+    }
+
 }
