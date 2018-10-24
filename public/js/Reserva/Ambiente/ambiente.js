@@ -5,12 +5,12 @@ $(document).ready(function($) {
         }
     });
 
-    //tabela de Reserva
+    //tabela de Reserva Colaboradores
 	var tabela_reservas = $('#reserva').DataTable({
         processing: true,
         serverSide: true,
         deferRender: true,
-        ajax: './reserva-ambiente/reservados',
+        ajax: './reserva-ambiente/list',
         columns: [
         { data: null, name: 'order' },
         { data: 'ambiente', name: 'ambiente' },
@@ -80,7 +80,7 @@ $(document).ready(function($) {
     }).draw();
 
 
-    //tabela de Atendidos
+    //tabela de Atendidos colaboradores
 	var tabela_atendidos = $('#atendidos').DataTable({
         processing: true,
         serverSide: true,
@@ -151,6 +151,79 @@ $(document).ready(function($) {
     tabela_atendidos.on('draw.dt', function() {
         tabela_atendidos.column(0, { search: 'applied', order: 'applied' }).nodes().each(function(cell, i) {
             cell.innerHTML = tabela_atendidos.page.info().page * tabela_atendidos.page.info().length + i + 1;
+        });
+    }).draw();
+
+
+    //tabela de Reservas Professores
+	var tabela_professor = $('#tabela_professor').DataTable({
+        processing: true,
+        serverSide: true,
+        deferRender: true,
+        ajax: './reserva-ambiente/list',
+        columns: [
+        { data: null, name: 'order' },
+        { data: 'ambiente', name: 'ambiente' },
+        { data: 'data', name: 'data' },
+        { data: 'turno', name: 'turno' },
+        { data: 'status', name: 'status' },
+        { data: 'acao', name: 'acao' }
+        ],
+       
+        createdRow : function( row, data, index ) {
+            row.id = "item-" + data.id;   
+        },
+
+        paging: true,
+        lengthChange: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        scrollX: true,
+        sorting: [[ 1, "asc" ]],
+        responsive: true,
+        lengthMenu: [
+            [10, 15, -1],
+            [10, 15, "Todos"]
+        ],
+        language: {
+            "sEmptyTable": "Nenhum registro encontrado",
+            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+            "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "_MENU_ resultados por página",
+            "sLoadingRecords": "Carregando...",
+            "sProcessing": "<div><i class='fa fa-circle-o-notch fa-spin' style='font-size:38px;'></i> <span style='font-size:20px; margin-left: 5px'> Carregando...</span></div>",
+            "sZeroRecords": "Nenhum registro encontrado",
+            "sSearch": "Pesquisar",
+            "oPaginate": {
+                "sNext": "Próximo",
+                "sPrevious": "Anterior",
+                "sFirst": "Primeiro",
+                "sLast": "Último"
+            },
+            "oAria": {
+                "sSortAscending": ": Ordenar colunas de forma ascendente",
+                "sSortDescending": ": Ordenar colunas de forma descendente"
+            }
+        },
+        columnDefs : [
+          { targets : [0,5], sortable : false },
+          { "width": "5%" , "targets":  0 }, //nº
+          { "width": "10%", "targets":  1 }, //ambiente
+          { "width": "5%" , "targets":  2 }, //data
+          { "width": "5%" , "targets":  3 }, //turno
+          { "width": "5%" , "targets":  4 }, //Status
+          { "width": "10%", "targets":  5 }, //acao
+        ]
+    });
+
+    tabela_professor.on('draw.dt', function() {
+        tabela_professor.column(0, { search: 'applied', order: 'applied' }).nodes().each(function(cell, i) {
+            cell.innerHTML = tabela_professor.page.info().page * tabela_professor.page.info().length + i + 1;
         });
     }).draw();
     
@@ -265,14 +338,16 @@ $(document).ready(function($) {
                     $('#table').DataTable().draw(false);
 
                     jQuery('#criar_editar-modal').modal('hide');
-
+                    
                     $(function() {
                         iziToast.success({
                             title: 'OK',
                             message: 'Ambiente Adicionado com Sucesso!',
                         });
                     });
+                    
                 }
+                
             },
 
             error: function() {
@@ -283,7 +358,7 @@ $(document).ready(function($) {
                     message: 'Operação Cancelada!',
                 });
             },
-
+            
         });
     });
 

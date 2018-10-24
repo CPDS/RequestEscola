@@ -28,6 +28,7 @@ class ReservaAmbienteController extends Controller
         return view('reservas.ambiente.index', compact('ambientes'));
     }
 
+    //Turno
     private function turno(Reservas $reservas){
 
         //Recuperando data e hora final da reserva e convertendo o formato
@@ -99,18 +100,44 @@ class ReservaAmbienteController extends Controller
 
     
         $btnVisualizar = '<a class="btn btn-sm btn-info btnVisualizar" '.$dadosVisualizar.' title="Visualizar" data-toggle="tooltip" ><i class="fa fa-eye"></i></a>';
-
-        $btnExcluir = ' <a data-id="'.$reservas->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
-
+        
         $btnEditar = '';
+        $btnFeedback = '';
+        
+        $btnRetirar = '';
+        $btnFinalizar = '';
+        $btnExcluir= '';
+        $btnCancelar = '';
+
+        //Condição para botão excluir e cancelar
+        if($reservas->status == 'Reservado' || $reservas->status == 'Em uso'){
+            $btnCancelar = ' <a data-id="'.$reservas->id.'" class="btn btn-sm btn-danger btnCancelar" title="Cancelar" data-toggle="tooltip"><i class="fa fa-times"></i></a>';    
+        }else if($reservas->fk_usuario == Auth::user()->id)
+            $btnExcluir = ' <a data-id="'.$reservas->id.'" class="btn btn-sm btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';            
+
+        
         
         //Botões para colaboradores (Administradores e funcionários)
         if(Auth::user()->hasRole('Administrador|Funcionário')){
-            $btnEditar = ' <a  data-id="'.$reservas->id.'" class="btn btn-sm btn-primary btnEditar" title="Editar" data-toggle="tooltip" ><i class="fa fa- fa-pencil-square-o"></i></a>';
+            if($reservas->status == 'Reservado' || $reservas->status == 'Em uso')
+                $btnEditar = ' <a  data-id="'.$reservas->id.'" class="btn btn-sm btn-primary btnEditar" title="Editar" data-toggle="tooltip" ><i class="fa fa- fa-pencil-square-o"></i></a>';
+            if($reservas->status == 'Reservado')
+                $btnRetirar = ' <a  class="btn btn-sm btn-success btnRetirar" data-id="'. $reservas->id .'" title="Retirar" data-toggle="tooltip" ><i class="glyphicon glyphicon-export"></i></a>';
+            if($reservas->status == 'Em uso')
+                $btnFinalizar = ' <a   class="btn btn-sm btn-success btnFinalizar" data-id="'. $reservas->id .'" title="Finalizar" data-toggle="tooltip" ><i class="glyphicon glyphicon-import"></i></a>';
         }
-        
-        
-        return $btnVisualizar . $btnEditar . $btnExcluir;
+        //botão para professor
+        if(Auth::user()->hasRole('Professor') && $reservas->status == 'Finalizada' && $reservas->feedback == null){
+            $btnFeedback = ' <a  data-id="'.$reservas->id.'" class="btn btn-sm btn-success btnFeedback" title="Feedback" data-toggle="tooltip" ><i class="fa fa-thumbs-up"></i> </a>';
+        }
+        //retornando todos os botões 
+        return $btnVisualizar .
+         $btnEditar .
+         $btnRetirar.
+         $btnFinalizar.
+         $btnFeedback.
+         $btnCancelar .
+         $btnExcluir;
 
     }
     //Criar Reserva
@@ -152,22 +179,51 @@ class ReservaAmbienteController extends Controller
             $data_entrega = $request->data_final.' '.$request->hora_final.':00';
             //Data da entrega convertida
             $data_entrega_str = date('Y-m-d H:i:s',strtotime($data_retirada));
-            //data da reserva menos uma semana
-            $data_reserva_7dias = date('Y-m-d H:i:s',strtotime($data_retirada.'- 1 week'));
-
-            if($data_retirada_str < $data_reserva_7dias)
-                return Response::json(array('errors' => ['A data do agendamento deve ter antecedência superior a 7 dias']));
+            //data atual mais 1 semana
+            $atual_mais_7 = date('Y-m-d H:i:s',strtotime('+ 1 week'));
+            //data atual
+            $atual = date('Y-m-d H:i:s',strtotime('now'));
+            
+            //tratamentos de tempo
+            if($data_retirada_str > $atual_mais_7)
+                return Response::json(array('errors' => ['A data do agendamento não deve ter antecedência superior a 7 dias']));
+            if($data_retirada_str < $atual)
+                return Response::json(array('errors' => ['A data do agendamento deve superior a data atual']));
             if($data_entrega_str < $data_retirada_str)
                 return Response::json(array('errors' => ['A data do agendamento deve superior a data de retirada do ambiente']));
-
-            if($request->ch_usuario_logado)
-                $solicitante = $telefone = null;
+            
+            //tratamentos de solicitante
+            if($request->ch_usuario_logado){
+                $solicitante = Auth::user()->name;
+                $telefone = Auth::user()->telefone;
+            }
             else{
                 $solicitante = $request->solicitante;
                 $telefone = $request->telefone;
             }
+
+            //persistendo no banco
+
+            $reserva = new Reservas();
+            $ambiente_reserva = new AmbienteReserva();
             
-                
+            $reserva->fk_usuario = Auth::user()->id;
+            $reserva->data_inicial = $data_retirada;
+            $reserva->data_final = $data_entrega;
+            $reserva->observacao = $request->observacao;
+            $reserva->status = 'Reservado';
+            $reserva->save();
+
+            $ambiente_reserva->fk_reserva = $reserva->id;
+            $ambiente_reserva->fk_ambiente = $request->ambiente;
+            $ambiente_reserva->tipo = true; //Garantindo que é uma reserva do tipo "reserva de ambiente"
+            $ambiente_reserva->solicitante = $solicitante;
+            $ambiente_reserva->telefone = $telefone;
+            $ambiente_reserva->status = true;
+            $ambiente_reserva->save();
+            
+            $reserva->setAttribute('buttons', $this->setDataButtons($reserva)); 
+            return response()->json($reserva);
         }
     }
 
@@ -176,23 +232,20 @@ class ReservaAmbienteController extends Controller
     {
 
     }
-
-    //listar ambientes reservados e atendidos
-    public function reservados(){
+    /*  listar ambientes reservados e atendidos
+        para colaboradores e  professores
+    */
+    public function list(){
         //Capiturar Usuário Logado
         $usuario_logado = Auth::user();
         
         //Consulta para Colaboradores
         if($usuario_logado->hasRole('Administrador|Funcionário')){
             $reservas = Reservas::where('status','Reservado')
-            ->orwhere('status','Expirado')
             ->orwhere('status','Cancelada')
             ->get();
         }else{//Consulta para professores
             $reservas = Reservas::where('fk_usuario',$usuario_logado->id)
-            ->where('status','Reservado')
-            ->orwhere('status','Expirado')
-            ->orwhere('status','Cancelada')
             ->get();
         }
         //dados de ambiente
@@ -225,8 +278,19 @@ class ReservaAmbienteController extends Controller
                     return "<span class='label label-warning' style='font-size:14px'>Reservado</span>";
                 if($status == 'Cancelada')
                     return "<span class='label label-danger' style='font-size:14px'>Cancelada</span>";
-                else{
-                    return "<span class='label label-warning' style='font-size:14px'>Expirado</span>";
+                
+                //Status para professor
+                if(Auth::user()->hasRole('Professor')){
+                    if($status == 'Em uso')
+                        return "<span class='label label-primary' style='font-size:14px'>Em uso</span>";
+                    if($status == 'Expirado'){
+                        return "<span class='label label-warning' style='font-size:14px'>Expirado</span>";
+                    }
+                    //reserva já finalizada
+                    if($reservas->feedback == null)
+                        return "<span class='label label-danger' style='font-size:14px'>Finalizada</span>";
+                    else
+                        return "<span class='label label-success' style='font-size:14px'>Finalizada</span>";
                 }
                 
         })
@@ -235,21 +299,13 @@ class ReservaAmbienteController extends Controller
     }
 
     public function atendidos(){
-        //Capiturar Usuário Logado
-        $usuario_logado = Auth::user();
-
-         //Consulta para Colaboradores
-        if($usuario_logado->hasRole('Administrador|Funcionário')){
-            $reservas = Reservas::where('status','Ocupado')
-            ->orwhere('status','Finalizada')
-            ->get();
-        }else{//Consulta para professores
-            $reservas = Reservas::with('usuario')
-            ->where('fk_usuario',$usuario_logado->id)
-            ->where('status','Ocupado')
-            ->orwhere('status','Finalizada')
-            ->get();
-        }
+        
+        //Consulta para Colaboradores
+        $reservas = Reservas::where('status','Em uso')
+        ->orwhere('status','Finalizada')
+        ->orwhere('status','Expirado')
+        ->get();
+        
 
         return Datatables::of($reservas)
         ->editColumn('acao', function($reservas){
@@ -275,8 +331,12 @@ class ReservaAmbienteController extends Controller
         })
         ->editColumn('status', function($reservas){
             $status = $reservas->status;
-            if($status == 'Ocupado')
-                return "<span class='label label-primary' style='font-size:14px'>Ocupado</span>";
+            if($status == 'Em uso')
+                return "<span class='label label-primary' style='font-size:14px'>Em uso</span>";
+            if($status == 'Expirado')
+                return "<span class='label label-danger' style='font-size:14px'>Expirado</span>";
+            if($status == 'Finalizada' && $reservas->feedbak == null)
+                return "<span class='label label-danger' style='font-size:14px'>Finalizada</span>";
             else{
                 return "<span class='label label-success' style='font-size:14px'>Finalizada</span>";
             }

@@ -18,11 +18,13 @@ class CreateReservasTable extends Migration
             $table->integer('fk_usuario');
             $table->timestamp('data_inicial');
             $table->timestamp('data_final');
-            $table->text('parecer');
+            $table->integer('fk_reserva_externa')->nullable();
+            $table->text('parecer')->nullable();
             $table->text('observacao')->nullable();
             $table->text('feedback')->nullable();
             $table->string('status');
             $table->foreign('fk_usuario')->references('id')->on('users');
+            $table->foreign('fk_reserva_externa')->references('id')->on('reserva_externas');
             $table->timestamps();
         });
     }

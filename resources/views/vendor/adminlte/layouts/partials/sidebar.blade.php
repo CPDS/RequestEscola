@@ -43,28 +43,32 @@
             </li>
             @endrole
             
-            @role('Administrador|Funcionário')
+            
             <li class="treeview">
                  <a href="#"><i class='fa fa-laptop'></i> <span>Gestão de Equipamentos</span> <i class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <li><a href="{{ url('equipamentos') }}">Equipamentos</a></li>
-                         <li><a href="{{ url('tipoEquipamento') }}">Tipos de Equipamentos</a></li>
-                        <li><a href="#"><i class='fa fa-calendar'></i>Reservas e Retiradas</a></li>
-                        <li><a href="{{ url('manutencoes') }}"><i class='fa  fa-exclamation-triangle'></i>Manutenção</a></li>
+                        @role('Administrador|Funcionário')
+                            <li><a href="{{ url('equipamentos') }}">Equipamentos</a></li>
+                            <li><a href="{{ url('tipoEquipamento') }}">Tipos de Equipamentos</a></li>
+                            <li><a href="{{ url('manutencoes') }}"><i class='fa  fa-exclamation-triangle'></i>Manutenção</a></li>
+                         @endrole
+                        <li><a href="#"><i class='fa fa-calendar'></i>Reservas e Retiradas</a></li>  
                     </ul>
             </li>
-            @endrole
+            
             
             <li class="treeview">
                 <a href="#"><i class='fa fa-university'></i><span>Gestão de Ambiente</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="{{ url('ambiente') }}">Ambientes</a></li>
+                    @role('Administrador|Funcionário')
+                        <li><a href="{{ url('ambiente') }}">Ambientes</a></li>
+                    @endrole
                     <li><a href="{{url('reserva-ambiente')}}"><i class='fa fa-calendar'></i>Reservas de Ambiente</a></li>
                 </ul>
             </li>
-
-            <li><a href="{{ url('locais') }}"><i class='fa fa-location-arrow'></i><span>Locais</span></a></li>
-
+            @role('Administrador|Funcionário')
+                <li><a href="{{ url('locais') }}"><i class='fa fa-location-arrow'></i><span>Locais</span></a></li>
+            @endrole
 
         </ul><!-- /.sidebar-menu -->
     </section>

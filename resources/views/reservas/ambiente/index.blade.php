@@ -16,7 +16,12 @@
 	<div class="row">
 		<div class="col-lg-12 margin-tb">
 			<div class="pull-left">
-				<h2><i class='fa fa-calendar'></i> Gerenciamento de Reservas</h2>
+				@role('Administrador|Funcionário')
+					<h2><i class='fa fa-calendar'></i> Gerenciamento de Reservas</h2>
+				@else
+					<h2><i class='fa fa-calendar'></i> Reservas de Ambiente</h2>
+				@endrole
+				
 			</div>
 			<br>
 
@@ -31,61 +36,80 @@
 	</div>
 	
 	<br>
-
-	<!--Tabela de Reservados-->
-	<div class="box box-solid box-primary">
-		<div class="box-header">
-	      <h3 class="box-title">
-	      	<strong>Reservas</strong> 
-	      		<span>(Aguardando Retirada)</span>
-	      </h3>
-	   </div><!-- /.box-header -->
-		<div class="box-body">
-			<table id="reserva" class="table table-striped table-bordered" cellspacing="0" width="100%">
-				
-			   <thead>
-					<tr>
-						 <th>No</th>
-						 <th>Ambiente</th>
-						 <th>Solicitante</th>
-						 <th>Data</th>
-						 <th>Turno</th>
-						 <th>Status</th>
-						 <th>Ação</th>
-					 </tr>
-				</thead>	 
-			</table>
+	@role('Administrador|Funcionário')
+		<!--Tabela de Reservados-->
+		<div class="box box-solid box-primary">
+			<div class="box-header">
+			<h3 class="box-title">
+				<strong>Reservas</strong> 
+					<span>(Aguardando Retirada)</span>
+			</h3>
+		</div><!-- /.box-header -->
+			<div class="box-body">
+				<table id="reserva" class="table table-striped table-bordered" cellspacing="0" width="100%">
+					
+				<thead>
+						<tr>
+							<th>No</th>
+							<th>Ambiente</th>
+							<th>Solicitante</th>
+							<th>Data</th>
+							<th>Turno</th>
+							<th>Status</th>
+							<th>Ação</th>
+						</tr>
+					</thead>	 
+				</table>
+			</div>
 		</div>
-	</div>
-	<!--Fim de Tabela de Reservados-->
-	<br>
-	<!--Tabela de Retirados-->
-	<div class="box box-solid box-success">
-		<div class="box-header">
-	      <h3 class="box-title">
-	      <strong>Retiradas</strong>
-	      	<span>(Aguardando Devolução)</span>
-	      </h3>
-	   </div><!-- /.box-header -->
-		<div class="box-body">
-			<table id="atendidos" class="table table-striped table-bordered" cellspacing="0" width="100%">
-				
-			   <thead>
-					<tr>
-						 <th>No</th>
-						 <th>Ambiente</th>
-						 <th>Responsável</th>
-						 <th>Data</th>
-						 <th>Turno</th>
-						 <th>Status</th>
-						 <th>Ação</th>
-					 </tr>
-				</thead>
-				 
-			</table>
+		<!--Fim de Tabela de Reservados-->
+		<br>
+		<!--Tabela de Retirados-->
+		<div class="box box-solid box-success">
+			<div class="box-header">
+				<h3 class="box-title">
+				<strong>Retiradas</strong>
+					<span>(Aguardando Devolução)</span>
+				</h3>
+			</div><!-- /.box-header -->
+				<div class="box-body">
+					<table id="atendidos" class="table table-striped table-bordered" cellspacing="0" width="100%">
+						
+					<thead>
+							<tr>
+								<th>No</th>
+								<th>Ambiente</th>
+								<th>Responsável</th>
+								<th>Data</th>
+								<th>Turno</th>
+								<th>Status</th>
+								<th>Ação</th>
+							</tr>
+						</thead>
+						
+					</table>
+				</div>
+				<!--Fim de Tabela de Retirados-->
 		</div>
-		<!--Fim de Tabela de Retirados-->
-	</div>
+	@else
+		<div class="box">
+			<div class="box-body">
+				<table id="tabela_professor" class="table table-striped table-bordered" cellspacing="0" width="100%">				
+				<thead>
+						<tr>
+							<th>No</th>						 
+							<th>Ambiente</th>
+							<th>Data</th>
+							<th>Turno</th>
+							<th>Status</th>
+							<th>Ação</th>
+						</tr>
+					</thead>
+					
+				</table>
+			</div>
+		</div>
+	@endrole
 
 	@include('reservas.ambiente.modals.criar_editar')
 
