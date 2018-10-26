@@ -81,10 +81,10 @@
 			</div>
 		</div>
 	@endrole
-
-	@include('reservas.ambiente.modals.criar')
+	@include('reservas.ambiente.modals.visualizar')
+	@include('reservas.ambiente.modals.criar_editar')
 	@role('Administrador|Funcionário')
-		@include('reservas.ambiente.modals.editar')
+		@include('reservas.ambiente.modals.criar_editar')
 	@endrole
 
 

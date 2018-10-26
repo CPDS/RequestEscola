@@ -21,6 +21,23 @@ use App\{
 class ReservaAmbienteController extends Controller
 {
   
+
+    function __construct(){
+        /*$reservas = DB::table('reservas')
+        ->join('ambiente_reservas','reservas.id','=','fk_reserva')
+        ->where('reservas.status','Reservado')
+        ->where('ambiente_reservas.status',true)
+        ->where(DB::raw('data_inicial + interval \'15 minute\''),'<',DB::raw('now()'))
+        ->select('reservas.status')
+        ->update([
+            'status' => 'Expirado'
+        ]);*/
+        $reservas = AmbienteReserva::where('status',true)->get();
+        dd($reservas);
+       
+    }
+  
+
     public function index()
     {
         $ambientes = Ambiente::where('status','Ativo')->get();
@@ -87,21 +104,27 @@ class ReservaAmbienteController extends Controller
         $hora_inicial = date('H:i',strtotime($reservas->data_inicial));
         
 
-        //conteudo da reserva
+        //dados do botão visualizar
         $dadosVisualizar = 'data-id="'.$reservas->id.
         '" data-local="'.$ambientes->ambiente->local->nome.
         '" data-numero="'.$ambientes->ambiente->numero_ambiente.
         '" data-hora_incio="'.$hora_inicial.
         '" data-data_final="'.$data_final.
         '" data-hora_final="'.$hora_final.
-        '" data-descricao="'.$reservas->observacao.
+        '" data-observacao="'.$reservas->observacao.
         '" data-telefone="'.$reservas->usuario->telefone.
-        '" data-responsavel="'.$reservas->usuario->name.'"';
-
-    
-        $btnVisualizar = '<a class="btn btn-sm btn-info btnVisualizar" '.$dadosVisualizar.' title="Visualizar" data-toggle="tooltip" ><i class="fa fa-eye"></i></a>';
+        '" data-responsavel="'.$reservas->usuario->name.
+        '" data-ambiente="'.$ambientes->ambiente->tipo.'"';
         
+        //dados para botão editar
+        $dados_editar = 'data-id="'.$reservas->id.
+        '" data-solicitante="'.$ambientes->solicitante.
+        '" data-responsavel="'.$reservas->usuario->name.
+        '" data-telefone="'.$ambientes->telefone.
+        '" data-ambiente="'.$ambientes->fk_ambiente.'"';
+    
         //botões
+        $btnVisualizar = '<a class="btn btn-sm btn-info btnVisualizar" '.$dadosVisualizar.' title="Visualizar" data-toggle="tooltip" ><i class="fa fa-eye"></i></a>';
         $btnEditar = '';
         $btnFeedback = '';
         $btnFinalizar = '';
@@ -109,15 +132,15 @@ class ReservaAmbienteController extends Controller
         $btnCancelar = '';
 
         //Condição para botão excluir e cancelar
-        if($reservas->status == 'Reservado' || $reservas->status == 'Em uso'){
+        if($reservas->status == 'Reservado' || $reservas->status == 'Em uso')
             $btnCancelar = ' <a data-id="'.$reservas->id.'" class="btn btn-sm btn-danger btnCancelar" title="Cancelar" data-toggle="tooltip"><i class="fa fa-times"></i></a>';    
-        }else if($reservas->fk_usuario == Auth::user()->id)
+        else if($reservas->fk_usuario == Auth::user()->id)
             $btnExcluir = ' <a data-id="'.$reservas->id.'" class="btn btn-sm btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';            
 
         //Botões para colaboradores (Administradores e funcionários)
         if(Auth::user()->hasRole('Administrador|Funcionário')){
             if($reservas->status == 'Reservado' || $reservas->status == 'Em uso')
-                $btnEditar = ' <a  data-id="'.$reservas->id.'" class="btn btn-sm btn-primary btnEditar" title="Editar" data-toggle="tooltip" ><i class="fa fa- fa-pencil-square-o"></i></a>';
+                $btnEditar = ' <a  class="btn btn-sm btn-primary btnEditar"'.$dados_editar.' title="Editar" data-toggle="tooltip" ><i class="fa fa- fa-pencil-square-o"></i></a>';
             if($reservas->status == 'Em uso')
                 $btnFinalizar = ' <a   class="btn btn-sm btn-success btnFinalizar" data-id="'. $reservas->id .'" title="Finalizar" data-toggle="tooltip" ><i class="glyphicon glyphicon-import"></i></a>';
         }
@@ -233,10 +256,13 @@ class ReservaAmbienteController extends Controller
         //Capiturar Usuário Logado
         $usuario_logado = Auth::user();
         
+        
         //Consulta para Colaboradores
         if($usuario_logado->hasRole('Administrador|Funcionário')){
             $reservas = Reservas::where('status','!=', 'Inativo')
+            ->where('status','!=','Expirado')
             ->get();
+            //dd($reservas);
         }else{//Consulta para professores
             $reservas = Reservas::where('fk_usuario',$usuario_logado->id)
             ->where('status', '!=', 'Inativo')
@@ -273,7 +299,7 @@ class ReservaAmbienteController extends Controller
                 if($status == 'Em uso')
                      return "<span class='label label-primary' style='font-size:14px'>Em uso</span>";
                 if($status == 'Expirado')
-                     return "<span class='label label-warning' style='font-size:14px'>Expirado</span>";
+                     return "<span class='label label-danger' style='font-size:14px'>Expirado</span>";
                 if($status == 'Cancelada')
                     return "<span class='label label-danger' style='font-size:14px'>Cancelada</span>";  
                 //reserva já finalizada

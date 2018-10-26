@@ -56,6 +56,7 @@ class AmbienteController extends Controller
             $btnEditar = '';
             $btnExcluir = '';
             $btnAtivar = '';
+            return $btnVisualizar.$btnEditar.$btnExcluir;
         }    
     }
 

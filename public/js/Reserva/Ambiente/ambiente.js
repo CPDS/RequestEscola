@@ -170,12 +170,15 @@ $(document).ready(function($) {
 
     //Visualizar
     $(document).on('click', '.btnVisualizar', function() {
+        $('#ambiente-visualizar').text($(this).data('ambiente'));
         $('#telefone-visualizar').text($(this).data('telefone'));
-        $('#horaInicial-visualizar').text($(this).data('horaInicial'));
-        $('#horaFinal-visualizar').text($(this).data('horaFinal'));
-        $('#numero_ambiente-visualizar').text($(this).data('numero_ambiente'));        
-        $('#solicitante-visualizar').text($(this).data('solicitante'));
+        $('#horaInicial-visualizar').text($(this).data('hora_incio'));
+        $('#horaFinal-visualizar').text($(this).data('hora_final'));
+        $('#dataFinal-visualizar').text($(this).data('data_final'));
+        $('#numero-visualizar').text($(this).data('numero'));        
+        $('#responsavel-visualizar').text($(this).data('responsavel'));
         $('#observacao-visualizar').text($(this).data('observacao'));
+        $('#local-visualizar').text($(this).data('local'));
         jQuery('#visualizar-modal').modal('show');
     });
 
@@ -189,7 +192,9 @@ $(document).ready(function($) {
         $('.modal-sub').text('PREENCHA TODAS AS INFORMAÇÕES CORRETAMENTE');
         $('.callout').addClass("hidden"); 
         $('.callout').find("p").text(""); 
-
+        $('.dadosHora').removeClass("hidden");//Exibindo dados de horario
+        $('#texto_observacao').text('Observações');
+        
         $('#form')[0].reset();
         $('#solicitante').val($("#ch_usuario_logado").data('nome'));
         $('#solicitante').prop("readonly",true);
@@ -197,7 +202,7 @@ $(document).ready(function($) {
         $('#telefone').val($(this).data('telefone'));
         $('#telefone').prop("readonly",true);
 
-        jQuery('#criar-modal').modal('show');
+        jQuery('#criar_editar-modal').modal('show');
     });
 
     //Editar
@@ -208,8 +213,24 @@ $(document).ready(function($) {
         $('.modal-title').text('Editar Reserva de Ambiente');
         $('.callout').addClass("hidden"); //ocultar a div de aviso
         $('.callout').find("p").text(""); //limpar a div de aviso
- 
-        jQuery('#editar-modal').modal('show'); //Abrir o modal
+        $('.dadosHora').addClass("hidden");//ocutando dados de horario
+        $('#texto_observacao').text('Descrição do Pedido: ');
+        
+        var btnEditar = $(this);
+        
+        //condição para checkbox
+        if(btnEditar.data('solicitante') != $('#ch_usuario_logado').data('nome')){
+            $('#ch_usuario_logado').prop("checked",false);
+            $('#solicitante').prop("readonly",false);
+            $('#telefone').prop("readonly",false);
+        }
+
+        //preenchendo formulário
+        $('#form :input').each(function(index,input){
+            $('#'+input.id).val($(btnEditar).data(input.id));
+        });
+
+        jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
     });
 
     //Retirar

@@ -1,4 +1,4 @@
-<div id="criar-modal" class="modal fade" role="dialog" data-backdrop="static">
+<div id="criar_editar-modal" class="modal fade" role="dialog" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
 
@@ -16,36 +16,37 @@
 
         <form id="form" role="form" method="post">
          <div class="row" style="width: 100%">
-
-		 <div class="form-group col-md-6">
-            <strong>Data Inicial</strong>
-            <div class="input-group">
-			  <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-              	<input class="form-control" id="data_inicial" name="data_inicial" type="date">
+          <div class="dadosHora" >  
+            <div class="form-group col-md-6">
+                <strong>Data Inicial</strong>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                  <input class="form-control" id="data_inicial" name="data_inicial" type="date">
+                </div>
             </div>
-          </div>
 
-		  <div class="form-group col-md-6">
-            <strong>Hora Inicial:</strong>
-            <div class="input-group">
-			  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-              	<input class="form-control" id="hora_inicial" name="hora_inicial" type="time">
+            <div class="form-group col-md-6">
+                  <strong>Hora Inicial:</strong>
+                  <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                      <input class="form-control" id="hora_inicial" name="hora_inicial" type="time">
+                  </div>
             </div>
-          </div>
 
-		  <div class="form-group col-md-6">
-            <strong>Data Final</strong>
-            <div class="input-group">
-			  <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-              	<input class="form-control"  id="data_final" name="data_final" type="date">
+            <div class="form-group col-md-6">
+                <strong>Data Final</strong>
+                  <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                      <input class="form-control"  id="data_final" name="data_final" type="date">
+                  </div>
             </div>
-          </div>
-		  
-		  <div class="form-group col-md-6">
-            <strong>Hora Final</strong>
-            <div class="input-group">
-			  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-              	<input class="form-control" id="hora_final" name="hora_final" type="time">
+            
+            <div class="form-group col-md-6">
+                <strong>Hora Final</strong>
+                  <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                      <input class="form-control" id="hora_final" name="hora_final" type="time">
+                  </div>
             </div>
           </div>
         
@@ -75,16 +76,19 @@
 
           <div class="form-group col-md-6">
            <strong>Ambiente</strong>
-           <select name="ambiente" id="ambiente" class="form-control">
-            <option value='' selected disabled>Selecione ...</option>
-            @foreach($ambientes as $ambiente)
-              <option value='{{$ambiente->id}}'>{{$ambiente->descricao}}</option>
-            @endforeach
-          </select>
+           <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-university"></i></span>
+              <select name="ambiente" id="ambiente" class="form-control">
+                <option value='' selected disabled>Selecione ...</option>
+                @foreach($ambientes as $ambiente)
+                  <option value='{{$ambiente->id}}'>{{$ambiente->descricao}}</option>
+                @endforeach
+              </select>
+            </div>  
         </div>
 
 		<div class="form-group col-md-12">
-			<strong>Observações</strong>
+			<strong id="texto_observacao">Observações</strong>
 			<textarea class="form-control" rows="3" width="100%" maxlength="254" id="observacao" class="form-control" name="observacao"></textarea> 
 		</div>
 

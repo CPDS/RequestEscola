@@ -18,7 +18,8 @@ use App\Cidade;
 class UserController extends Controller
 {
     //
-    
+
+      
     public function index()
     {
         $estados = Estado::select('nome','id')->get();
