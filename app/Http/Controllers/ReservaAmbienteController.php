@@ -23,18 +23,22 @@ class ReservaAmbienteController extends Controller
   
 
     function __construct(){
-        /*$reservas = DB::table('reservas')
-        ->join('ambiente_reservas','reservas.id','=','fk_reserva')
-        ->where('reservas.status','Reservado')
-        ->where('ambiente_reservas.status',true)
+        //Consulta das reservas
+        $reservas = Reservas::where('status','Reservado')
         ->where(DB::raw('data_inicial + interval \'15 minute\''),'<',DB::raw('now()'))
-        ->select('reservas.status')
-        ->update([
-            'status' => 'Expirado'
-        ]);*/
-        $reservas = AmbienteReserva::where('status',true)->get();
-        dd($reservas);
-       
+        ->get();
+        
+        //Atualizando a reserva
+        if($reservas!= null){
+            foreach($reservas as $reserva){
+                Reservas::where('id',$reserva->id)->update([
+                    'status' => 'Expirado',
+                    'feedback' => 'Reserva Expirada'
+                    ]);
+                AmbienteReserva::where('fk_reserva',$reserva->id)->update(['status' => false]);
+            }
+        }
+
     }
   
 
@@ -102,7 +106,7 @@ class ReservaAmbienteController extends Controller
        
         //recuperando hora inicial da reserva
         $hora_inicial = date('H:i',strtotime($reservas->data_inicial));
-        
+        dd($ambientes);
 
         //dados do botão visualizar
         $dadosVisualizar = 'data-id="'.$reservas->id.
@@ -259,8 +263,20 @@ class ReservaAmbienteController extends Controller
         
         //Consulta para Colaboradores
         if($usuario_logado->hasRole('Administrador|Funcionário')){
-            $reservas = Reservas::where('status','!=', 'Inativo')
-            ->where('status','!=','Expirado')
+            /*$reservas_expiaras = Reservas::where('status', 'Expirados')
+            ->where(DB::raw('updated_at + interval \'30 minute\''),'>',DB::raw('now()'))
+            ->get();
+           
+            foreach($reservas_expiaras as $reserva){
+                $reservas = Reservas::where('status','!=','Inativo')
+                ->whereNoIn('id',$reserva->id)
+                ->get();
+            } */
+            $reservas = Reservas::whereRaw('status = \'Expirado\' and updated_at + interval \'30 minute\' < now()')
+            ->orwhere('status','Em uso')
+            ->orwhere('status','Reservado')
+            ->orwhere('status','Cancelada')
+            ->orwhere('status','Finalizada')
             ->get();
             //dd($reservas);
         }else{//Consulta para professores
@@ -281,6 +297,7 @@ class ReservaAmbienteController extends Controller
              $ambientes = AmbienteReserva::with('ambiente')
             ->where('fk_reserva',$reservas->id)
             ->first();
+            
             return $ambientes->ambiente->tipo;
         })
         ->editColumn('solicitante', function($reservas){
@@ -330,14 +347,12 @@ class ReservaAmbienteController extends Controller
             return $this->turno($reservas);
         })
         ->editColumn('ambiente', function($reservas){
-            $ambientes = AmbienteReserva::with('ambiente')
-            ->where('fk_reserva',$reservas->id)
+            $ambientes = AmbienteReserva::where('fk_reserva',$reservas->id)
             ->first();
             return $ambientes->ambiente->tipo;
         })
         ->editColumn('solicitante', function($reservas){
-             $ambientes = AmbienteReserva::with('ambiente')
-            ->where('fk_reserva',$reservas->id)
+             $ambientes = AmbienteReserva::where('fk_reserva',$reservas->id)
             ->first();
             return $ambientes->solicitante;
         })
