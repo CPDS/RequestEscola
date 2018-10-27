@@ -23,19 +23,53 @@ class ReservaAmbienteController extends Controller
   
 
     function __construct(){
-        //Consulta das reservas
-        $reservas = Reservas::where('status','Reservado')
-        ->where(DB::raw('data_inicial + interval \'15 minute\''),'<',DB::raw('now()'))
+        
+        //Reservas aguardando retirada
+        $reservas = Reservas::with('ambienteReserva')
+        ->where('data_inicial','<',DB::raw('now()'))
+        ->where('data_final','>',DB::raw('now()'))
+        ->where('status','Reservado')
+        ->select('id')
         ->get();
         
-        //Atualizando a reserva
+        //Reservas Em uso
+        $reservas_em_uso = Reservas::with('ambienteReserva')
+        ->where('data_final','<',DB::raw('now()'))
+        ->where('status','Em uso')
+        ->select('id')
+        ->get();
+        
+        //reservas finalizadas
+        $finalizados = Reservas::with('ambienteReserva')
+        ->whereRaw('data_final + interval \'2 minute\' < now()')
+        ->where('status','Finalizada')
+        ->select('id')
+        ->get();
+
+        //Atualizando a reserva para em uso
         if($reservas!= null){
             foreach($reservas as $reserva){
                 Reservas::where('id',$reserva->id)->update([
-                    'status' => 'Expirado',
-                    'feedback' => 'Reserva Expirada'
+                    'status' => 'Em uso'
+                ]);
+            }
+        }
+
+        //Atualizando reserva para finalizada
+        if($reservas_em_uso != null){
+            foreach($reservas_em_uso as $reserva){
+                Reservas::where('id',$reserva->id)->update([
+                    'status' => 'Finalizada'
                     ]);
-                AmbienteReserva::where('fk_reserva',$reserva->id)->update(['status' => false]);
+                AmbienteReserva::where('fk_reserva',$reserva->id)
+                ->update(['status' => 'Expirado']);
+            }
+        }
+
+        if($finalizados != null){
+            foreach($finalizados as $reserva){
+                AmbienteReserva::where('fk_reserva',$reserva->id)
+                ->update(['status' => 'Inativo']);
             }
         }
 
@@ -47,6 +81,10 @@ class ReservaAmbienteController extends Controller
         $ambientes = Ambiente::where('status','Ativo')->get();
         //dd($ambientes);
         return view('reservas.ambiente.index', compact('ambientes'));
+    }
+
+    private function reservados(){
+
     }
 
     //Turno
@@ -94,44 +132,47 @@ class ReservaAmbienteController extends Controller
     private function setDataButtons(Reservas $reservas){
         
         //recuperando ambientes reservados
-        $ambientes = AmbienteReserva::where('status',true)
-        ->where('tipo',true)
-        ->where('fk_reserva',$reservas->id)
-        ->first();
-
-        //dd($ambientes->solicitante);
+        $ambientes = AmbienteReserva::where('tipo',true)
+        ->where('status','!=','Inativo')
+        ->orwhere('fk_reserva',$reservas->id)
+        ->get();
+        //dd($ambientes);
+        
         //Recuperando data e hora final da reserva e convertendo o formato
         $data_final = date('d/m/Y',strtotime($reservas->data_final));
         $hora_final = date('H:i',strtotime($reservas->data_final));
        
         //recuperando hora inicial da reserva
         $hora_inicial = date('H:i',strtotime($reservas->data_inicial));
-        dd($ambientes);
+        //dd($ambientes);
 
-        //dados do botão visualizar
-        $dadosVisualizar = 'data-id="'.$reservas->id.
-        '" data-local="'.$ambientes->ambiente->local->nome.
-        '" data-numero="'.$ambientes->ambiente->numero_ambiente.
-        '" data-hora_incio="'.$hora_inicial.
-        '" data-data_final="'.$data_final.
-        '" data-hora_final="'.$hora_final.
-        '" data-observacao="'.$reservas->observacao.
-        '" data-telefone="'.$reservas->usuario->telefone.
-        '" data-responsavel="'.$reservas->usuario->name.
-        '" data-ambiente="'.$ambientes->ambiente->tipo.'"';
-        
-        //dados para botão editar
-        $dados_editar = 'data-id="'.$reservas->id.
-        '" data-solicitante="'.$ambientes->solicitante.
-        '" data-responsavel="'.$reservas->usuario->name.
-        '" data-telefone="'.$ambientes->telefone.
-        '" data-ambiente="'.$ambientes->fk_ambiente.'"';
+        //preenchendo os botões
+        foreach($ambientes as $ambiente){
+            
+            //dados do botão visualizar
+            $dadosVisualizar = 'data-id="'.$reservas->id.
+            '" data-local="'.$ambiente->ambiente->local->nome.
+            '" data-numero="'.$ambiente->ambiente->numero_ambiente.
+            '" data-hora_incio="'.$hora_inicial.
+            '" data-data_final="'.$data_final.
+            '" data-hora_final="'.$hora_final.
+            '" data-observacao="'.$reservas->observacao.
+            '" data-telefone="'.$reservas->usuario->telefone.
+            '" data-responsavel="'.$reservas->usuario->name.
+            '" data-ambiente="'.$ambiente->ambiente->tipo.'"';
+            
+            //dados para botão editar
+            $dados_editar = 'data-id="'.$reservas->id.
+            '" data-solicitante="'.$ambiente->solicitante.
+            '" data-responsavel="'.$reservas->usuario->name.
+            '" data-telefone="'.$ambiente->telefone.
+            '" data-ambiente="'.$ambiente->fk_ambiente.'"';
+        }
     
         //botões
         $btnVisualizar = '<a class="btn btn-sm btn-info btnVisualizar" '.$dadosVisualizar.' title="Visualizar" data-toggle="tooltip" ><i class="fa fa-eye"></i></a>';
         $btnEditar = '';
         $btnFeedback = '';
-        $btnFinalizar = '';
         $btnExcluir= '';
         $btnCancelar = '';
 
@@ -145,17 +186,16 @@ class ReservaAmbienteController extends Controller
         if(Auth::user()->hasRole('Administrador|Funcionário')){
             if($reservas->status == 'Reservado' || $reservas->status == 'Em uso')
                 $btnEditar = ' <a  class="btn btn-sm btn-primary btnEditar"'.$dados_editar.' title="Editar" data-toggle="tooltip" ><i class="fa fa- fa-pencil-square-o"></i></a>';
-            if($reservas->status == 'Em uso')
-                $btnFinalizar = ' <a   class="btn btn-sm btn-success btnFinalizar" data-id="'. $reservas->id .'" title="Finalizar" data-toggle="tooltip" ><i class="glyphicon glyphicon-import"></i></a>';
+            /*if($reservas->status == 'Em uso')
+                $btnFinalizar = ' <a   class="btn btn-sm btn-success btnFinalizar" data-id="'. $reservas->id .'" title="Finalizar" data-toggle="tooltip" ><i class="glyphicon glyphicon-import"></i></a>';*/
         }
-        //botão para professor
-        if(Auth::user()->hasRole('Professor') && $reservas->status == 'Finalizada' && $reservas->feedback == null){
+        //botão para feedback
+        if($reservas->status == 'Finalizada' && $reservas->feedback == null){
             $btnFeedback = ' <a  data-id="'.$reservas->id.'" class="btn btn-sm btn-success btnFeedback" title="Feedback" data-toggle="tooltip" ><i class="fa fa-thumbs-up"></i> </a>';
         }
         //retornando todos os botões 
         return $btnVisualizar .
          $btnEditar .
-         $btnFinalizar.
          $btnFeedback.
          $btnCancelar .
          $btnExcluir;
@@ -240,7 +280,7 @@ class ReservaAmbienteController extends Controller
             $ambiente_reserva->tipo = true; //Garantindo que é uma reserva do tipo "reserva de ambiente"
             $ambiente_reserva->solicitante = $solicitante;
             $ambiente_reserva->telefone = $telefone;
-            $ambiente_reserva->status = true;
+            $ambiente_reserva->status = 'Ativo';
             $ambiente_reserva->save();
             
             $reserva->setAttribute('buttons', $this->setDataButtons($reserva)); 
@@ -260,23 +300,14 @@ class ReservaAmbienteController extends Controller
         //Capiturar Usuário Logado
         $usuario_logado = Auth::user();
         
-        
         //Consulta para Colaboradores
         if($usuario_logado->hasRole('Administrador|Funcionário')){
-            /*$reservas_expiaras = Reservas::where('status', 'Expirados')
-            ->where(DB::raw('updated_at + interval \'30 minute\''),'>',DB::raw('now()'))
-            ->get();
-           
-            foreach($reservas_expiaras as $reserva){
-                $reservas = Reservas::where('status','!=','Inativo')
-                ->whereNoIn('id',$reserva->id)
-                ->get();
-            } */
-            $reservas = Reservas::whereRaw('status = \'Expirado\' and updated_at + interval \'30 minute\' < now()')
+        
+            $reservas = Reservas::whereRaw('status = \'Finalizada\' and data_final + interval \'2 minute\' > now()')
             ->orwhere('status','Em uso')
             ->orwhere('status','Reservado')
             ->orwhere('status','Cancelada')
-            ->orwhere('status','Finalizada')
+            ->orwhere('fk_usuario',$usuario_logado->id)
             ->get();
             //dd($reservas);
         }else{//Consulta para professores
@@ -315,8 +346,6 @@ class ReservaAmbienteController extends Controller
                     return "<span class='label label-warning' style='font-size:14px'>Reservado</span>";
                 if($status == 'Em uso')
                      return "<span class='label label-primary' style='font-size:14px'>Em uso</span>";
-                if($status == 'Expirado')
-                     return "<span class='label label-danger' style='font-size:14px'>Expirado</span>";
                 if($status == 'Cancelada')
                     return "<span class='label label-danger' style='font-size:14px'>Cancelada</span>";  
                 //reserva já finalizada
@@ -329,55 +358,7 @@ class ReservaAmbienteController extends Controller
         ->make(true);
     }
 
-    public function atendidos(){
-        
-        //Consulta para Colaboradores
-        $reservas = Reservas::where('status','Em uso')
-        ->orwhere('status','Finalizada')
-        ->orwhere('status','Expirado')
-        ->orwhere('status','Cancalada')
-        ->get();
-        
-
-        return Datatables::of($reservas)
-        ->editColumn('acao', function($reservas){
-            return $this->setDataButtons($reservas);
-        })
-        ->editColumn('turno', function($reservas){
-            return $this->turno($reservas);
-        })
-        ->editColumn('ambiente', function($reservas){
-            $ambientes = AmbienteReserva::where('fk_reserva',$reservas->id)
-            ->first();
-            return $ambientes->ambiente->tipo;
-        })
-        ->editColumn('solicitante', function($reservas){
-             $ambientes = AmbienteReserva::where('fk_reserva',$reservas->id)
-            ->first();
-            return $ambientes->solicitante;
-        })
-        ->editColumn('data', function($reservas){
-            return date('d/m/Y',strtotime($reservas->data_inicial));
-        })
-        ->editColumn('status', function($reservas){
-            $status = $reservas->status;
-            if($status == 'Em uso')
-                return "<span class='label label-primary' style='font-size:14px'>Em uso</span>";
-            if($status == 'Expirado')
-                return "<span class='label label-danger' style='font-size:14px'>Expirado</span>";
-            if($status == 'Finalizada' && $reservas->feedbak == null)
-                return "<span class='label label-danger' style='font-size:14px'>Finalizada</span>";
-            if($status == 'Cancelada')
-                return "<span class='label label-danger' style='font-size:14px'>Cancelada</span>";
-            else{
-                return "<span class='label label-success' style='font-size:14px'>Finalizada</span>";
-            }
-        })
-        ->escapeColumns([0])
-        ->make(true);
-
-    }
-   
+       
     //Finalizar Reserva de ambiente
     public function finalizar(Request $request)
     {

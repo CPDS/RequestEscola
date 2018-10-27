@@ -24,5 +24,9 @@ class Reservas extends Model
     	return $this->hasMany(EquipamentoReservas::class);
     }
 
+    public function ambienteReserva(){
+        
+        return $this->hasMany(AmbienteReserva::class,'fk_reserva');
+    }
     
 }

@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->integer('fk_cidade');
             $table->boolean('status');
             $table->foreign('fk_cidade')->references('id')->on('cidades');
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

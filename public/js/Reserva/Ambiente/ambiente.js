@@ -276,7 +276,7 @@ $(document).ready(function($) {
                     
                     $('#table').DataTable().draw(false);
 
-                    jQuery('#criar-modal').modal('hide');
+                    jQuery('#criar_editar-modal').modal('hide');
                     
                     $(function() {
                         iziToast.success({
@@ -290,7 +290,7 @@ $(document).ready(function($) {
             },
 
             error: function() {
-                jQuery('#criar-modal').modal('hide'); //fechar o modal
+                jQuery('#criar_editar-modal').modal('hide'); //fechar o modal
 
                 iziToast.error({
                     title: 'Erro Interno',
