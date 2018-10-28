@@ -86,6 +86,7 @@
 	@role('Administrador|Funcionário')
 		@include('reservas.ambiente.modals.criar_editar')
 	@endrole
+	@include('reservas.ambiente.modals.cancelar')
 
 
 @endsection

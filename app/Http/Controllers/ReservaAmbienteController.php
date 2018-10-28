@@ -61,15 +61,13 @@ class ReservaAmbienteController extends Controller
                 Reservas::where('id',$reserva->id)->update([
                     'status' => 'Finalizada'
                     ]);
-                AmbienteReserva::where('fk_reserva',$reserva->id)
-                ->update(['status' => 'Expirado']);
             }
         }
 
         if($finalizados != null){
             foreach($finalizados as $reserva){
                 AmbienteReserva::where('fk_reserva',$reserva->id)
-                ->update(['status' => 'Inativo']);
+                ->update(['status' => false]);
             }
         }
 
@@ -133,7 +131,7 @@ class ReservaAmbienteController extends Controller
         
         //recuperando ambientes reservados
         $ambientes = AmbienteReserva::where('tipo',true)
-        ->where('status','!=','Inativo')
+        ->where('status','!=',false)
         ->orwhere('fk_reserva',$reservas->id)
         ->get();
         //dd($ambientes);
@@ -159,7 +157,8 @@ class ReservaAmbienteController extends Controller
             '" data-observacao="'.$reservas->observacao.
             '" data-telefone="'.$reservas->usuario->telefone.
             '" data-responsavel="'.$reservas->usuario->name.
-            '" data-ambiente="'.$ambiente->ambiente->tipo.'"';
+            '" data-ambiente="'.$ambiente->ambiente->tipo->nome.
+            '" data-feedback="'.$reservas->feedback.'"';
             
             //dados para botão editar
             $dados_editar = 'data-id="'.$reservas->id.
@@ -167,6 +166,10 @@ class ReservaAmbienteController extends Controller
             '" data-responsavel="'.$reservas->usuario->name.
             '" data-telefone="'.$ambiente->telefone.
             '" data-ambiente="'.$ambiente->fk_ambiente.'"';
+
+            //Dados cancelar
+            $dados_cancelar = 'data-id="'.$reservas->id.
+            '" data-descricao="'.$ambiente->ambiente->descricao.'" ';
         }
     
         //botões
@@ -178,7 +181,7 @@ class ReservaAmbienteController extends Controller
 
         //Condição para botão excluir e cancelar
         if($reservas->status == 'Reservado' || $reservas->status == 'Em uso')
-            $btnCancelar = ' <a data-id="'.$reservas->id.'" class="btn btn-sm btn-danger btnCancelar" title="Cancelar" data-toggle="tooltip"><i class="fa fa-times"></i></a>';    
+            $btnCancelar = ' <a '.$dados_cancelar.' class="btn btn-sm btn-danger btnCancelar" title="Cancelar" data-toggle="tooltip"><i class="fa fa-times"></i></a>';    
         else if($reservas->fk_usuario == Auth::user()->id)
             $btnExcluir = ' <a data-id="'.$reservas->id.'" class="btn btn-sm btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';            
 
@@ -280,7 +283,7 @@ class ReservaAmbienteController extends Controller
             $ambiente_reserva->tipo = true; //Garantindo que é uma reserva do tipo "reserva de ambiente"
             $ambiente_reserva->solicitante = $solicitante;
             $ambiente_reserva->telefone = $telefone;
-            $ambiente_reserva->status = 'Ativo';
+            $ambiente_reserva->status = true;
             $ambiente_reserva->save();
             
             $reserva->setAttribute('buttons', $this->setDataButtons($reserva)); 
@@ -327,9 +330,8 @@ class ReservaAmbienteController extends Controller
         ->editColumn('ambiente', function($reservas){
              $ambientes = AmbienteReserva::with('ambiente')
             ->where('fk_reserva',$reservas->id)
-            ->first();
-            
-            return $ambientes->ambiente->tipo;
+            ->first();  
+            return $ambientes->ambiente->tipo->nome;
         })
         ->editColumn('solicitante', function($reservas){
              $ambientes = AmbienteReserva::with('ambiente')
@@ -359,13 +361,29 @@ class ReservaAmbienteController extends Controller
     }
 
        
-    //Finalizar Reserva de ambiente
-    public function finalizar(Request $request)
+    //Cancelar Reserva 
+    public function cancelar(Request $request)
     {
-        //
+        
+        AmbienteReserva::where('fk_reserva',$request->id)
+        ->update([
+            'status' => false
+        ]);
+        $reserva = Reservas::find($request->id);
+        $reserva->status = 'Cancelada';
+        if($reserva->fk_usuario == Auth::user()->id)
+            $reserva->feedback = 'Cancelada pelo próprio usuário';
+        else
+            $reserva->feedback = 'Cancelada por '.Auth::user()->name;
+        
+        $reserva->save();
+
+        $reserva->setAttribute('buttons', $this->setDataButtons($reserva)); 
+        return response()->json($reserva);
+
     }
 
-    //Cancelar reserva
+    //excluir reserva
     public function destroy(Request $request){
 
     }

@@ -58,6 +58,10 @@
             <strong>Telefone do Responsável:</strong>
               <span id="telefone-visualizar"></span>
         </div>
+    <div class="form-group">
+        <strong>Feedback:</strong>
+           <span id="feedback-visualizar"></span>
+    </div>
 		
 		<div class="form-group">
           <strong>Observações:</strong>

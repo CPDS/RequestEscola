@@ -48,6 +48,15 @@ Route::group(['middleware' => ['auth']], function() {
 			Route::post('/delete',['as' => 'tipoEquipamento.destroy', 'uses'=> 'TipoEquipamentoController@destroy'])->middleware('role:Administrador');
 		});
 
+		//Rotas Tipo de Ambiente
+		Route::group(['prefix'=> 'tipoAmbiente', 'where' => ['id'=>'0-9+'], 'middleware' => ['role:Administrador|Funcionário']], function (){
+			Route::get('/',['as' => 'tipoAmbiente.index', 'uses' => 'TipoAmbienteController@index']);
+			Route::get('/list',['as' => 'tipoAmbiente.list', 'uses' => 'TipoAmbienteController@list']);
+			Route::post('/create', ['as' => 'tipoAmbiente.create', 'uses' => 'TipoAmbienteController@store'])->middleware('role:Administrador');
+			Route::post('/edit',['as' => 'tipoAmbiente.edit', 'uses' => 'TipoAmbienteController@update'])->middleware('role:Administrador');
+			Route::post('/delete',['as' => 'tipoAmbiente.destroy', 'uses'=> 'TipoAmbienteController@destroy'])->middleware('role:Administrador');
+		});
+
 		//Rotas de equipamentos
 		Route::group(['prefix'=> 'equipamentos', 'where' => ['id'=>'0-9+'], 'middleware' => ['role:Administrador|Funcionário']], function (){
 			Route::get('/',['as' => 'equipamentos.index', 'uses' => 'EquipamentosController@index']);
@@ -72,7 +81,7 @@ Route::group(['middleware' => ['auth']], function() {
 			Route::get('/list',['as' => 'reserva-ambiente.list', 'uses' => 'ReservaAmbienteController@list']);
 			Route::post('/create', ['as' => 'resereva-ambiente.create', 'uses' => 'ReservaAmbienteController@store']);
 			Route::post('/edit',['as' => 'reserva-ambiente.edit', 'uses' => 'ReservaAmbienteController@update'])->middleware('role:Administrador|Funcionário');
-			Route::post('/finalizar',['as' => 'reserva-ambiente.finalizar', 'uses'=> 'ReservaAmbienteController@finalizar'])->middleware('role:Administrador|Funcionário');
+			Route::post('/cancelar',['as' => 'reserva-ambiente.cancelar', 'uses'=> 'ReservaAmbienteController@cancelar']);
 			Route::post('/delete',['as' => 'reserva-ambiente.destroy', 'uses'=> 'ReservaAmbienteController@destroy']);
 		});
 

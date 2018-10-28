@@ -19,7 +19,12 @@
 
           <div class="form-group col-md-12">
             <strong>Tipo:</strong>
-            <input placeholder="Digite o tipo de Ambiente" maxlength="254" id="tipo" class="form-control" name="tipo" type="text">
+            <select name="tipo_id" id="tipo_id" class="form-control">
+                <option value='' selected disabled>Selecione ...</option>
+                @foreach($tipos as $tipo)
+                  <option value="{{$tipo->id}}">{{$tipo->nome}}</option> 
+                @endforeach
+            </select>
           </div>
 
           <div class="form-group col-xs-12">
@@ -37,7 +42,7 @@
               <select name="id_local" id="id_local" class="form-control">
                 <option value='' selected disabled>Selecione ...</option>
                 @foreach($locais as $local)
-                <option value="{{$local->id}}">{{$local->nome}}</option> 
+                  <option value="{{$local->id}}">{{$local->nome}}</option> 
                 @endforeach
               </select>
             </div>

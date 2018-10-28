@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'name' => 'Geneses dos Santos Lopes',
             'email' => 'genesesslopes@gmail.com',
             'password' => Hash::make('123123'),
-			'telefone' => '(73) 3526-7504',
+			'telefone' => '(75) 98248-1405',
 			'endereco' => 'Av. José Moreira Sobrinho numero 12',
 			'fk_cidade' => 3387,
             'status' => 1

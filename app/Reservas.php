@@ -13,7 +13,6 @@ class Reservas extends Model
     	return $this->belongsToMany(Equipamentos::class);
     }
 
-
     public function usuario(){
 
     	return $this->belongsTo(User::class, 'fk_usuario');
@@ -21,7 +20,7 @@ class Reservas extends Model
 
     public function equipamentoReserva(){
 
-    	return $this->hasMany(EquipamentoReservas::class);
+    	return $this->hasMany(EquipamentoReservas::class, 'fk_equipamento');
     }
 
     public function ambienteReserva(){

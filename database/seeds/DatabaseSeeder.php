@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(RolesAndPermissions::class);
         $this->call(ModelRolesSeeder::class);
+        $this->call(TipoAmbienteSeeder::class);
+        $this->call(LocaisSeeder::class);
        
     }
 }

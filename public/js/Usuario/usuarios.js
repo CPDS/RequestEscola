@@ -191,7 +191,7 @@ $(document).ready(function($) {
     });
 
     //Evento ajax - EXCLUIR USUÁRIO
-    $('.modal-footer').on('click', '.del', function() {
+    $('.modal-footer').on('click', '.can', function() {
         
         $.ajax({
             type: 'post',

@@ -12,5 +12,10 @@ class Ambiente extends Model
 
     	return $this->belongsTo(Locais::class, 'fk_local');
     }
+
+    public function tipo(){
+        
+        return $this->belongsTo(TipoAmbiente::class,'fk_tipo');
+    }
     
 }

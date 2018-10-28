@@ -179,6 +179,7 @@ $(document).ready(function($) {
         $('#responsavel-visualizar').text($(this).data('responsavel'));
         $('#observacao-visualizar').text($(this).data('observacao'));
         $('#local-visualizar').text($(this).data('local'));
+        $('#feedback-visualizar').text($(this).data('feedback'));
         jQuery('#visualizar-modal').modal('show');
     });
 
@@ -233,14 +234,14 @@ $(document).ready(function($) {
         jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
     });
 
-    //Retirar
-    $(document).on('click', '.btnRetirar', function() {
+    //Cancelar
+    $(document).on('click', '.btnCancelar', function() {
         $('.callout').addClass("hidden"); //ocultar a div de aviso
         $('.callout').find("p").text(""); //limpar a div de aviso
         
-        $('#equipamentos-retirar').text($(this).data('equipamentos'));
-        $('.id_ret').val($(this).data('id')); 
-        jQuery('#retirar-modal').modal('show'); //Abrir o modal
+        $('#ambiente-retirar').text($(this).data('descricao'));
+        $('.id_can').val($(this).data('id')); 
+        jQuery('#cancelar-modal').modal('show'); //Abrir o modal
     });
 
     
@@ -356,35 +357,36 @@ $(document).ready(function($) {
     });
 
     //Evento ajax - Desativar AMBIENTE
-     $('.modal-footer').on('click', '.del', function() {
+     $('.modal-footer').on('click', '.can', function() {
 
         $.ajax({
             type: 'post',
-            url: './ambiente/delete',
+            url: './reserva-ambiente/cancelar',
             data: {
-                'id': $(".id_del").val(),
+                'id': $(".id_can").val(),
             },
             beforeSend: function(){
-                jQuery('.del').button('loading');
+                jQuery('.can').button('loading');
             },
             complete: function() {
-                jQuery('.del').button('reset');
+                jQuery('.can').button('reset');
+                
             },
             success: function(data) {
                 $('#table').DataTable().row('#item-' + data.id).remove().draw(); //remove a linha e ordena
-                jQuery('#excluir-modal').modal('hide'); //fechar o modal
-
+                jQuery('#cancelar-modal').modal('hide'); //fechar o modal
+                
                 $(function() {
-
                     iziToast.success({
                         title: 'OK',
-                        message: 'Ambiente Desativado com Sucesso!',
+                        message: 'Reserva cancelada com Sucesso!',
                     });
                 });
+                
             },
             error: function() {
 
-                jQuery('#excluir-modal').modal('hide'); //fechar o modal
+                jQuery('#cancelar-modal').modal('hide'); //fechar o modal
 
                 iziToast.error({
                     title: 'Erro Interno',

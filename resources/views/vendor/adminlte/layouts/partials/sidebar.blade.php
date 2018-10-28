@@ -62,6 +62,7 @@
                 <ul class="treeview-menu">
                     @role('Administrador|Funcionário')
                         <li><a href="{{ url('ambiente') }}">Ambientes</a></li>
+                        <li><a href="{{ url('tipoAmbiente') }}">Tipos de Ambientes</a></li>
                     @endrole
                     <li><a href="{{url('reserva-ambiente')}}"><i class='fa fa-calendar'></i>Reservas de Ambiente</a></li>
                 </ul>

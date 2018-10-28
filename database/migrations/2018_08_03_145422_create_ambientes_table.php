@@ -16,11 +16,12 @@ class CreateAmbientesTable extends Migration
         Schema::create('ambientes', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('fk_local')->unsigned();
-            $table->string('tipo');
+            $table->integer('fk_tipo');
             $table->text('descricao')->nullable();
             $table->integer('numero_ambiente')->nullable();
             $table->string('status');
             $table->foreign('fk_local')->references('id')->on('locais');
+            $table->foreign('fk_tipo')->references('id')->on('tipo_ambientes');
             $table->timestamps();
         });
     }

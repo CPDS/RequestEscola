@@ -10,18 +10,20 @@ use Response;
 use DataTables;
 use DB;
 use Auth;
-use App\Ambiente;
-use App\Locais;
 use Hash;
-
+use App\{
+    Ambiente,
+    Locais,
+    TipoAmbiente
+};
 
 class AmbienteController extends Controller
 {
 	// 
 	public function index(){
         $locais = Locais::where('status',true)->get();
-
-        return view('ambiente.index',compact('locais'));
+        $tipos = TipoAmbiente::where('status',true)->get();
+        return view('ambiente.index',compact('locais','tipos'));
     }
     
     private function setDataButtons(Ambiente $ambiente){
@@ -30,8 +32,15 @@ class AmbienteController extends Controller
         $usuarioLogado = Auth::user();        
 
     	$dados = 'data-local="'.$ambiente->local->nome.
-        '" data-tipo="'.$ambiente->tipo.
+        '" data-tipo_id="'.$ambiente->tipo->nome.
         '" data-descricao="'.$ambiente->descricao.
+        '" data-numero_ambiente="'.$ambiente->numero_ambiente.
+        '" data-status="'.$ambiente->status.'"'; 
+
+        $dados_editar = 'data-local="'.$ambiente->local->nome.
+        '" data-tipo_id="'.$ambiente->fk_tipo.
+        '" data-descricao="'.$ambiente->descricao.
+        '" data-id_local="'.$ambiente->fk_local.
         '" data-numero_ambiente="'.$ambiente->numero_ambiente.
         '" data-status="'.$ambiente->status.'"'; 
     
@@ -40,7 +49,7 @@ class AmbienteController extends Controller
        //Exibir botões para usuários administradores
         if($usuarioLogado->hasRole('Administrador'))
         {
-            $btnEditar = ' <a data-id="'.$ambiente->id.'" class="btn btn-primary btnEditar" '. $dados .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
+            $btnEditar = ' <a data-id="'.$ambiente->id.'" class="btn btn-primary btnEditar" '. $dados_editar .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
             $btnExcluir = ' <a data-id="'.$ambiente->id.'" class="btn btn-danger btnExcluir" title="Desativar" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
             if($ambiente->status == 'Inativo')
             {
@@ -62,8 +71,9 @@ class AmbienteController extends Controller
 
     public function store(Request $request)
     {
+        //dd($request->all());
         $rules = array(
-            'tipo' => 'required',
+            'tipo_id' => 'required',
             'descricao' => 'required',
             'id_local' => 'required',
             'numero_ambiente' => 'required',
@@ -73,6 +83,7 @@ class AmbienteController extends Controller
             'descricao' => 'descrição',
             'id_local' => 'local',
             'numero_ambiente' => 'número do ambiente',
+            'tipo_id' => 'Tipo'
         );
 
         $messages = array(
@@ -85,7 +96,7 @@ class AmbienteController extends Controller
             return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
         }else{
             $ambiente = new Ambiente();
-            $ambiente->tipo = $request->tipo;
+            $ambiente->fk_tipo = $request->tipo_id;
             $ambiente->descricao = $request->descricao;
             $ambiente->fk_local = $request->id_local;
             $ambiente->numero_ambiente = $request->numero_ambiente;
@@ -116,6 +127,9 @@ class AmbienteController extends Controller
         ->editColumn('fk_local', function($ambiente){
             return $ambiente->local->nome;
         })
+        ->editColumn('fk_tipo', function($ambiente){
+            return $ambiente->tipo->nome;
+        })
         ->escapeColumns([0])
         ->make(true);
     }
@@ -123,7 +137,7 @@ class AmbienteController extends Controller
     public function update(Request $request)
     {
         $rules = array(
-            'tipo' => 'required',
+            'tipo_id' => 'required',
             'descricao' => 'required',
             'id_local' => 'required',
             'numero_ambiente' => 'required',
@@ -133,6 +147,7 @@ class AmbienteController extends Controller
             'descricao' => 'descrição',
             'id_local' => 'local',
             'numero_ambiente' => 'número do ambiente',
+            'tipo_id' => 'Tipo'
         );
 
         $messages = array(
@@ -146,7 +161,7 @@ class AmbienteController extends Controller
             return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
         }else{
             $ambiente = Ambiente::find($request->id);
-            $ambiente->tipo = $request->tipo;
+            $ambiente->fk_tipo = $request->tipo_id;
             $ambiente->descricao = $request->descricao;
             $ambiente->fk_local = $request->id_local;
             $ambiente->numero_ambiente = $request->numero_ambiente;
