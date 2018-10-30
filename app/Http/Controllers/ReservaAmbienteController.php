@@ -78,9 +78,8 @@ class ReservaAmbienteController extends Controller
 
     public function index()
     {
-        $ambientes = Ambiente::where('status','Ativo')->get();
-        //dd($ambientes);
-        return view('reservas.ambiente.index', compact('ambientes'));
+        $locais = Locais::where('status',true)->get();
+        return view('reservas.ambiente.index', compact('locais'));
     }
 
     //selecionar ambientes reservados
@@ -156,12 +155,18 @@ class ReservaAmbienteController extends Controller
             return 'Manhã, Tarde e Noite';
     }
 
-    public function reservados(){
-        //Ambientes reservados
+    public function reservados(Request $request){
+        //recuperando dados e querbando string
+        $dados = explode(',',$request->dados);
+        $local = $dados[0];
+        $data_inicio = $dados[1];
+        $data_final = $dados[2];
+
+        /*Ambientes reservados
         $ambientes = Reservas::with('ambienteReserva')
         ->where('status','!=','Inativo')
         ->orwhere('status','!=','Finalizado')
-        ->get();
+        ->get();*/
         //Tipos de ambientes
         $tipos = TipoAmbiente::where('status',true)->get();
         $ambientes_reservados='';
@@ -173,33 +178,46 @@ class ReservaAmbienteController extends Controller
         foreach($tipos as $tipo){
             //array de ambientes reservados
             $naoPodeUsar = array();
+
+            //armazenando os tipos de equipamentos
+            array_push($tipoAmbiente,[
+                'id' => $tipo->id,
+                'nome' => $tipo->nome
+            ]);
             //recuperando os ambientes reservados
-            foreach($ambientes as $ambiente)
-                $ambientes_reservados = $this->Ambientes_reservados($ambiente->data_inicial, $ambiente->data_final);
-            
+            $ambientes_reservados = $this->Ambientes_reservados($data_inicio, $data_final);
+            //adicionando ambientes reservados no array 
             if($ambientes_reservados != null){
                 foreach($ambientes_reservados as $ambiente_reservado){
                     array_push($naoPodeUsar,$ambiente_reservado->fk_ambiente);
                 }
             }
-                
-            //dd($naoPodeUsar);
-            //dd($naoPodeUsar);
+
+            //condições para selecionar ambientes a serem reservados
             if($ambientes_reservados == null){
                 $ambiente_que_sera_reservado = Ambiente::where('status','Ativo')
-                ->where('fk_tipo',$tipo->id)
+                ->where('fk_local',$local)
                 ->get();
             }else{
                 $ambiente_que_sera_reservado = Ambiente::where('status','Ativo')
-                ->where('fk_tipo',$tipo->id)
+                ->where('fk_local',$local)
                 ->whereNotIn('id',$naoPodeUsar)
                 ->get();
             }
 
-            dd($ambiente_que_sera_reservado);
             
-            //dd($ambiente_reservados->all());
         }
+        //populando array de ambientes disponíveis
+        foreach ($ambiente_que_sera_reservado as $ambiente_que_sera_Reservado2) {
+                        
+            array_push($paraReservar,[
+                'id' => $ambiente_que_sera_Reservado2->id,
+                'fk_tipo' => $ambiente_que_sera_Reservado2->fk_tipo,
+                'numero_ambiente' => $ambiente_que_sera_Reservado2->numero_ambiente
+            ]);  
+        }    
+        //retornando arrays
+        return response()->json(['ambientes'=> $paraReservar, 'tipoAmbiente' => $tipoAmbiente]);
     }
     //Botões
     private function setDataButtons(Reservas $reservas){
@@ -257,7 +275,7 @@ class ReservaAmbienteController extends Controller
         //Condição para botão excluir e cancelar
         if($reservas->status == 'Reservado' || $reservas->status == 'Em uso')
             $btnCancelar = ' <a '.$dados_cancelar.' class="btn btn-sm btn-danger btnCancelar" title="Cancelar" data-toggle="tooltip"><i class="fa fa-times"></i></a>';    
-        else if($reservas->fk_usuario == Auth::user()->id)
+        else if($reservas->fk_usuario == Auth::user()->id && $reservas->feedback != null)
             $btnExcluir = ' <a data-id="'.$reservas->id.'" class="btn btn-sm btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';            
 
         //Botões para colaboradores (Administradores e funcionários)
@@ -268,7 +286,7 @@ class ReservaAmbienteController extends Controller
                 $btnFinalizar = ' <a   class="btn btn-sm btn-success btnFinalizar" data-id="'. $reservas->id .'" title="Finalizar" data-toggle="tooltip" ><i class="glyphicon glyphicon-import"></i></a>';*/
         }
         //botão para feedback
-        if($reservas->status == 'Finalizada' && $reservas->feedback == null){
+        if($reservas->status == 'Finalizada' && $reservas->feedback == null && $reservas->fk_usuario == Auth::user()->id){
             $btnFeedback = ' <a  data-id="'.$reservas->id.'" class="btn btn-sm btn-success btnFeedback" title="Feedback" data-toggle="tooltip" ><i class="fa fa-thumbs-up"></i> </a>';
         }
         //retornando todos os botões 
@@ -439,7 +457,7 @@ class ReservaAmbienteController extends Controller
     //Cancelar Reserva 
     public function cancelar(Request $request)
     {
-        
+        $atual = date('d/m/Y H:i:s',strtotime('now'));
         AmbienteReserva::where('fk_reserva',$request->id)
         ->update([
             'status' => false
@@ -447,9 +465,9 @@ class ReservaAmbienteController extends Controller
         $reserva = Reservas::find($request->id);
         $reserva->status = 'Cancelada';
         if($reserva->fk_usuario == Auth::user()->id)
-            $reserva->feedback = 'Cancelada pelo próprio usuário';
+            $reserva->feedback = "Cancelada pelo próprio usuário em $atual";
         else
-            $reserva->feedback = 'Cancelada por '.Auth::user()->name;
+            $reserva->feedback = "Cancelada por ".Auth::user()->name." em $atual";
         
         $reserva->save();
 

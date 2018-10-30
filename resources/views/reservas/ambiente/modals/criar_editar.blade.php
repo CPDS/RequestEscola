@@ -66,7 +66,7 @@
           </div>
 
           
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-12">
             <strong>Telefone:</strong>
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
@@ -75,17 +75,27 @@
           </div>
 
           <div class="form-group col-md-6">
+           <strong>Local</strong>
+           <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+              <select name="local" id="local" class="form-control">
+                <option value='' selected disabled>Selecione ...</option>
+                @foreach($locais as $local)
+                  <option value='{{$local->id}}'>{{$local->nome}}</option>
+                @endforeach
+              </select>
+            </div>  
+          </div>
+
+          <div class="form-group col-md-6">
            <strong>Ambiente</strong>
            <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-university"></i></span>
               <select name="ambiente" id="ambiente" class="form-control">
                 <option value='' selected disabled>Selecione ...</option>
-                @foreach($ambientes as $ambiente)
-                  <option value='{{$ambiente->id}}'>{{$ambiente->descricao}}</option>
-                @endforeach
               </select>
             </div>  
-        </div>
+          </div>
 
 		<div class="form-group col-md-12">
 			<strong id="texto_observacao">Observações</strong>

@@ -168,6 +168,53 @@ $(document).ready(function($) {
         }
     });
 
+    //Preencher select de ambiente
+    $(document).on('change','#local', function(){
+
+        //recuperando Valores do formulário
+        var local = $("#local :selected").val();
+        var data_inicial = $('#data_inicial').val()+' '+$('#hora_inicial').val()+':00';
+        var data_final = $('#data_final').val()+' '+$('#hora_final').val()+':00';
+        //array de dados
+        var dados_form = [local,data_inicial,data_final];
+         //Recuperando data e hora do inicio e final para coneverter em timestamps
+         var data_hora_inicial = Date.parse(data_inicial);
+         var data_hora_final = Date.parse(data_final);
+         //recuperando horario atual
+         var data_atual = Date.now();
+        //Validacoes
+        if($('#local :selected').val() == '' || $('#data_inicial').val() == '' || $('#hora_inicial').val() == ''
+            || $('#data_final').val() == '' || $('#hora_final').val() == '' )
+            alert('É necessário informar o periodo de utilização');
+        else if(data_hora_inicial  > data_hora_final)
+            alert('A data de inicio da reserva deve ser posterior a data final!');
+        else if(data_hora_inicial < data_atual)
+            alert('A data inicial da reserva deve ser igual ou posterior a data atual');
+        else{
+            $.getJSON('./reserva-ambiente/reservados/'+dados_form, function(dados){
+                var option = '';
+                
+                if(dados.tipoAmbiente.length > 0){
+                    $.each(dados.tipoAmbiente, function(i,tipoAmbiente){
+                        
+                        option += '<optgroup label="'+tipoAmbiente.nome+'">';//agrupando ambientes por tipo
+
+                        $.each(dados.ambientes, function(i,ambientes){
+                            if(tipoAmbiente.id == ambientes.fk_tipo){
+                                option += '<option value="'+ambientes.id+'">'+ambientes.numero_ambiente+'</option>';
+                            }
+                        });
+
+                        option += '</optgroup>';
+                    });
+                }
+
+                $('#ambiente').html(option).show();
+        
+            });
+        }
+    });
+
     //Visualizar
     $(document).on('click', '.btnVisualizar', function() {
         $('#ambiente-visualizar').text($(this).data('ambiente'));
