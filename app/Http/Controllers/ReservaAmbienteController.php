@@ -15,7 +15,8 @@ use App\{
     Reservas,
     Ambiente,
     Locais,
-    AmbienteReserva
+    AmbienteReserva,
+    TipoAmbiente
 };
 
 class ReservaAmbienteController extends Controller
@@ -73,6 +74,7 @@ class ReservaAmbienteController extends Controller
 
     }
   
+    
 
     public function index()
     {
@@ -81,8 +83,35 @@ class ReservaAmbienteController extends Controller
         return view('reservas.ambiente.index', compact('ambientes'));
     }
 
-    private function reservados(){
+    //selecionar ambientes reservados
+    private function Ambientes_reservados($data_inicio, $data_final){
+        //convertendo para formato americano
+        $data_inicio = date('Y-m-d H:i:s',strtotime($data_inicio));
+        $data_final = date('Y-m-d H:i:s',strtotime($data_final));
+         
+        //Todos os ambientes ocupados no dia escolhido + hora inicial + hora final das reservas
+        $consulta = 'select ambiente_reservas.fk_ambiente,
+        reservas.data_inicial,reservas.data_final,
+        ambiente_reservas.status from ambientes join ambiente_reservas
+        on ambiente_reservas.fk_ambiente = ambientes.id
+        join reservas on ambiente_reservas.fk_reserva = reservas.id
+        where ? between data_inicial and data_final or ? between data_inicial and data_final
+        or data_inicial >= ? and data_final <= ? and ambiente_reservas.tipo = ?
+        and ambiente_reservas.status = ? and reservas.status = ? or reservas.status = ?';
+        
+        //Associando atributos e executando a consulta sql  
+        $Reservados = DB::select($consulta,[
+            $data_inicio,
+            $data_final,
+            $data_inicio,
+            $data_final,
+            true,
+            true,
+            'Reservado',
+            'Em uso'
+        ]);
 
+        return $Reservados;
     }
 
     //Turno
@@ -125,6 +154,52 @@ class ReservaAmbienteController extends Controller
             return 'Tarde e Noite';
         else
             return 'Manhã, Tarde e Noite';
+    }
+
+    public function reservados(){
+        //Ambientes reservados
+        $ambientes = Reservas::with('ambienteReserva')
+        ->where('status','!=','Inativo')
+        ->orwhere('status','!=','Finalizado')
+        ->get();
+        //Tipos de ambientes
+        $tipos = TipoAmbiente::where('status',true)->get();
+        $ambientes_reservados='';
+        $paraReservar = array();
+        $tipoAmbiente = array();
+        
+
+        //pecorrendo por cada tipo de ambiente
+        foreach($tipos as $tipo){
+            //array de ambientes reservados
+            $naoPodeUsar = array();
+            //recuperando os ambientes reservados
+            foreach($ambientes as $ambiente)
+                $ambientes_reservados = $this->Ambientes_reservados($ambiente->data_inicial, $ambiente->data_final);
+            
+            if($ambientes_reservados != null){
+                foreach($ambientes_reservados as $ambiente_reservado){
+                    array_push($naoPodeUsar,$ambiente_reservado->fk_ambiente);
+                }
+            }
+                
+            //dd($naoPodeUsar);
+            //dd($naoPodeUsar);
+            if($ambientes_reservados == null){
+                $ambiente_que_sera_reservado = Ambiente::where('status','Ativo')
+                ->where('fk_tipo',$tipo->id)
+                ->get();
+            }else{
+                $ambiente_que_sera_reservado = Ambiente::where('status','Ativo')
+                ->where('fk_tipo',$tipo->id)
+                ->whereNotIn('id',$naoPodeUsar)
+                ->get();
+            }
+
+            dd($ambiente_que_sera_reservado);
+            
+            //dd($ambiente_reservados->all());
+        }
     }
     //Botões
     private function setDataButtons(Reservas $reservas){

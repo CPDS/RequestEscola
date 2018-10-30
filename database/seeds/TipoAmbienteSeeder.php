@@ -26,7 +26,7 @@ class TipoAmbienteSeeder extends Seeder
 
         TipoAmbiente::create( [
             'nome'  =>    'Pavilhão',
-            'descricao' => 'Pavilhão para apreserntaçõe',
+            'descricao' => 'Pavilhão para apresentações',
             'status'  =>  true
         ]);
     }
