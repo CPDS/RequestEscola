@@ -32,7 +32,7 @@ class HomeController extends Controller
         
         //Verificando se o usuário esta ativo
         if($usuario->status)
-            return view('home');
+            return view('dashboards.administrador');
         else{
             echo "<script>alert('Usuário $usuario->name desabilitado! Favor entrar em contato com o Administrador do sistema!');</script>";
             Auth::logout();
