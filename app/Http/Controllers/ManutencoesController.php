@@ -32,7 +32,7 @@ class ManutencoesController extends Controller
     	$equipamentos = Equipamentos::where('status','Ativo')->get();
     	$usuario = User::where('status',true)->get();
 
-        return view('manutencao.funcionarios.index', compact('equipamentos','usuario'));
+        return view('manutencao.funcionarios.index', compact('equipamentos'));
     }
 
     private function setDataButtons(Manutencoes $manutencao){
@@ -72,7 +72,7 @@ class ManutencoesController extends Controller
         }
         else{
             $btnEditar = '';
-            $btnExcluir = '';
+           // $btnExcluir = '';
         } 
     }
 
@@ -80,7 +80,7 @@ class ManutencoesController extends Controller
     {
         $manutencao = Manutencoes::with('usuario')
         ->with('equipamento')
-        //->where('id_usuario', Auth::user()->id)
+        ->where('id', Auth::user()->id)
         ->where('status', 'Ativo')
         ->get();
 
@@ -133,8 +133,8 @@ class ManutencoesController extends Controller
            $equipamento = Equipamentos::find($request->id_equipamento);
            $equipamento->status = "Em Manutencao";
            $flag_email=false;
-          /* $manutencao->save();
-           $equipamento->save();
+           $manutencao->save();
+          /* $equipamento->save();
            $manutencao->setAttribute('buttons', $this->setDataButtons($manutencao));
 
            return response()->json();*/
