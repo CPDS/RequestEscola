@@ -26,19 +26,22 @@ class ReservaAmbienteController extends Controller
     function __construct(){
         
         //Reservas aguardando retirada
-        $reservas = Reservas::with('ambienteReserva')
+        Reservas::with('ambienteReserva')
         ->where('data_inicial','<',DB::raw('now()'))
         ->where('data_final','>',DB::raw('now()'))
+        ->orwhere('data_final','<',DB::raw('now()'))
         ->where('status','Reservado')
-        ->select('id')
-        ->get();
+        ->update([
+            'status' => 'Em uso'
+        ]);
         
-        //Reservas Em uso
-        $reservas_em_uso = Reservas::with('ambienteReserva')
+        //Reservas Em uso 
+        Reservas::with('ambienteReserva')
         ->where('data_final','<',DB::raw('now()'))
         ->where('status','Em uso')
-        ->select('id')
-        ->get();
+        ->update([
+            'status' => 'Finalizada'
+            ]);
         
         //reservas finalizadas
         $finalizados = Reservas::with('ambienteReserva')
@@ -46,24 +49,6 @@ class ReservaAmbienteController extends Controller
         ->where('status','Finalizada')
         ->select('id')
         ->get();
-
-        //Atualizando a reserva para em uso
-        if($reservas!= null){
-            foreach($reservas as $reserva){
-                Reservas::where('id',$reserva->id)->update([
-                    'status' => 'Em uso'
-                ]);
-            }
-        }
-
-        //Atualizando reserva para finalizada
-        if($reservas_em_uso != null){
-            foreach($reservas_em_uso as $reserva){
-                Reservas::where('id',$reserva->id)->update([
-                    'status' => 'Finalizada'
-                    ]);
-            }
-        }
 
         if($finalizados != null){
             foreach($finalizados as $reserva){
@@ -94,14 +79,13 @@ class ReservaAmbienteController extends Controller
         ambiente_reservas.status from ambientes join ambiente_reservas
         on ambiente_reservas.fk_ambiente = ambientes.id
         join reservas on ambiente_reservas.fk_reserva = reservas.id
-        where ? between data_inicial and data_final or ? between data_inicial and data_final
-        or data_inicial >= ? and data_final <= ? and ambiente_reservas.tipo = ?
-        and ambiente_reservas.status = ? and reservas.status = ? or reservas.status = ?';
+        where ? between data_inicial and data_final
+        or ? between data_inicial and data_final
+        and ambiente_reservas.tipo = ? and ambiente_reservas.status = ?
+        and reservas.status = ? or reservas.status = ?';
         
         //Associando atributos e executando a consulta sql  
         $Reservados = DB::select($consulta,[
-            $data_inicio,
-            $data_final,
             $data_inicio,
             $data_final,
             true,
