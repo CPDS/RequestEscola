@@ -79,7 +79,7 @@
            <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
               <select name="local" id="local" class="form-control">
-                <option value='' selected disabled>Selecione ...</option>
+                <option value=''>Selecione ...</option>
                 @foreach($locais as $local)
                   <option value='{{$local->id}}'>{{$local->nome}}</option>
                 @endforeach

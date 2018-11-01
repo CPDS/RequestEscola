@@ -5,6 +5,7 @@ $(document).ready(function($) {
         }
     });
 
+    
     //tabela de Reserva Colaboradores
 	var tabela_reservas = $('#reserva').DataTable({
         processing: true,
@@ -236,7 +237,7 @@ $(document).ready(function($) {
         $('.modal-footer .btn-action').removeClass('edit');
         $('.modal-footer .btn-action').addClass('add');
 
-        $('.modal-title').text('Cadastrar nova Reserva');
+        $('.modal-title').text('Cadastrar Nova Reserva');
         $('.modal-sub').text('PREENCHA TODAS AS INFORMAÇÕES CORRETAMENTE');
         $('.callout').addClass("hidden"); 
         $('.callout').find("p").text(""); 
