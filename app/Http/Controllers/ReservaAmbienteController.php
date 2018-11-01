@@ -247,6 +247,9 @@ class ReservaAmbienteController extends Controller
             //Dados cancelar
             $dados_cancelar = 'data-id="'.$reservas->id.
             '" data-descricao="'.$ambiente->ambiente->descricao.'" ';
+            //dados feedback
+            $dados_feedback = 'data-id_feedback="'.$reservas->id.
+            '" data-feedback="'.$reservas->feedback.'"';
         }
     
         //botões
@@ -271,7 +274,7 @@ class ReservaAmbienteController extends Controller
         }
         //botão para feedback
         if($reservas->status == 'Finalizada' && $reservas->feedback == null && $reservas->fk_usuario == Auth::user()->id){
-            $btnFeedback = ' <a  data-id="'.$reservas->id.'" class="btn btn-sm btn-success btnFeedback" title="Feedback" data-toggle="tooltip" ><i class="fa fa-thumbs-up"></i> </a>';
+            $btnFeedback = ' <a  class="btn btn-sm btn-success btnFeedback" '.$dados_feedback.' title="Feedback" data-toggle="tooltip" ><i class="fa fa-thumbs-up"></i> </a>';
         }
         //retornando todos os botões 
         return $btnVisualizar .
@@ -387,7 +390,7 @@ class ReservaAmbienteController extends Controller
             ->orwhere('status','Em uso')
             ->orwhere('status','Reservado')
             ->orwhere('status','Cancelada')
-            ->orwhere('fk_usuario',$usuario_logado->id)
+            ->orwhereRaw('fk_usuario = ? and status != \'Inativo\'',[$usuario_logado->id])
             ->get();
             //dd($reservas);
         }else{//Consulta para professores
@@ -462,6 +465,24 @@ class ReservaAmbienteController extends Controller
 
     //excluir reserva
     public function destroy(Request $request){
+        $reserva = Reservas::find($request->id);
+        $reserva->status = 'Inativo';
+        $reserva->save();
+        $reserva->setAttribute('buttons', $this->setDataButtons($reserva)); 
+        return response()->json($reserva);
 
     }
+
+    //feedback
+    public function feedback(Request $request){
+        $reserva = Reservas::find($request->id_feedback);
+        if(!$request->feedback)
+            $reserva->feedback = 'Nada a declarar';
+        else
+            $reserva->feedback = $request->feedback;
+        $reserva->save();
+        $reserva->setAttribute('buttons', $this->setDataButtons($reserva)); 
+        return response()->json($reserva);
+    }
+
 }

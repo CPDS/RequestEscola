@@ -84,6 +84,7 @@ Route::group(['middleware' => ['auth']], function() {
 			Route::post('/cancelar',['as' => 'reserva-ambiente.cancelar', 'uses'=> 'ReservaAmbienteController@cancelar']);
 			Route::post('/delete',['as' => 'reserva-ambiente.destroy', 'uses'=> 'ReservaAmbienteController@destroy']);
 			Route::get('/reservados/{dados}',['as' => 'reserva-ambiente.reservados', 'uses' => 'ReservaAmbienteController@reservados']);
+			Route::post('/feedback',['as' => 'reserva-ambiente.feedback', 'uses'=> 'ReservaAmbienteController@feedback']);
 		});
 
 

@@ -291,7 +291,83 @@ $(document).ready(function($) {
         jQuery('#cancelar-modal').modal('show'); //Abrir o modal
     });
 
-    
+    //Excluir
+    $(document).on('click', '.btnExcluir', function() {
+        $('.modal-title').text('Excluir Reserva');
+        $('.id_del').val($(this).data('id')); 
+        jQuery('#excluir-modal').modal('show'); //Abrir o modal
+    });
+
+    //modal feedback
+    $(document).on('click', '.btnFeedback', function() {
+        $('.modal-title').text('Novo Feedback');
+        $('.callout').addClass("hidden"); 
+        $('.callout').find("p").text(""); 
+
+        var btnFeedback = $(this);
+        
+        $('#formulario :input').each(function(index,input){
+            $('#'+input.id).val(btnFeedback.data(input.id));
+        });
+                
+        jQuery('#feedback-modal').modal('show'); //Abrir o modal
+    });
+
+    //AJAX feedback
+    $('.modal-footer').on('click', '.feed', function() {
+        var dados = new FormData($("#formulario")[0]); //pega os dados do form
+
+        $.ajax({
+            type: 'post',
+            url: "./reserva-ambiente/feedback",
+            data: dados,
+            processData: false,
+            contentType: false,
+            beforeSend: function(){
+                jQuery('.feed').button('loading');
+            },
+            complete: function() {
+                jQuery('.feed').button('reset');
+            },
+            success: function(data) {
+                 //Verificar os erros de preenchimento
+                if ((data.errors)) {
+
+                    $('.callout').removeClass('hidden'); //exibe a div de erro
+                    $('.callout').find('p').text(""); //limpa a div para erros successivos
+
+                    $.each(data.errors, function(nome, mensagem) {
+                            $('.callout').find("p").append(mensagem + "</br>");
+                    });
+
+                } else {
+                    
+                    $('#table').DataTable().draw(false);
+
+                    jQuery('#feedback-modal').modal('hide');
+
+                    $(function() {
+                        iziToast.success({
+                            title: 'OK',
+                            message: 'Feedback enviado com Sucesso!',
+                        });
+                    });
+
+                }
+            },
+
+            error: function() {
+                jQuery('#feedback-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+
+        });
+    });
+
     //AJAX Adicionar Ambiente
     $('.modal-footer').on('click', '.add', function() {
         
@@ -403,7 +479,7 @@ $(document).ready(function($) {
         });
     });
 
-    //Evento ajax - Desativar AMBIENTE
+    //Evento ajax - cancelar AMBIENTE
      $('.modal-footer').on('click', '.can', function() {
 
         $.ajax({
@@ -443,35 +519,35 @@ $(document).ready(function($) {
         });
     });
 
-    //Evento ajax - ATIVAR AMBIENTE
-    $('.modal-footer').on('click', '.ativ', function() {
+    //Evento ajax - Excluir AMBIENTE
+    $('.modal-footer').on('click', '.del', function() {
         $.ajax({
             type: 'post',
-            url: './ambiente/ativar',
+            url: './reserva-ambiente/delete',
             data: {
-                'id': $(".id_ativ").val(),
+                'id': $(".id_del").val(),
             },
             beforeSend: function(){
-                jQuery('.ativ').button('loading');
+                jQuery('.del').button('loading');
             },
             complete: function() {
-                jQuery('.ativ').button('reset');
+                jQuery('.del').button('reset');
             },
             success: function(data) {
                 $('#table').DataTable().row('#item-' + data.id).remove().draw(); //remove a linha e ordena
-                jQuery('#ativar-modal').modal('hide'); //fechar o modal
+                jQuery('#excluir-modal').modal('hide'); //fechar o modal
 
                 $(function() {
 
                     iziToast.success({
                         title: 'OK',
-                        message: 'Ambiente Ativado com Sucesso!',
+                        message: 'Reserva excluída com Sucesso!',
                     });
                 });
             },
             error: function() {
 
-                jQuery('#ativar-modal').modal('hide'); //fechar o modal
+                jQuery('#excluir-modal').modal('hide'); //fechar o modal
 
                 iziToast.error({
                     title: 'Erro Interno',
