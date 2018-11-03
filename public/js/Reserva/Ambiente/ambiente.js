@@ -5,7 +5,9 @@ $(document).ready(function($) {
         }
     });
 
-    
+    //botao de editar
+    botao = false;
+
     //tabela de Reserva Colaboradores
 	var tabela_reservas = $('#reserva').DataTable({
         processing: true,
@@ -169,13 +171,34 @@ $(document).ready(function($) {
         }
     });
 
+    //Ação no radio de ambiente padrão
+    $(document).on('click','#ambiente_padrao', function(){
+        $('#dadosAmbiente').prop("hidden",true);//Ocutando dados de ambiente
+    });
+
+    //Ação no radio de ambiente Novo
+    $(document).on('click','#ambiente_novo', function(){
+        $('#dadosAmbiente').prop("hidden",false);//Ocutando dados de ambiente
+    });
+
+
     //Preencher select de ambiente
     $(document).on('change','#local', function(){
-
+        //variaveis
+        var local = ''
+        var data_inicial = '';
+        var data_final = '';
         //recuperando Valores do formulário
-        var local = $("#local :selected").val();
-        var data_inicial = $('#data_inicial').val()+' '+$('#hora_inicial').val()+':00';
-        var data_final = $('#data_final').val()+' '+$('#hora_final').val()+':00';
+        local = $("#local :selected").val();
+        //verificar se está abrindo modal de criação
+        if(botao){
+            data_inicial = $('#data_inicial').val()+' '+$('#hora_inicial').val()+':00';
+            data_final = $('#data_final').val()+' '+$('#hora_final').val()+':00';
+        }else{//caso seja para edição
+            data_inicial = $('#data_hora_inicio').val();
+            data_final = $('#data_hora_termino').val();
+        }
+        
         //array de dados
         var dados_form = [local,data_inicial,data_final];
          //Recuperando data e hora do inicio e final para coneverter em timestamps
@@ -183,13 +206,14 @@ $(document).ready(function($) {
          var data_hora_final = Date.parse(data_final);
          //recuperando horario atual
          var data_atual = Date.now();
-        //Validacoes
-        if($('#local :selected').val() == '' || $('#data_inicial').val() == '' || $('#hora_inicial').val() == ''
-            || $('#data_final').val() == '' || $('#hora_final').val() == '' )
+         
+        //Validacoes (Salvo no caso de edição)
+        if(($('#local :selected').val() == '' || $('#data_inicial').val() == '' || $('#hora_inicial').val() == ''
+            || $('#data_final').val() == '' || $('#hora_final').val() == '' ) && botao)
             alert('É necessário informar o periodo de utilização');
-        else if(data_hora_inicial  > data_hora_final)
+        else if(data_hora_inicial  > data_hora_final && botao )
             alert('A data de inicio da reserva deve ser posterior a data final!');
-        else if(data_hora_inicial < data_atual)
+        else if(data_hora_inicial < data_atual && botao)
             alert('A data inicial da reserva deve ser igual ou posterior a data atual');
         else{
             $.getJSON('./reserva-ambiente/reservados/'+dados_form, function(dados){
@@ -233,7 +257,8 @@ $(document).ready(function($) {
 
     //Adicionar
     $(document).on('click', '.btnAdicionar', function() {
-       // alert('agora sim');
+       
+        botao = true;
         $('.modal-footer .btn-action').removeClass('edit');
         $('.modal-footer .btn-action').addClass('add');
 
@@ -242,6 +267,9 @@ $(document).ready(function($) {
         $('.callout').addClass("hidden"); 
         $('.callout').find("p").text(""); 
         $('.dadosHora').removeClass("hidden");//Exibindo dados de horario
+        $('#dadosAmbiente').prop("hidden",false);//Exibindo dados de ambiente
+        $('.radioPadrao').prop("hidden",true);//escolhas de abiente( para editar reserva)
+        $('.radioNovo').prop("hidden",true);
         $('#texto_observacao').text('Observações');
         
         $('#form')[0].reset();
@@ -250,6 +278,7 @@ $(document).ready(function($) {
         $('#responsavel').val($(this).data('nome'));
         $('#telefone').val($(this).data('telefone'));
         $('#telefone').prop("readonly",true);
+        
 
         jQuery('#criar_editar-modal').modal('show');
     });
@@ -258,14 +287,18 @@ $(document).ready(function($) {
     $(document).on('click', '.btnEditar', function() {
         $('.modal-footer .btn-action').removeClass('add');
         $('.modal-footer .btn-action').addClass('edit');
-
+        $('.dadosHora').addClass("hidden");//Exibindo dados de horario
         $('.modal-title').text('Editar Reserva de Ambiente');
         $('.callout').addClass("hidden"); //ocultar a div de aviso
         $('.callout').find("p").text(""); //limpar a div de aviso
-        $('.dadosHora').addClass("hidden");//ocutando dados de horario
-        $('#texto_observacao').text('Descrição do Pedido: ');
+        $('#dadosAmbiente').prop("hidden",true);//Exibindo dados de ambiente
+        $('.radioPadrao').prop("hidden",false);//escolhas de abiente( para editar reserva)
+        $('.radioNovo').prop("hidden",false);
         
+        $('#texto_observacao').text('Descrição do Pedido: ');
+        botao = false;
         var btnEditar = $(this);
+        
         
         //condição para checkbox
         if(btnEditar.data('solicitante') != $('#ch_usuario_logado').data('nome')){
@@ -274,13 +307,18 @@ $(document).ready(function($) {
             $('#telefone').prop("readonly",false);
         }
 
+        
         //preenchendo formulário
         $('#form :input').each(function(index,input){
             $('#'+input.id).val($(btnEditar).data(input.id));
         });
 
+         
+
         jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
     });
+
+    
 
     //Cancelar
     $(document).on('click', '.btnCancelar', function() {
@@ -432,7 +470,7 @@ $(document).ready(function($) {
 
         $.ajax({
             type: 'post',
-            url: "./ambiente/edit",
+            url: "./reserva-ambiente/edit",
             data: dados,
             processData: false,
             contentType: false,
@@ -462,7 +500,7 @@ $(document).ready(function($) {
                     $(function() {
                         iziToast.success({
                             title: 'OK',
-                            message: 'Ambiente Atualizado com Sucesso!',
+                            message: 'Reserva Atualizada com Sucesso!',
                         });
                     });
 

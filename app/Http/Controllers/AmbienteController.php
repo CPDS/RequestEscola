@@ -14,7 +14,8 @@ use Hash;
 use App\{
     Ambiente,
     Locais,
-    TipoAmbiente
+    TipoAmbiente,
+    AmbienteReserva
 };
 
 class AmbienteController extends Controller
@@ -50,7 +51,10 @@ class AmbienteController extends Controller
         if($usuarioLogado->hasRole('Administrador'))
         {
             $btnEditar = ' <a data-id="'.$ambiente->id.'" class="btn btn-primary btnEditar" '. $dados_editar .' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
-            $btnExcluir = ' <a data-id="'.$ambiente->id.'" class="btn btn-danger btnExcluir" title="Desativar" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
+            if(!AmbienteReserva::where('fk_ambiente',$ambiente->id)->where('status',true)->count())
+                $btnExcluir = ' <a data-id="'.$ambiente->id.'" class="btn btn-danger btnExcluir" title="Desativar" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
+            else
+                $btnExcluir = '';
             if($ambiente->status == 'Inativo')
             {
                 $btnAtivar = ' <a data-id="'.$ambiente->id.'" class="btn btn-warning btnAtivar" '. $dados .' title="Ativar Ambiente" data-toggle="tooltip" ><i class="fa fa-plus"> </i></a>';

@@ -49,7 +49,7 @@ class ReservaAmbienteController extends Controller
         ->where('status','Finalizada')
         ->select('id')
         ->get();
-
+        //dd($finalizados);
         if($finalizados != null){
             foreach($finalizados as $reserva){
                 AmbienteReserva::where('fk_reserva',$reserva->id)
@@ -205,7 +205,7 @@ class ReservaAmbienteController extends Controller
     }
     //Botões
     private function setDataButtons(Reservas $reservas){
-        
+    
         //recuperando ambientes reservados
         $ambientes = AmbienteReserva::where('tipo',true)
         ->where('status','!=',false)
@@ -216,13 +216,15 @@ class ReservaAmbienteController extends Controller
         //Recuperando data e hora final da reserva e convertendo o formato
         $data_final = date('d/m/Y',strtotime($reservas->data_final));
         $hora_final = date('H:i',strtotime($reservas->data_final));
-       
+        $data_inicio_editar = $reservas->data_inicial;
+        $data_fim_editar = $reservas->data_final;
         //recuperando hora inicial da reserva
         $hora_inicial = date('H:i',strtotime($reservas->data_inicial));
         //dd($ambientes);
 
         //preenchendo os botões
         foreach($ambientes as $ambiente){
+            
             
             //dados do botão visualizar
             $dadosVisualizar = 'data-id="'.$reservas->id.
@@ -242,7 +244,10 @@ class ReservaAmbienteController extends Controller
             '" data-solicitante="'.$ambiente->solicitante.
             '" data-responsavel="'.$reservas->usuario->name.
             '" data-telefone="'.$ambiente->telefone.
-            '" data-ambiente="'.$ambiente->fk_ambiente.'"';
+            '" data-ambiente="'.$ambiente->fk_ambiente.
+            '" data-local="'.$ambiente->ambiente->fk_local.
+            '" data-data_hora_inicio="'.$data_inicio_editar.
+            '" data-data_hora_termino="'.$data_fim_editar.'"';
 
             //Dados cancelar
             $dados_cancelar = 'data-id="'.$reservas->id.
@@ -374,6 +379,35 @@ class ReservaAmbienteController extends Controller
     //Atualizar pedido
     public function update(Request $request)
     {
+        $rules = array(
+            'solicitante' => 'required',
+            'telefone' => 'required',
+            'observacao' => 'required',
+            'id' => 'required',
+        );
+
+        $attributeNames = array(
+            'solicitante' => 'Solicitante',
+            'telefone' => 'Telefone',
+            'observacao'=> 'Observação',
+            'id'=> 'Identificação',
+        );
+
+        $validator = Validator::make(Input::all(), $rules);
+        $validator->setAttributeNames($attributeNames);
+
+        if ($validator->fails())
+                return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
+        else{
+            dd($request->all());
+            $reserva_antiga = Reservas::where('id',$request->id)->first();
+
+            $reserva = Reservas::find($request->id);
+              
+            $solicitante = $request->solicitante;
+            $telefone = $request->telefone;
+            
+        }
 
     }
     /*  listar ambientes reservados e atendidos
@@ -386,13 +420,11 @@ class ReservaAmbienteController extends Controller
         //Consulta para Colaboradores
         if($usuario_logado->hasRole('Administrador|Funcionário')){
         
-            $reservas = Reservas::whereRaw('status = \'Finalizada\' and data_final + interval \'2 minute\' > now()')
+            $reservas = Reservas::whereRaw('status = \'Finalizada\' or status = \'Cancelada\' and data_final + interval \'2 minute\' > now()')
             ->orwhere('status','Em uso')
             ->orwhere('status','Reservado')
-            ->orwhere('status','Cancelada')
             ->orwhereRaw('fk_usuario = ? and status != \'Inativo\'',[$usuario_logado->id])
             ->get();
-            //dd($reservas);
         }else{//Consulta para professores
             $reservas = Reservas::where('fk_usuario',$usuario_logado->id)
             ->where('status', '!=', 'Inativo')
