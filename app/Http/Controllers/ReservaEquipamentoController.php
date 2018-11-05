@@ -21,30 +21,42 @@ class ReservaEquipamentoController extends Controller
 {
     
     public function index()
-    {
-        return view('reservas.equipamento.index');
+    {   
+        $locais = Locais::where('status',true)->get();
+        return view('reservas.equipamento.index',compact('locais'));
     }
 
+    //listar pedidos para colaboradores e professores
+    public function list(){
+
+    }
+
+    //lista de atendidos para colaboradores
+    public function atendidos(){
+
+    }
   
+    //Criando reserva
     public function store(Request $request)
     {
         //
     }
 
-  
+    //Atualizando Reserva
     public function update(Request $request)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    //Excluindo reserva
+    public function destroy(Request $request)
     {
         //
     }
+    
+    //Cancelando reserva
+    public function cancelar(Request $request){
+
+    }
+    
 }

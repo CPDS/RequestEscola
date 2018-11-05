@@ -7,9 +7,12 @@
 <script src="{{ asset('plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('plugins/datatables/dataTables.bootstrap.css') }}">
 <link rel="stylesheet" href="{{ asset('css/iziToast.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/select2/select2.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/select2/select2.min.css') }}">
 <script src="{{ asset('js/iziToast.min.js') }}"></script>
-<!--<script src=" {{ asset('js/Reserva/Ambiente/ambiente.js') }} "> </script>-->
+<script src=" {{ asset('js/Reserva/Equipamento/equipamento.js') }} "> </script>
 <script src=" {{ asset('js/jquery.maskedinput.js') }} "> </script>
+<script src="{{ asset('plugins/select2/select2.min.js') }}" type = "text/javascript"></script>
 
 @section('main-content')
 
@@ -50,6 +53,7 @@
 						 <th>Data</th>
 						 <th>Horário Inicial</th>
 						 <th>Horário Final</th>
+						 <th>Telefone</th>
 						 <th>Status</th>
 						 <th>Ação</th>
 					 </tr>
@@ -72,13 +76,14 @@
 				
 			   <thead>
 					<tr>
-						 <th>No</th>
-						 <th>Solicitante</th>
-						 <th>Data</th>
-						 <th>Horário Inicial</th>
-						 <th>Horário Final</th>
-						 <th>Status</th>
-						 <th>Ação</th>
+						<th>No</th>
+						<th>Solicitante</th>
+						<th>Data</th>
+						<th>Horário Inicial</th>
+						<th>Horário Final</th>
+						<th>Telefone</th>
+						<th>Status</th>
+						<th>Ação</th>
 					 </tr>
 				</thead>
 				 
@@ -86,6 +91,7 @@
 		</div>
 	</div>
 @else
+<!--Tabela professores-->
 <div class="box">
 			<div class="box-body">
 				<table id="tabela_professor" class="table table-striped table-bordered" cellspacing="0" width="100%">				
@@ -93,7 +99,8 @@
 						<tr>
 							<th>No</th>						 
 							<th>Data</th>
-							<th>Turno</th>
+							<th>Hora Inicial</th>
+							<th>Hora Final</th>
 							<th>Status</th>
 							<th>Ação</th>
 						</tr>
@@ -102,8 +109,10 @@
 				</table>
 			</div>
 		</div>
+		<!-- fim tabela profesores-->
 @endrole
 
+@include('reservas.equipamento.modals.criar')
 
    
 @endsection

@@ -25,7 +25,6 @@ class ReservaAmbienteController extends Controller
   
 
     function __construct(){
-        
         //Reservas aguardando retirada
         Reservas::with('ambienteReserva')
         ->where('data_inicial','<',DB::raw('now()'))

@@ -7,17 +7,18 @@ $(document).ready(function($) {
 
     
     //tabela de Reserva Colaboradores
-	var tabela_reservas = $('#reserva').DataTable({
+	var tabela_reservas = $('#reserva-table').DataTable({
         processing: true,
         serverSide: true,
         deferRender: true,
-        ajax: './reserva-ambiente/list',
+        ajax: './reserva-equipamento/list',
         columns: [
         { data: null, name: 'order' },
-        { data: 'ambiente', name: 'ambiente' },
         { data: 'solicitante', name: 'solicitante' },
         { data: 'data', name: 'data' },
-        { data: 'turno', name: 'turno' },
+        { data: 'hora_inicial', name: 'hora_inicial' },
+        { data: 'hora_final', name: 'hora_final' },
+        { data: 'telefone', name: 'telefone' },
         { data: 'status', name: 'status' },
         { data: 'acao', name: 'acao' }
         ],
@@ -63,14 +64,15 @@ $(document).ready(function($) {
             }
         },
         columnDefs : [
-          { targets : [0,6], sortable : false },
+          { targets : [0,7], sortable : false },
           { "width": "5%" , "targets":  0 }, //nº
-          { "width": "10%", "targets":  1 }, //ambiente
-          { "width": "5%" , "targets":  2 }, //Responsavel
-          { "width": "5%" , "targets":  3 }, //data
-          { "width": "5%" , "targets":  4 }, //turno
-          { "width": "5%" , "targets":  5 }, //Status
-          { "width": "10%", "targets":  6 }, //acao
+          { "width": "10%", "targets":  1 }, //Solicitante
+          { "width": "5%" , "targets":  2 }, //Data
+          { "width": "5%" , "targets":  3 }, //Hora incial
+          { "width": "5%" , "targets":  4 }, //Hora Final
+          { "width": "5%" , "targets":  5 }, //Telefone
+          { "width": "10%", "targets":  6 }, //status
+          { "width": "10%", "targets":  7 }, //Ação
         ]
     });
 
@@ -80,17 +82,19 @@ $(document).ready(function($) {
         });
     }).draw();
 
-    //tabela de Reservas Professores
-	var tabela_professor = $('#tabela_professor').DataTable({
+    //tabela de Atendidos Colaboradores
+	var tabela_atendidos = $('#atendidos-table').DataTable({
         processing: true,
         serverSide: true,
         deferRender: true,
-        ajax: './reserva-ambiente/list',
+        ajax: './reserva-equipamento/atendidos',
         columns: [
         { data: null, name: 'order' },
-        { data: 'ambiente', name: 'ambiente' },
         { data: 'data', name: 'data' },
-        { data: 'turno', name: 'turno' },
+        { data: 'solicitante', name: 'solicitante' },
+        { data: 'hora_inicial', name: 'hora_inicial' },
+        { data: 'hora_final', name: 'hora_final' },
+        { data: 'telefone', name: 'telefone' },
         { data: 'status', name: 'status' },
         { data: 'acao', name: 'acao' }
         ],
@@ -136,13 +140,87 @@ $(document).ready(function($) {
             }
         },
         columnDefs : [
-          { targets : [0,5], sortable : false },
-          { "width": "5%" , "targets":  0 }, //nº
-          { "width": "10%", "targets":  1 }, //ambiente
-          { "width": "5%" , "targets":  2 }, //data
-          { "width": "5%" , "targets":  3 }, //turno
-          { "width": "5%" , "targets":  4 }, //Status
-          { "width": "10%", "targets":  5 }, //acao
+            { targets : [0,7], sortable : false },
+            { "width": "5%" , "targets":  0 }, //nº
+            { "width": "10%", "targets":  1 }, //Solicitante
+            { "width": "5%" , "targets":  2 }, //Data
+            { "width": "5%" , "targets":  3 }, //Hora incial
+            { "width": "5%" , "targets":  4 }, //Hora Final
+            { "width": "5%" , "targets":  5 }, //Telefone
+            { "width": "10%", "targets":  6 }, //status
+            { "width": "10%", "targets":  7 }, //Ação
+        ]
+    });
+
+    tabela_atendidos.on('draw.dt', function() {
+        tabela_atendidos.column(0, { search: 'applied', order: 'applied' }).nodes().each(function(cell, i) {
+            cell.innerHTML = tabela_atendidos.page.info().page * tabela_atendidos.page.info().length + i + 1;
+        });
+    }).draw();
+
+    //tabela de Professores
+	var tabela_professor = $('#tabela_professor').DataTable({
+        processing: true,
+        serverSide: true,
+        deferRender: true,
+        ajax: './reserva-equipamento/list',
+        columns: [
+        { data: null, name: 'order' },
+        { data: 'data', name: 'data' },
+        { data: 'hora_inicial', name: 'hora_inicial' },
+        { data: 'hora_final', name: 'hora_final' },
+        { data: 'status', name: 'status' },
+        { data: 'acao', name: 'acao' }
+        ],
+       
+        createdRow : function( row, data, index ) {
+            row.id = "item-" + data.id;   
+        },
+
+        paging: true,
+        lengthChange: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        scrollX: true,
+        sorting: [[ 1, "asc" ]],
+        responsive: true,
+        lengthMenu: [
+            [10, 15, -1],
+            [10, 15, "Todos"]
+        ],
+        language: {
+            "sEmptyTable": "Nenhum registro encontrado",
+            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+            "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "_MENU_ resultados por página",
+            "sLoadingRecords": "Carregando...",
+            "sProcessing": "<div><i class='fa fa-circle-o-notch fa-spin' style='font-size:38px;'></i> <span style='font-size:20px; margin-left: 5px'> Carregando...</span></div>",
+            "sZeroRecords": "Nenhum registro encontrado",
+            "sSearch": "Pesquisar",
+            "oPaginate": {
+                "sNext": "Próximo",
+                "sPrevious": "Anterior",
+                "sFirst": "Primeiro",
+                "sLast": "Último"
+            },
+            "oAria": {
+                "sSortAscending": ": Ordenar colunas de forma ascendente",
+                "sSortDescending": ": Ordenar colunas de forma descendente"
+            }
+        },
+        columnDefs : [
+            { targets : [0,5], sortable : false },
+            { "width": "5%" , "targets":  0 }, //nº
+            { "width": "5%" , "targets":  1 }, //Data
+            { "width": "5%" , "targets":  2 }, //Hora incial
+            { "width": "5%" , "targets":  3 }, //Hora Final
+            { "width": "10%", "targets":  4 }, //status
+            { "width": "10%", "targets":  5 }, //Ação
         ]
     });
 
@@ -152,6 +230,13 @@ $(document).ready(function($) {
         });
     }).draw();
     
+    //select 2
+    $('.js-example-basic-multiple').select2({
+        placeholder: "Selecione",
+        allowClear: true,
+        tags: true,
+      });
+
     //Ação checkbox do solicitante
     $(document).on('click','#ch_usuario_logado', function() {
         if($('#ch_usuario_logado').is(':checked')){
@@ -174,8 +259,8 @@ $(document).ready(function($) {
 
         //recuperando Valores do formulário
         var local = $("#local :selected").val();
-        var data_inicial = $('#data_inicial').val()+' '+$('#hora_inicial').val()+':00';
-        var data_final = $('#data_final').val()+' '+$('#hora_final').val()+':00';
+        var data_inicial = $('#data').val()+' '+$('#hora_inicial').val()+':00';
+        var data_final = $('#data').val()+' '+$('#hora_final').val()+':00';
         //array de dados
         var dados_form = [local,data_inicial,data_final];
          //Recuperando data e hora do inicio e final para coneverter em timestamps
@@ -183,27 +268,26 @@ $(document).ready(function($) {
          var data_hora_final = Date.parse(data_final);
          //recuperando horario atual
          var data_atual = Date.now();
-         
         //Validacoes
-        if($('#local :selected').val() == '' || $('#data_inicial').val() == '' || $('#hora_inicial').val() == ''
-            || $('#data_final').val() == '' || $('#hora_final').val() == '' )
+        if($('#local :selected').val() == '' || $('#data').val() == '' || $('#hora_inicial').val() == ''
+            || $('#hora_final').val() == '' )
             alert('É necessário informar o periodo de utilização');
         else if(data_hora_inicial  > data_hora_final)
             alert('A data de inicio da reserva deve ser posterior a data final!');
         else if(data_hora_inicial < data_atual)
             alert('A data inicial da reserva deve ser igual ou posterior a data atual');
         else{
-            $.getJSON('./reserva-ambiente/reservados/'+dados_form, function(dados){
+            $.getJSON('./reserva-equipamento/reservados/'+dados_form, function(dados){
                 var option = '';
                 
-                if(dados.tipoAmbiente.length > 0){
-                    $.each(dados.tipoAmbiente, function(i,tipoAmbiente){
+                if(dados.tipoEquipamento.length > 0){
+                    $.each(dados.tipoEquipamento, function(i,tipoEquipamento){
                         
-                        option += '<optgroup label="'+tipoAmbiente.nome+'">';//agrupando ambientes por tipo
+                        option += '<optgroup label="'+tipoEquipamento.nome+'">';//agrupando ambientes por tipo
 
-                        $.each(dados.ambientes, function(i,ambientes){
-                            if(tipoAmbiente.id == ambientes.fk_tipo){
-                                option += '<option value="'+ambientes.id+'">'+ambientes.numero_ambiente+'</option>';
+                        $.each(dados.equipamentos, function(i,equipamentos){
+                            if(tipoEquipamento.id == equipamentos.fk_tipo){
+                                option += '<option value="'+equipamentos.id+'">'+equipamentos.numero_ambiente+'</option>';
                             }
                         });
 
@@ -211,7 +295,7 @@ $(document).ready(function($) {
                     });
                 }
 
-                $('#ambiente').html(option).show();
+                $('#equipamentos').html(option).show();
         
             });
         }
@@ -243,7 +327,6 @@ $(document).ready(function($) {
         $('.callout').addClass("hidden"); 
         $('.callout').find("p").text(""); 
         $('.dadosHora').removeClass("hidden");//Exibindo dados de horario
-        $('.radioEscolha').addClass("hidden");//Ocurando dados de Ambiente
         $('#texto_observacao').text('Observações');
         
         $('#form')[0].reset();
@@ -253,7 +336,7 @@ $(document).ready(function($) {
         $('#telefone').val($(this).data('telefone'));
         $('#telefone').prop("readonly",true);
 
-        jQuery('#criar_editar-modal').modal('show');
+        jQuery('#criar-modal').modal('show');
     });
 
     //Editar
@@ -264,8 +347,7 @@ $(document).ready(function($) {
         $('.modal-title').text('Editar Reserva de Ambiente');
         $('.callout').addClass("hidden"); //ocultar a div de aviso
         $('.callout').find("p").text(""); //limpar a div de aviso
-        $('.dadosHora').addClass("hidden");//ocutando dados de horario
-        $('.radioEscolha').removeClass("hidden");//Ocurando dados de Ambiente
+        
         $('#texto_observacao').text('Descrição do Pedido: ');
         
         var btnEditar = $(this);
@@ -282,7 +364,7 @@ $(document).ready(function($) {
             $('#'+input.id).val($(btnEditar).data(input.id));
         });
 
-        jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
+        jQuery('#editar-modal').modal('show'); //Abrir o modal
     });
 
     //Cancelar
@@ -323,7 +405,7 @@ $(document).ready(function($) {
 
         $.ajax({
             type: 'post',
-            url: "./reserva-ambiente/feedback",
+            url: "./reserva-equipamento/feedback",
             data: dados,
             processData: false,
             contentType: false,
@@ -379,7 +461,7 @@ $(document).ready(function($) {
 
         $.ajax({
             type: 'post',
-            url: "./reserva-ambiente/create",
+            url: "./reserva-equipamento/create",
             data: dados,
             processData: false,
             contentType: false,
@@ -488,7 +570,7 @@ $(document).ready(function($) {
 
         $.ajax({
             type: 'post',
-            url: './reserva-ambiente/cancelar',
+            url: './reserva-equipamento/cancelar',
             data: {
                 'id': $(".id_can").val(),
             },
@@ -527,7 +609,7 @@ $(document).ready(function($) {
     $('.modal-footer').on('click', '.del', function() {
         $.ajax({
             type: 'post',
-            url: './reserva-ambiente/delete',
+            url: './reserva-equipamento/delete',
             data: {
                 'id': $(".id_del").val(),
             },

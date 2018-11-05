@@ -18,7 +18,11 @@ class CreateReservasTable extends Migration
             $table->integer('fk_usuario');
             $table->timestamp('data_inicial');
             $table->timestamp('data_final');
+            $table->timestamp('data_hora_retirada')->nullable();
+            $table->timestamp('data_hora_entrega')->nullable();
             $table->integer('fk_reserva_externa')->nullable();
+            $table->integer('fk_usuario_retirada')->nullable();
+            $table->integer('fk_usuario_entrega')->nullable();
             $table->text('parecer')->nullable();
             $table->text('observacao')->nullable();
             $table->text('feedback')->nullable();
