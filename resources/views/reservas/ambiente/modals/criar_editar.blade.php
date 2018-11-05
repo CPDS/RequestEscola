@@ -77,7 +77,7 @@
             <div class="form-group col-md-6 text-center radioPadrao">
               <div class="radio">
               <label>
-              <input type="radio" name="ambiente_escolha" id="ambiente_padrao" checked value="manter"/>
+              <input type="radio" name="ambiente_escolha" id="ambiente_padrao" checked/>
                 Manter Ambiente
               </label>  
               </div>
@@ -86,7 +86,7 @@
             <div class="form-group col-md-6 text-center radioNovo" >
               <div class="radio">
               <label>
-              <input type="radio" name="ambiente_escolha" id="ambiente_novo" value="mudar"/>
+              <input type="radio" name="ambiente_escolha" id="ambiente_novo" />
                 Mudar Ambiente
               </label>
               </div>

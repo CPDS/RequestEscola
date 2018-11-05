@@ -16,7 +16,8 @@ use App\{
     Ambiente,
     Locais,
     AmbienteReserva,
-    TipoAmbiente
+    TipoAmbiente,
+    AlteracoesAmbienteReserva
 };
 
 class ReservaAmbienteController extends Controller
@@ -53,7 +54,7 @@ class ReservaAmbienteController extends Controller
         if($finalizados != null){
             foreach($finalizados as $reserva){
                 AmbienteReserva::where('fk_reserva',$reserva->id)
-                ->update(['status' => false]);
+                ->update(['status' => 'Finalizada']);
             }
         }
 
@@ -89,7 +90,7 @@ class ReservaAmbienteController extends Controller
             $data_inicio,
             $data_final,
             true,
-            true,
+            'Ativo',
             'Reservado',
             'Em uso'
         ]);
@@ -140,20 +141,16 @@ class ReservaAmbienteController extends Controller
     }
 
     public function reservados(Request $request){
-        //recuperando dados e querbando string
+        //recuperando dados e quebrando string
         $dados = explode(',',$request->dados);
         $local = $dados[0];
         $data_inicio = $dados[1];
         $data_final = $dados[2];
 
-        /*Ambientes reservados
-        $ambientes = Reservas::with('ambienteReserva')
-        ->where('status','!=','Inativo')
-        ->orwhere('status','!=','Finalizado')
-        ->get();*/
+       
         //Tipos de ambientes
         $tipos = TipoAmbiente::where('status',true)->get();
-        $ambientes_reservados='';
+        $ambientes_reservados = '';
         $paraReservar = array();
         $tipoAmbiente = array();
         
@@ -170,13 +167,15 @@ class ReservaAmbienteController extends Controller
             ]);
             //recuperando os ambientes reservados
             $ambientes_reservados = $this->Ambientes_reservados($data_inicio, $data_final);
+            
             //adicionando ambientes reservados no array 
             if($ambientes_reservados != null){
                 foreach($ambientes_reservados as $ambiente_reservado){
-                    array_push($naoPodeUsar,$ambiente_reservado->fk_ambiente);
+                    if($ambiente_reservado->status)
+                        array_push($naoPodeUsar,$ambiente_reservado->fk_ambiente);
                 }
             }
-
+            //dd($naoPodeUsar);
             //condições para selecionar ambientes a serem reservados
             if($ambientes_reservados == null){
                 $ambiente_que_sera_reservado = Ambiente::where('status','Ativo')
@@ -206,12 +205,17 @@ class ReservaAmbienteController extends Controller
     //Botões
     private function setDataButtons(Reservas $reservas){
     
+        
         //recuperando ambientes reservados
+        
         $ambientes = AmbienteReserva::where('tipo',true)
-        ->where('status','!=',false)
-        ->orwhere('fk_reserva',$reservas->id)
+        ->where('status','!=','Inativo')
+        ->where('fk_reserva',$reservas->id)
         ->get();
         //dd($ambientes);
+        //dd($reservas);
+        
+
         
         //Recuperando data e hora final da reserva e convertendo o formato
         $data_final = date('d/m/Y',strtotime($reservas->data_final));
@@ -221,11 +225,10 @@ class ReservaAmbienteController extends Controller
         //recuperando hora inicial da reserva
         $hora_inicial = date('H:i',strtotime($reservas->data_inicial));
         //dd($ambientes);
-
+        
         //preenchendo os botões
         foreach($ambientes as $ambiente){
-            
-            
+            //dd($ambiente);
             //dados do botão visualizar
             $dadosVisualizar = 'data-id="'.$reservas->id.
             '" data-local="'.$ambiente->ambiente->local->nome.
@@ -240,14 +243,16 @@ class ReservaAmbienteController extends Controller
             '" data-feedback="'.$reservas->feedback.'"';
             
             //dados para botão editar
-            $dados_editar = 'data-id="'.$reservas->id.
+            $dados_editar = 'data-id="'.$ambiente->id.
             '" data-solicitante="'.$ambiente->solicitante.
             '" data-responsavel="'.$reservas->usuario->name.
             '" data-telefone="'.$ambiente->telefone.
             '" data-ambiente="'.$ambiente->fk_ambiente.
             '" data-local="'.$ambiente->ambiente->fk_local.
             '" data-data_hora_inicio="'.$data_inicio_editar.
-            '" data-data_hora_termino="'.$data_fim_editar.'"';
+            '" data-data_hora_termino="'.$data_fim_editar.
+            '" data-ambiente_padrao="manter"
+               data-ambiente_novo="novo"';
 
             //Dados cancelar
             $dados_cancelar = 'data-id="'.$reservas->id.
@@ -368,7 +373,7 @@ class ReservaAmbienteController extends Controller
             $ambiente_reserva->tipo = true; //Garantindo que é uma reserva do tipo "reserva de ambiente"
             $ambiente_reserva->solicitante = $solicitante;
             $ambiente_reserva->telefone = $telefone;
-            $ambiente_reserva->status = true;
+            $ambiente_reserva->status = 'Ativo';
             $ambiente_reserva->save();
             
             $reserva->setAttribute('buttons', $this->setDataButtons($reserva)); 
@@ -395,18 +400,63 @@ class ReservaAmbienteController extends Controller
 
         $validator = Validator::make(Input::all(), $rules);
         $validator->setAttributeNames($attributeNames);
+        
+        $reserva_antiga = AmbienteReserva::where('id',$request->id)->first();
+        $reserva = Reservas::where('id',$reserva_antiga->fk_reserva)->first();
+        $atual_str = date('Y-m-d H:i:s',strtotime('now'));
+        $data_final = date('Y-m-d H:i:s',strtotime($reserva->data_final));
+        
+        if($data_final < $atual_str)
+            return Response::json(array('errors' => ['Não é possivel Editar depois do termino da reserva']));
 
         if ($validator->fails())
-                return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
+            return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
+               
         else{
-            dd($request->all());
-            $reserva_antiga = Reservas::where('id',$request->id)->first();
+            //dd($request->all());
+            $novo = false;
 
-            $reserva = Reservas::find($request->id);
-              
-            $solicitante = $request->solicitante;
-            $telefone = $request->telefone;
+            if($request->ambiente_escolha == 'novo'){
+                if(!$request->local)
+                    return Response::json(array('errors' => ['Obrigatório a escolha de um local de retirada']));
+                if(!$request->ambiente)
+                    return Response::json(array('errors' => ['Obrigatório a escolha de um Ambiente']));
+                
+                $novo = true;
+            }
+
+            $reserva_antiga = AmbienteReserva::where('id',$request->id)->first();
+
+            //dd($reserva_antiga);
+
+            $nova_reserva = new AmbienteReserva();
+            $nova_reserva->fk_reserva = $reserva_antiga->fk_reserva;
+            $nova_reserva->tipo = true;
+            $nova_reserva->solicitante = $request->solicitante;
+            $nova_reserva->telefone = $request->telefone;
+            $nova_reserva->status = 'Ativo';
             
+            if($novo){
+                $nova_reserva->fk_ambiente = $request->ambiente;
+            }else{
+                $nova_reserva->fk_ambiente = $reserva_antiga->fk_ambiente;
+            }
+            $nova_reserva->save();
+
+            $alteracao = new AlteracoesAmbienteReserva();
+             //taleba de alterações
+            $alteracao->fk_reserva_ambiente = $request->id;
+            $alteracao->fk_usuario = Auth::user()->id;
+            $alteracao->descricao = $request->observacao;
+            $alteracao->save();
+
+            AmbienteReserva::where('id',$request->id)->update([
+                'status' => 'Inativo'
+            ]);
+            $reserva = Reservas::where('id',$reserva_antiga->fk_reserva)->first();
+            $reserva->setAttribute('buttons', $this->setDataButtons($reserva)); 
+            return response()->json($reserva);
+           
         }
 
     }
@@ -420,11 +470,13 @@ class ReservaAmbienteController extends Controller
         //Consulta para Colaboradores
         if($usuario_logado->hasRole('Administrador|Funcionário')){
         
-            $reservas = Reservas::whereRaw('status = \'Finalizada\' or status = \'Cancelada\' and data_final + interval \'2 minute\' > now()')
+            $reservas = Reservas::whereRaw('status = \'Finalizada\' and data_final + interval \'2 minute\' > now()')
+            ->orwhereRaw('status = \'Cancelada\' and data_final + interval \'2 minute\' > now()')
             ->orwhere('status','Em uso')
             ->orwhere('status','Reservado')
             ->orwhereRaw('fk_usuario = ? and status != \'Inativo\'',[$usuario_logado->id])
             ->get();
+            //dd($reservas);
         }else{//Consulta para professores
             $reservas = Reservas::where('fk_usuario',$usuario_logado->id)
             ->where('status', '!=', 'Inativo')
@@ -442,12 +494,14 @@ class ReservaAmbienteController extends Controller
         ->editColumn('ambiente', function($reservas){
              $ambientes = AmbienteReserva::with('ambiente')
             ->where('fk_reserva',$reservas->id)
+            ->where('status','!=','Inativo')
             ->first();  
             return $ambientes->ambiente->tipo->nome;
         })
         ->editColumn('solicitante', function($reservas){
              $ambientes = AmbienteReserva::with('ambiente')
             ->where('fk_reserva',$reservas->id)
+            ->where('status','!=','Inativo')
             ->first();
             return $ambientes->solicitante;
         })
@@ -476,23 +530,27 @@ class ReservaAmbienteController extends Controller
     //Cancelar Reserva 
     public function cancelar(Request $request)
     {
-        $atual = date('d/m/Y H:i:s',strtotime('now'));
-        AmbienteReserva::where('fk_reserva',$request->id)
-        ->update([
-            'status' => false
-        ]);
-        $reserva = Reservas::find($request->id);
-        $reserva->status = 'Cancelada';
-        if($reserva->fk_usuario == Auth::user()->id)
-            $reserva->feedback = "Cancelada pelo próprio usuário em $atual";
-        else
-            $reserva->feedback = "Cancelada por ".Auth::user()->name." em $atual";
         
-        $reserva->save();
+        $atual = date('d/m/Y H:i:s',strtotime('now'));
+        
+            AmbienteReserva::where('fk_reserva',$request->id)
+            ->update([
+                'status' => 'Finalizada'
+            ]);
+            $reserva = Reservas::find($request->id);
+            $reserva->status = 'Cancelada';
+            if($reserva->fk_usuario == Auth::user()->id){
+                $reserva->feedback = "Cancelada pelo próprio usuário em $atual";        
+            }
+            else{
+                $reserva->feedback = "Cancelada por ".Auth::user()->name." em $atual";
+            }
+            
+            $reserva->save();
 
-        $reserva->setAttribute('buttons', $this->setDataButtons($reserva)); 
-        return response()->json($reserva);
-
+            $reserva->setAttribute('buttons', $this->setDataButtons($reserva)); 
+            return response()->json($reserva);
+        
     }
 
     //excluir reserva
@@ -513,6 +571,7 @@ class ReservaAmbienteController extends Controller
         else
             $reserva->feedback = $request->feedback;
         $reserva->save();
+        
         $reserva->setAttribute('buttons', $this->setDataButtons($reserva)); 
         return response()->json($reserva);
     }

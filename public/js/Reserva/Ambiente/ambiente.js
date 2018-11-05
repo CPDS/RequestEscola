@@ -294,6 +294,7 @@ $(document).ready(function($) {
         $('#dadosAmbiente').prop("hidden",true);//Exibindo dados de ambiente
         $('.radioPadrao').prop("hidden",false);//escolhas de abiente( para editar reserva)
         $('.radioNovo').prop("hidden",false);
+
         
         $('#texto_observacao').text('Descrição do Pedido: ');
         botao = false;
@@ -307,7 +308,7 @@ $(document).ready(function($) {
             $('#telefone').prop("readonly",false);
         }
 
-        
+        $('#form')[0].reset();
         //preenchendo formulário
         $('#form :input').each(function(index,input){
             $('#'+input.id).val($(btnEditar).data(input.id));
