@@ -87,6 +87,7 @@
 		@include('reservas.ambiente.modals.criar_editar')
 	@endrole
 	@include('reservas.ambiente.modals.cancelar')
-
+	@include('reservas.ambiente.modals.feedback')
+	@include('reservas.ambiente.modals.excluir')
 
 @endsection

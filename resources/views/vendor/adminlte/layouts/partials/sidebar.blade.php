@@ -52,7 +52,7 @@
                             <li><a href="{{ url('tipoEquipamento') }}">Tipos de Equipamentos</a></li>
                             <li><a href="{{ url('manutencoes') }}"><i class='fa  fa-exclamation-triangle'></i>Manutenção</a></li>
                          @endrole
-                        <li><a href="#"><i class='fa fa-calendar'></i>Reservas e Retiradas</a></li>  
+                        <li><a href="{{ url('reserva-equipamento') }}"><i class='fa fa-calendar'></i>Reservas e Retiradas</a></li>  
                     </ul>
             </li>
             

@@ -65,7 +65,6 @@
             </div>
           </div>
 
-          
           <div class="form-group col-md-12">
             <strong>Telefone:</strong>
             <div class="input-group">
@@ -74,35 +73,57 @@
             </div>
           </div>
 
-          <div class="form-group col-md-6">
-           <strong>Local</strong>
-           <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
-              <select name="local" id="local" class="form-control">
-                <option value='' selected disabled>Selecione ...</option>
-                @foreach($locais as $local)
-                  <option value='{{$local->id}}'>{{$local->nome}}</option>
-                @endforeach
-              </select>
-            </div>  
-          </div>
+          <div class="radioEscolha">
+            <div class="form-group col-md-6 text-center radioPadrao">
+              <div class="radio">
+              <label>
+              <input type="radio" name="ambiente_escolha" id="ambiente_padrao" checked/>
+                Manter Ambiente
+              </label>  
+              </div>
+            </div>
 
-          <div class="form-group col-md-6">
-           <strong>Ambiente</strong>
-           <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-university"></i></span>
-              <select name="ambiente" id="ambiente" class="form-control">
-                <option value='' selected disabled>Selecione ...</option>
-              </select>
-            </div>  
+            <div class="form-group col-md-6 text-center radioNovo" >
+              <div class="radio">
+              <label>
+              <input type="radio" name="ambiente_escolha" id="ambiente_novo" />
+                Mudar Ambiente
+              </label>
+              </div>
+            </div>
           </div>
+          <div id="dadosAmbiente">
+            <div class="form-group col-md-6 ">
+            <strong>Local</strong>
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                <select name="local" id="local" class="form-control">
+                  <option value=''>Selecione ...</option>
+                  @foreach($locais as $local)
+                    <option value='{{$local->id}}'>{{$local->nome}}</option>
+                  @endforeach
+                </select>
+              </div>  
+            </div>
 
+            <div class="form-group col-md-6">
+            <strong>Ambiente</strong>
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-university"></i></span>
+                <select name="ambiente" id="ambiente" class="form-control">
+                  <option value='' selected disabled>Selecione ...</option>
+                </select>
+              </div>  
+            </div>
+          </div>
 		<div class="form-group col-md-12">
 			<strong id="texto_observacao">Observações</strong>
 			<textarea class="form-control" rows="3" width="100%" maxlength="254" id="observacao" class="form-control" name="observacao"></textarea> 
 		</div>
 
         <input type="hidden" id="id" name="id">
+        <input type="hidden" id="data_hora_inicio" name="data_hora_inicio">
+        <input type="hidden" id="data_hora_termino" name="data_hora_termino">
 
       </div> 
 

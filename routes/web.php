@@ -84,7 +84,21 @@ Route::group(['middleware' => ['auth']], function() {
 			Route::post('/cancelar',['as' => 'reserva-ambiente.cancelar', 'uses'=> 'ReservaAmbienteController@cancelar']);
 			Route::post('/delete',['as' => 'reserva-ambiente.destroy', 'uses'=> 'ReservaAmbienteController@destroy']);
 			Route::get('/reservados/{dados}',['as' => 'reserva-ambiente.reservados', 'uses' => 'ReservaAmbienteController@reservados']);
+			Route::post('/feedback',['as' => 'reserva-ambiente.feedback', 'uses'=> 'ReservaAmbienteController@feedback']);
 		});
+
+		//Rotas de Reservas de equipamamento
+		Route::group(['prefix'=> 'reserva-equipamento', 'where' => ['id'=>'0-9+']], function (){
+			Route::get('/',['as' => 'reserva-equipamento.index', 'uses' => 'ReservaEquipamentoController@index']);
+			Route::get('/list',['as' => 'reserva-equipamento.list', 'uses' => 'ReservaEquipamentoController@list']);
+			Route::post('/create', ['as' => 'resereva-ambiente.create', 'uses' => 'ReservaEquipamentoController@store']);
+			Route::post('/edit',['as' => 'reserva-equipamento.edit', 'uses' => 'ReservaEquipamentoController@update'])->middleware('role:Administrador|Funcionário');
+			Route::post('/cancelar',['as' => 'reserva-equipamento.cancelar', 'uses'=> 'ReservaEquipamentoController@cancelar']);
+			Route::post('/delete',['as' => 'reserva-equipamento.destroy', 'uses'=> 'ReservaEquipamentoController@destroy']);
+			Route::get('/reservados/{dados}',['as' => 'reserva-equipamento.reservados', 'uses' => 'ReservaEquipamentoController@reservados']);
+			Route::post('/feedback',['as' => 'reserva-equipamento.feedback', 'uses'=> 'ReservaEquipamentoController@feedback']);
+		});
+		
 
 
 	
