@@ -27,7 +27,7 @@
               </span>
             </div>
         </form>
-        <!-- /.search form -->
+         /.search form -->
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
