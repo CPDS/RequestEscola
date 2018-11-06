@@ -211,7 +211,7 @@ class ReservaAmbienteController extends Controller
         ->where('status','!=','Inativo')
         ->where('fk_reserva',$reservas->id)
         ->get();
-        //dd($ambientes);
+        
         //dd($reservas);
         
 
@@ -242,10 +242,10 @@ class ReservaAmbienteController extends Controller
             '" data-feedback="'.$reservas->feedback.'"';
             
             //dados para botão editar
-            $dados_editar = 'data-id="'.$ambiente->id.
-            '" data-solicitante="'.$ambiente->solicitante.
+            $dados_editar = 'data-id="'.$reservas->id.
+            '" data-solicitante="'.$reservas->solicitante.
             '" data-responsavel="'.$reservas->usuario->name.
-            '" data-telefone="'.$ambiente->telefone.
+            '" data-telefone="'.$reservas->telefone.
             '" data-ambiente="'.$ambiente->fk_ambiente.
             '" data-local="'.$ambiente->ambiente->fk_local.
             '" data-data_hora_inicio="'.$data_inicio_editar.
@@ -364,14 +364,14 @@ class ReservaAmbienteController extends Controller
             $reserva->data_inicial = $data_retirada;
             $reserva->data_final = $data_entrega;
             $reserva->observacao = $request->observacao;
+            $reserva->solicitante = $solicitante;
+            $reserva->telefone = $telefone;
             $reserva->status = 'Reservado';
             $reserva->save();
 
             $ambiente_reserva->fk_reserva = $reserva->id;
             $ambiente_reserva->fk_ambiente = $request->ambiente;
             $ambiente_reserva->tipo = true; //Garantindo que é uma reserva do tipo "reserva de ambiente"
-            $ambiente_reserva->solicitante = $solicitante;
-            $ambiente_reserva->telefone = $telefone;
             $ambiente_reserva->status = 'Ativo';
             $ambiente_reserva->save();
             
@@ -383,6 +383,7 @@ class ReservaAmbienteController extends Controller
     //Atualizar pedido
     public function update(Request $request)
     {
+        
         $rules = array(
             'solicitante' => 'required',
             'telefone' => 'required',
@@ -400,17 +401,16 @@ class ReservaAmbienteController extends Controller
         $validator = Validator::make(Input::all(), $rules);
         $validator->setAttributeNames($attributeNames);
         
-        $reserva_antiga = AmbienteReserva::where('id',$request->id)->first();
-        $reserva = Reservas::where('id',$reserva_antiga->fk_reserva)->first();
+        
+        $reserva = Reservas::where('id',$request->id)->first();
         $atual_str = date('Y-m-d H:i:s',strtotime('now'));
         $data_final = date('Y-m-d H:i:s',strtotime($reserva->data_final));
         
-        if($data_final < $atual_str)
-            return Response::json(array('errors' => ['Não é possivel Editar depois do termino da reserva']));
-
         if ($validator->fails())
             return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
-               
+
+        if($data_final < $atual_str || $reserva->status == 'Finalizada' || $reserva->status == 'Cancelada')
+            return Response::json(array('errors' => ['Não é possivel Editar depois do termino da reserva']));
         else{
             //dd($request->all());
             $novo = false;
@@ -424,15 +424,24 @@ class ReservaAmbienteController extends Controller
                 $novo = true;
             }
 
-            $reserva_antiga = AmbienteReserva::where('id',$request->id)->first();
+            $reserva_antiga = AmbienteReserva::where('fk_reserva',$request->id)
+            ->where('status','Ativo')
+            ->where('tipo',true)
+            ->first();
+
+            //alterando dados da reserva
+            Reservas::where('id',$request->id)
+            ->where('status','!=','Inativo')
+            ->update([
+                'solicitante' => $request->solicitante,
+                'telefone' => $request->telefone            
+            ]);
 
             //dd($reserva_antiga);
 
             $nova_reserva = new AmbienteReserva();
             $nova_reserva->fk_reserva = $reserva_antiga->fk_reserva;
             $nova_reserva->tipo = true;
-            $nova_reserva->solicitante = $request->solicitante;
-            $nova_reserva->telefone = $request->telefone;
             $nova_reserva->status = 'Ativo';
             
             if($novo){
@@ -449,13 +458,12 @@ class ReservaAmbienteController extends Controller
             $alteracao->descricao = $request->observacao;
             $alteracao->save();
 
-            AmbienteReserva::where('id',$request->id)->update([
+            AmbienteReserva::where('id',$reserva_antiga->id)->update([
                 'status' => 'Inativo'
             ]);
-            $reserva = Reservas::where('id',$reserva_antiga->fk_reserva)->first();
             $reserva->setAttribute('buttons', $this->setDataButtons($reserva)); 
             return response()->json($reserva);
-           
+            
         }
 
     }
@@ -498,11 +506,7 @@ class ReservaAmbienteController extends Controller
             return $ambientes->ambiente->tipo->nome;
         })
         ->editColumn('solicitante', function($reservas){
-             $ambientes = AmbienteReserva::with('ambiente')
-            ->where('fk_reserva',$reservas->id)
-            ->where('status','!=','Inativo')
-            ->first();
-            return $ambientes->solicitante;
+            return $reservas->solicitante;
         })
         ->editColumn('data', function($reservas){
             return date('d/m/Y',strtotime($reservas->data_inicial));

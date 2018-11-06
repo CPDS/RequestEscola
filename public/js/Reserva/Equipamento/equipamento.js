@@ -261,6 +261,7 @@ $(document).ready(function($) {
         var local = $("#local :selected").val();
         var data_inicial = $('#data').val()+' '+$('#hora_inicial').val()+':00';
         var data_final = $('#data').val()+' '+$('#hora_final').val()+':00';
+       
         //array de dados
         var dados_form = [local,data_inicial,data_final];
          //Recuperando data e hora do inicio e final para coneverter em timestamps
@@ -321,7 +322,7 @@ $(document).ready(function($) {
        // alert('agora sim');
         $('.modal-footer .btn-action').removeClass('edit');
         $('.modal-footer .btn-action').addClass('add');
-
+        
         $('.modal-title').text('Cadastrar Nova Reserva');
         $('.modal-sub').text('PREENCHA TODAS AS INFORMAÇÕES CORRETAMENTE');
         $('.callout').addClass("hidden"); 
@@ -335,8 +336,10 @@ $(document).ready(function($) {
         $('#responsavel').val($(this).data('nome'));
         $('#telefone').val($(this).data('telefone'));
         $('#telefone').prop("readonly",true);
-
-        jQuery('#criar-modal').modal('show');
+        $('#div_tel').removeClass("col-md-12");
+        $('#div_tel').addClass("col-md-6");
+        
+        jQuery('#criar_editar-modal').modal('show');
     });
 
     //Editar
@@ -347,7 +350,9 @@ $(document).ready(function($) {
         $('.modal-title').text('Editar Reserva de Ambiente');
         $('.callout').addClass("hidden"); //ocultar a div de aviso
         $('.callout').find("p").text(""); //limpar a div de aviso
-        
+        $('#div_tel').removeClass("col-md-6");
+        $('#div_tel').addClass("col-md-12");
+        $('.dadosHora').addClass("hidden");//Exibindo dados de horario
         $('#texto_observacao').text('Descrição do Pedido: ');
         
         var btnEditar = $(this);

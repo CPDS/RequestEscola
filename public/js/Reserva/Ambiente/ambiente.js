@@ -152,6 +152,10 @@ $(document).ready(function($) {
         });
     }).draw();
     
+
+    //flag de editar
+    flag = false;
+
     //Ação checkbox do solicitante
     $(document).on('click','#ch_usuario_logado', function() {
         if($('#ch_usuario_logado').is(':checked')){
@@ -172,10 +176,16 @@ $(document).ready(function($) {
     //Preencher select de ambiente
     $(document).on('change','#local', function(){
 
-        //recuperando Valores do formulário
         var local = $("#local :selected").val();
-        var data_inicial = $('#data_inicial').val()+' '+$('#hora_inicial').val()+':00';
-        var data_final = $('#data_final').val()+' '+$('#hora_final').val()+':00';
+        //recuperando Valores do formulário
+        if(flag){//caso seja para cadastro
+            data_inicial = $('#data_inicial').val()+' '+$('#hora_inicial').val()+':00';
+            data_final = $('#data_final').val()+' '+$('#hora_final').val()+':00';
+        }else{//caso seja para edição
+            data_inicial = $('#data_hora_inicio').val();
+            data_final = $('#data_hora_termino').val();
+        }
+
         //array de dados
         var dados_form = [local,data_inicial,data_final];
          //Recuperando data e hora do inicio e final para coneverter em timestamps
@@ -184,13 +194,14 @@ $(document).ready(function($) {
          //recuperando horario atual
          var data_atual = Date.now();
          
-        //Validacoes
-        if($('#local :selected').val() == '' || $('#data_inicial').val() == '' || $('#hora_inicial').val() == ''
-            || $('#data_final').val() == '' || $('#hora_final').val() == '' )
+        //Validacoes (Salvo no caso de edição)
+
+        if(($('#local :selected').val() == '' || $('#data_inicial').val() == '' || $('#hora_inicial').val() == ''
+            || $('#data_final').val() == '' || $('#hora_final').val() == '' ) && flag)
             alert('É necessário informar o periodo de utilização');
-        else if(data_hora_inicial  > data_hora_final)
+        else if(data_hora_inicial  > data_hora_final && flag)
             alert('A data de inicio da reserva deve ser posterior a data final!');
-        else if(data_hora_inicial < data_atual)
+        else if(data_hora_inicial < data_atual && flag)
             alert('A data inicial da reserva deve ser igual ou posterior a data atual');
         else{
             $.getJSON('./reserva-ambiente/reservados/'+dados_form, function(dados){
@@ -235,6 +246,7 @@ $(document).ready(function($) {
     //Adicionar
     $(document).on('click', '.btnAdicionar', function() {
        // alert('agora sim');
+        flag = true;
         $('.modal-footer .btn-action').removeClass('edit');
         $('.modal-footer .btn-action').addClass('add');
 
@@ -260,12 +272,13 @@ $(document).ready(function($) {
     $(document).on('click', '.btnEditar', function() {
         $('.modal-footer .btn-action').removeClass('add');
         $('.modal-footer .btn-action').addClass('edit');
-
+        flag = false;
         $('.modal-title').text('Editar Reserva de Ambiente');
         $('.callout').addClass("hidden"); //ocultar a div de aviso
         $('.callout').find("p").text(""); //limpar a div de aviso
         $('.dadosHora').addClass("hidden");//ocutando dados de horario
         $('.radioEscolha').removeClass("hidden");//Ocurando dados de Ambiente
+        $('#dadosAmbiente').addClass("hidden");
         $('#texto_observacao').text('Descrição do Pedido: ');
         
         var btnEditar = $(this);
@@ -285,6 +298,15 @@ $(document).ready(function($) {
         jQuery('#criar_editar-modal').modal('show'); //Abrir o modal
     });
 
+    //Evento radio
+    $(document).on('click','#ambiente_padrao', function(){
+        $('#dadosAmbiente').addClass("hidden");
+    });
+    $(document).on('click','#ambiente_novo',function(){
+        $('#dadosAmbiente').removeClass("hidden");
+    });
+    //fim evento radio
+    
     //Cancelar
     $(document).on('click', '.btnCancelar', function() {
         $('.callout').addClass("hidden"); //ocultar a div de aviso
@@ -435,7 +457,7 @@ $(document).ready(function($) {
 
         $.ajax({
             type: 'post',
-            url: "./ambiente/edit",
+            url: "./reserva-ambiente/edit",
             data: dados,
             processData: false,
             contentType: false,

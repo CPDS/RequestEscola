@@ -99,7 +99,6 @@ Route::group(['middleware' => ['auth']], function() {
 			Route::post('/cancelar',['as' => 'reserva-equipamento.cancelar', 'uses'=> 'ReservaEquipamentoController@cancelar']);
 			Route::post('/delete',['as' => 'reserva-equipamento.destroy', 'uses'=> 'ReservaEquipamentoController@destroy']);
 			Route::get('/reservados/{dados}',['as' => 'reserva-equipamento.reservados', 'uses' => 'ReservaEquipamentoController@reservados']);
-			Route::post('/feedback',['as' => 'reserva-equipamento.feedback', 'uses'=> 'ReservaEquipamentoController@feedback']);
 		});
 		
 

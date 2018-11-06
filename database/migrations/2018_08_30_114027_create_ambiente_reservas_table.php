@@ -18,8 +18,6 @@ class CreateAmbienteReservasTable extends Migration
             $table->integer('fk_reserva');
             $table->integer('fk_ambiente');
             $table->boolean('tipo');
-            $table->string('solicitante')->nullable();
-            $table->string('telefone')->nullable();
             $table->string('status');
             $table->foreign('fk_reserva')->references('id')->on('reservas');
             $table->foreign('fk_ambiente')->references('id')->on('ambientes');

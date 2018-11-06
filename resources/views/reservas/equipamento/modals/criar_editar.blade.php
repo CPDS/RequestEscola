@@ -1,4 +1,4 @@
-<div id="criar-modal" class="modal fade" role="dialog" data-backdrop="static">
+<div id="criar_editar-modal" class="modal fade" role="dialog" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
 
@@ -16,8 +16,32 @@
 
         <form id="form" role="form" method="post">
          <div class="row" style="width: 100%">
+          
+        
+		<div class="form-group col-md-12">
+			<strong>Solicitante</strong>
+			<div class="input-group">
+				<span class="input-group-addon"><input title="Proprio Usuário Logado" data-nome="{{Auth::user()->name}}" checked type="checkbox" id="ch_usuario_logado" name="ch_usuario_logado"/> </span>
+				<input maxlength="254" id="solicitante" readonly class="form-control" name="solicitante" type="text">
+			</div>
+		</div>
+          <div class="form-group col-md-12">
+            <strong>Funcionário Responsável </strong>
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+              <input maxlength="254" id="responsavel" readonly="true" class="form-control" name="responsavel" type="text">
+            </div>
+          </div>
+
+          <div class="form-group col-md-6" id="div_tel">
+            <strong>Telefone:</strong>
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+              <input id="telefone" maxlength="254" readonly class="form-control" name="telefone" type="text">
+            </div>
+          </div>
           <div class="dadosHora" >  
-            <div class="form-group col-md-12">
+            <div class="form-group col-md-6">
                 <strong>Data</strong>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
@@ -41,31 +65,25 @@
                   </div>
             </div>
           </div>
-        
-		<div class="form-group col-md-12">
-			<strong>Solicitante</strong>
-			<div class="input-group">
-				<span class="input-group-addon"><input title="Proprio Usuário Logado" data-nome="{{Auth::user()->name}}" checked type="checkbox" id="ch_usuario_logado" name="ch_usuario_logado"/> </span>
-				<input maxlength="254" id="solicitante" readonly class="form-control" name="solicitante" type="text">
-			</div>
-		</div>
-          <div class="form-group col-md-12">
-            <strong>Funcionário Responsável </strong>
-            <div class="input-group">
-              <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-              <input maxlength="254" id="responsavel" readonly="true" class="form-control" name="responsavel" type="text">
-            </div>
-          </div>
-
-          <div class="form-group col-md-12">
-            <strong>Telefone:</strong>
-            <div class="input-group">
-              <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-              <input id="telefone" maxlength="254" readonly class="form-control" name="telefone" type="text">
-            </div>
-          </div>
-
           
+          <div class="form-group col-md-12 ">
+            <strong>Ambiente</strong>
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-university"></i></span>
+                <select name="ambiente" id="ambiente" class="form-control">
+                  @foreach($tipoAmbientes as $tipoAmbiente)
+                    <optgroup label="{{$tipoAmbiente->nome}}">
+                      @foreach($ambientes as $ambiente)    
+                        @if($ambiente->fk_tipo == $tipoAmbiente->id)
+                          <option value='{{$ambiente->id}}'>{{$ambiente->numero_ambiente}}</option>
+                        @endif
+                      @endforeach
+                    </optgroup>
+                  @endforeach
+                </select>
+              </div>  
+            </div>
+
             <div class="form-group col-md-6 ">
             <strong>Local</strong>
             <div class="input-group">
@@ -84,8 +102,7 @@
                 <strong>Equipamentos</strong>
                   <div class="input-group"  style="width:100%">
                     <select name="equipamentos[]" id="equipamentos" class="form-control js-example-basic-multiple" style="width:100%" multiple="multiple">
-                      <option>Selecione</option>
-                      <option>Selecione2</option>
+                    
                     </select>
                   </div>       
               </div>

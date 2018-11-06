@@ -112,7 +112,7 @@
 		<!-- fim tabela profesores-->
 @endrole
 
-@include('reservas.equipamento.modals.criar')
+@include('reservas.equipamento.modals.criar_editar')
 
    
 @endsection
