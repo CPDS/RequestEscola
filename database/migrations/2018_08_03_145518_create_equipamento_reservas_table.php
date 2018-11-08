@@ -17,7 +17,7 @@ class CreateEquipamentoReservasTable extends Migration
             $table->increments('id');
             $table->integer('fk_reserva');
             $table->integer('fk_equipamento');
-            $table->string('status');
+            $table->string('status')->default('Ativo');
             $table->foreign('fk_reserva')->references('id')->on('reservas');
             $table->foreign('fk_equipamento')->references('id')->on('equipamentos');
             $table->timestamps();

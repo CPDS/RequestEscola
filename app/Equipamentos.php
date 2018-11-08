@@ -19,6 +19,10 @@ class Equipamentos extends Model
     	return $this->belongsTo(TipoEquipamentos::class,'fk_tipo_equipamento');
     }
 
+    public function reserva(){
+
+        return $this->belongsToMany(Reservas::class,'equipamento_reservas','fk_reserva','fk_equipamento');
+    }
     
 
 }

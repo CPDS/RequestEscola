@@ -270,7 +270,7 @@ $(document).ready(function($) {
          //recuperando horario atual
          var data_atual = Date.now();
         //Validacoes
-        if($('#local :selected').val() == '' || $('#data').val() == '' || $('#hora_inicial').val() == ''
+        if($('#data').val() == '' || $('#hora_inicial').val() == ''
             || $('#hora_final').val() == '' )
             alert('É necessário informar o periodo de utilização');
         else if(data_hora_inicial  > data_hora_final)

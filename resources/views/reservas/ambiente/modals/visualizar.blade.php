@@ -55,7 +55,7 @@
         </div>
 		
 		<div class="form-group">
-            <strong>Telefone do Responsável:</strong>
+            <strong>Telefone do Solicitante:</strong>
               <span id="telefone-visualizar"></span>
         </div>
     <div class="form-group">

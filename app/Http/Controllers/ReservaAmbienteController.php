@@ -26,36 +26,40 @@ class ReservaAmbienteController extends Controller
 
     function __construct(){
         //Reservas aguardando retirada
-        Reservas::with('ambienteReserva')
+        DB::table('reservas')
+        ->join('ambiente_reservas','reservas.id','=','fk_reserva')
         ->where('data_inicial','<',DB::raw('now()'))
         ->where('data_final','>',DB::raw('now()'))
         ->orwhere('data_final','<',DB::raw('now()'))
-        ->where('status','Reservado')
+        ->where('reservas.status','Reservado')
+        ->select('reservas.status')
         ->update([
             'status' => 'Em uso'
         ]);
+
         
         //Reservas Em uso 
-        Reservas::with('ambienteReserva')
+        DB::table('reservas')
+        ->join('ambiente_reservas','reservas.id','=','fk_reserva')
         ->where('data_final','<',DB::raw('now()'))
-        ->where('status','Em uso')
+        ->where('reservas.status','Em uso')
+        ->select('reservas.status')
         ->update([
             'status' => 'Finalizada'
-            ]);
+        ]);
         
         //reservas finalizadas
-        $finalizados = Reservas::with('ambienteReserva')
-        ->whereRaw('data_final + interval \'2 minute\' < now()')
-        ->where('status','Finalizada')
-        ->select('id')
-        ->get();
-        //dd($finalizados);
-        if($finalizados != null){
-            foreach($finalizados as $reserva){
-                AmbienteReserva::where('fk_reserva',$reserva->id)
-                ->update(['status' => 'Finalizada']);
-            }
-        }
+        DB::table('ambiente_reservas')
+        ->join('reservas','ambiente_reservas.id','=','reservas.id')
+        ->whereRaw('reservas.data_final + interval \'2 minute\' < now()')
+        ->where('ambiente_reservas.status','Ativo')
+        ->where('reservas.status','Finalizada')
+        ->select('ambiente_reservas.status')
+        ->update([
+            'status' => 'Finalizada'
+        ]);
+        
+        
 
     }
   
@@ -98,7 +102,7 @@ class ReservaAmbienteController extends Controller
     }
 
     //Turno
-    private function turno(Reservas $reservas){
+    private function turno($reservas){
 
         //Recuperando data e hora final da reserva e convertendo o formato
         $data_final = date('d/m/Y',strtotime($reservas->data_final));
@@ -202,14 +206,14 @@ class ReservaAmbienteController extends Controller
         return response()->json(['ambientes'=> $paraReservar, 'tipoAmbiente' => $tipoAmbiente]);
     }
     //Botões
-    private function setDataButtons(Reservas $reservas){
+    private function setDataButtons($reservas){
     
-        
+        //dd($reservas);
         //recuperando ambientes reservados
         
         $ambientes = AmbienteReserva::where('tipo',true)
         ->where('status','!=','Inativo')
-        ->where('fk_reserva',$reservas->id)
+        ->where('fk_reserva',$reservas->fk_reserva)
         ->get();
         
         //dd($reservas);
@@ -229,23 +233,23 @@ class ReservaAmbienteController extends Controller
         foreach($ambientes as $ambiente){
             //dd($ambiente);
             //dados do botão visualizar
-            $dadosVisualizar = 'data-id="'.$reservas->id.
+            $dadosVisualizar = 'data-id="'.$reservas->fk_reserva.
             '" data-local="'.$ambiente->ambiente->local->nome.
             '" data-numero="'.$ambiente->ambiente->numero_ambiente.
             '" data-hora_incio="'.$hora_inicial.
             '" data-data_final="'.$data_final.
             '" data-hora_final="'.$hora_final.
             '" data-observacao="'.$reservas->observacao.
-            '" data-telefone="'.$reservas->usuario->telefone.
-            '" data-responsavel="'.$reservas->usuario->name.
+            '" data-telefone="'.$reservas->solicitante_telefone.
+            '" data-responsavel="'.$reservas->name.
             '" data-ambiente="'.$ambiente->ambiente->tipo->nome.
             '" data-feedback="'.$reservas->feedback.'"';
             
             //dados para botão editar
-            $dados_editar = 'data-id="'.$reservas->id.
+            $dados_editar = 'data-id="'.$reservas->fk_reserva.
             '" data-solicitante="'.$reservas->solicitante.
-            '" data-responsavel="'.$reservas->usuario->name.
-            '" data-telefone="'.$reservas->telefone.
+            '" data-responsavel="'.$reservas->name.
+            '" data-telefone="'.$reservas->solicitante_telefone.
             '" data-ambiente="'.$ambiente->fk_ambiente.
             '" data-local="'.$ambiente->ambiente->fk_local.
             '" data-data_hora_inicio="'.$data_inicio_editar.
@@ -254,10 +258,10 @@ class ReservaAmbienteController extends Controller
                data-ambiente_novo="novo"';
 
             //Dados cancelar
-            $dados_cancelar = 'data-id="'.$reservas->id.
+            $dados_cancelar = 'data-id="'.$reservas->fk_reserva.
             '" data-descricao="'.$ambiente->ambiente->descricao.'" ';
             //dados feedback
-            $dados_feedback = 'data-id_feedback="'.$reservas->id.
+            $dados_feedback = 'data-id_feedback="'.$reservas->fk_reserva.
             '" data-feedback="'.$reservas->feedback.'"';
         }
     
@@ -365,7 +369,7 @@ class ReservaAmbienteController extends Controller
             $reserva->data_final = $data_entrega;
             $reserva->observacao = $request->observacao;
             $reserva->solicitante = $solicitante;
-            $reserva->telefone = $telefone;
+            $reserva->solicitante_telefone = $telefone;
             $reserva->status = 'Reservado';
             $reserva->save();
 
@@ -434,7 +438,7 @@ class ReservaAmbienteController extends Controller
             ->where('status','!=','Inativo')
             ->update([
                 'solicitante' => $request->solicitante,
-                'telefone' => $request->telefone            
+                'solicitante_telefone' => $request->telefone            
             ]);
 
             //dd($reserva_antiga);
@@ -477,16 +481,30 @@ class ReservaAmbienteController extends Controller
         //Consulta para Colaboradores
         if($usuario_logado->hasRole('Administrador|Funcionário')){
         
-            $reservas = Reservas::whereRaw('status = \'Finalizada\' and data_final + interval \'2 minute\' > now()')
-            ->orwhereRaw('status = \'Cancelada\' and data_final + interval \'2 minute\' > now()')
-            ->orwhere('status','Em uso')
-            ->orwhere('status','Reservado')
-            ->orwhereRaw('fk_usuario = ? and status != \'Inativo\'',[$usuario_logado->id])
+            $reservas = DB::table('reservas')
+            ->join('ambiente_reservas','reservas.id','=','ambiente_reservas.fk_reserva')
+            ->join('users','reservas.fk_usuario','=','users.id')
+            ->whereRaw('reservas.status = \'Finalizada\' and data_final + interval \'2 minute\' > now()')
+            ->orwhereRaw('reservas.status = \'Cancelada\' and data_final + interval \'2 minute\' > now()')
+            ->orwhere('reservas.status','Em uso')
+            ->orwhere('reservas.status','Reservado')
+            ->orwhereRaw('fk_usuario = ? and reservas.status != \'Inativo\'',[$usuario_logado->id])
+            ->select('reservas.fk_usuario','data_inicial','data_final','data_hora_retirada'
+            ,'data_hora_entrega','fk_reserva_externa','fk_usuario_retirada','fk_usuario_entrega','solicitante'
+            ,'solicitante_telefone','parecer','reservas.observacao','feedback','reservas.status','ambiente_reservas.fk_reserva'
+            ,'users.name')
             ->get();
             //dd($reservas);
         }else{//Consulta para professores
-            $reservas = Reservas::where('fk_usuario',$usuario_logado->id)
-            ->where('status', '!=', 'Inativo')
+            $reservas = DB::table('reservas')
+            ->join('ambiente_reservas','reservas.id','=','ambiente_reservas.fk_reserva')
+            ->join('users','reservas.fk_usuario','=','users.id')
+            ->where('reservas.fk_usuario',$usuario_logado->id)
+            ->where('reservas.status', '!=', 'Inativo')
+            ->select('reservas.fk_usuario','data_inicial','data_final','data_hora_retirada'
+            ,'data_hora_entrega','fk_reserva_externa','fk_usuario_retirada','fk_usuario_entrega','solicitante'
+            ,'solicitante_telefone','parecer','reservas.observacao','feedback','reservas.status','ambiente_reservas.fk_reserva'
+            ,'users.name')
             ->get();
         }
         //dados de ambiente
@@ -500,13 +518,10 @@ class ReservaAmbienteController extends Controller
         })
         ->editColumn('ambiente', function($reservas){
              $ambientes = AmbienteReserva::with('ambiente')
-            ->where('fk_reserva',$reservas->id)
+            ->where('fk_reserva',$reservas->fk_reserva)
             ->where('status','!=','Inativo')
             ->first();  
             return $ambientes->ambiente->tipo->nome;
-        })
-        ->editColumn('solicitante', function($reservas){
-            return $reservas->solicitante;
         })
         ->editColumn('data', function($reservas){
             return date('d/m/Y',strtotime($reservas->data_inicial));

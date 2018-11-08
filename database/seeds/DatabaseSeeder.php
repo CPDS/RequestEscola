@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ModelRolesSeeder::class);
         $this->call(TipoAmbienteSeeder::class);
         $this->call(LocaisSeeder::class);
+        $this->call(TipoEquipamentoSeeder::class);
+        $this->call(EquipamentoSeeder::class);
        
     }
 }

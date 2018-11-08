@@ -10,7 +10,12 @@ class Reservas extends Model
 
     public function equipamento(){
 
-    	return $this->belongsToMany(Equipamentos::class);
+    	return $this->belongsToMany(Equipamentos::class,'equipamento_reservas','fk_reserva','fk_equipamento');
+    }
+
+    public function ambiente(){
+
+    	return $this->belongsToMany(Ambiente::class,'ambiente_reservas','fk_reserva','fk_ambiente');
     }
 
     public function usuario(){
@@ -20,12 +25,21 @@ class Reservas extends Model
 
     public function equipamentoReserva(){
 
-    	return $this->hasMany(EquipamentoReservas::class, 'fk_equipamento');
+    	return $this->hasMany(EquipamentoReservas::class, 'fk_reserva');
     }
 
     public function ambienteReserva(){
         
         return $this->hasMany(AmbienteReserva::class,'fk_reserva');
+    }
+    public function usuarioRetirada(){
+        
+        return $this->belongsTo(User::class,'fk_usuario_retirada');
+    }
+
+    public function usuarioEntrega(){
+        
+        return $this->belongsTo(User::class,'fk_entrega');
     }
     
 }
