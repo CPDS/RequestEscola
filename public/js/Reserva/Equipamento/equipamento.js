@@ -388,6 +388,16 @@ $(document).ready(function($) {
         jQuery('#excluir-modal').modal('show'); //Abrir o modal
     });
 
+    //Retirar
+    $(document).on('click', '.btnRetirar', function() {
+        $('.callout').addClass("hidden"); //ocultar a div de aviso
+        $('.callout').find("p").text(""); //limpar a div de aviso
+        
+        $('#equipamentos-retirar').text($(this).data('equipamentos'));
+        $('.id_ret').val($(this).data('id')); 
+        jQuery('#retirar-modal').modal('show'); //Abrir o modal
+    });
+
     //modal feedback
     $(document).on('click', '.btnFeedback', function() {
         $('.modal-title').text('Novo Feedback');
@@ -401,6 +411,13 @@ $(document).ready(function($) {
         });
                 
         jQuery('#feedback-modal').modal('show'); //Abrir o modal
+    });
+
+    //modal Finalizar
+    $(document).on('click', '.btnFinalizar', function() {
+        $('#equipamentos').text($(this).data('equipamentos'));
+        $('.id_fin').val($(this).data('id')); 
+        jQuery('#finalizar-modal').modal('show'); //Abrir o modal
     });
 
     //AJAX feedback
@@ -647,6 +664,99 @@ $(document).ready(function($) {
 
         });
     });
+
+     //AJAX Retirar
+     $('.modal-footer').on('click', '.ret', function() {
+
+        $.ajax({
+            type: 'post',
+            url: '../reserva-equipamento/retirar',
+            data: {
+                'id': $(".id_ret").val(),
+            },
+            beforeSend: function(){
+                jQuery('.ret').button('loading');
+            },
+            complete: function() {
+                jQuery('.ret').button('reset');
+            },
+            success: function(data) {
+
+                if ((data.errors)) {
+                    $('.callout').removeClass('hidden'); //exibe a div de erro
+                    $('.callout').find('p').text(""); //limpa a div para erros successivos
+
+                    $.each(data.errors, function(nome, mensagem) {
+                            $('.callout').find("p").append(mensagem + "</br>");
+                    });
+                } else {                    
+                    $('#table').DataTable().draw(false); //remove a linha e ordena
+                    jQuery('#retirar-modal').modal('hide'); //fechar o modal
+                    
+                    $(function() {
+
+                        iziToast.success({
+                            title: 'OK',
+                            message: 'Equipamentos retirados com Sucesso!',
+                        });
+                    });
+                    //window.location.reload();
+                }               
+            },
+            error: function() {
+
+                jQuery('#retirar-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+
+        });
+    });
+
+    $('.modal-footer').on('click', '.fin', function() {
+        
+        $.ajax({
+            type: 'post',
+            url: '../reserva-equipamento/finalizar',
+            data: {
+                'id': $(".id_fin").val(),
+            },
+            beforeSend: function(){
+                jQuery('.fin').button('loading');
+            },
+            complete: function() {
+                jQuery('.fin').button('reset');
+            },
+            success: function(data) {
+                $('#table').DataTable().draw(false); //remove a linha e ordena
+                jQuery('#finalizar-modal').modal('hide'); //fechar o modal
+                
+                $(function() {
+
+                    iziToast.success({
+                        title: 'OK',
+                        message: 'Equipamentos devolvidos com Sucesso!',
+                    });
+                    
+                });
+                //window.location.reload();
+            },
+            error: function() {
+
+                jQuery('#finalizar-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+
+        });
+    });
+
 
     //Validação de dados
     $("#telefone").mask("(99) 99999-9999");

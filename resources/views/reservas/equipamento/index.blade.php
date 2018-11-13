@@ -114,6 +114,10 @@
 
 @include('reservas.equipamento.modals.criar_editar')
 @include('reservas.equipamento.modals.visualizar')
+@role('Administrador|Funcionário')
+	@include('reservas.equipamento.modals.retirar')
+	@include('reservas.equipamento.modals.finalizar')
+@endrole
 
    
 @endsection

@@ -470,21 +470,7 @@ class ReservaEquipamentoController extends Controller
                 ['tipo' => false,
                 'status' => 'Ativo']
             );
-            /*foreach($request->equipamentos as $equipamento){
-                $equipamento_reserva = new EquipamentoReservas();
-                $equipamento_reserva->fk_reserva = $reserva->id;
-                $equipamento_reserva->fk_equipamento = $equipamento;
-
-                $equipamento_reserva->save();
-            }
-
-            $ambiente = new AmbienteReseva();
-            $ambiente->fk_reserva = $reserva->id;
-            $ambiente->fk_ambiente = $request->ambiente;
-            $ambiente->tipo = false;
-            $ambiete->status = 'Ativo';
-            $ambiente->save();*/
-
+           
 
             $reserva->setAttribute('buttons', $this->setDataButtons($reserva)); 
             return response()->json($reserva);
@@ -498,6 +484,7 @@ class ReservaEquipamentoController extends Controller
         //
     }
 
+    
     //Excluindo reserva
     public function destroy(Request $request)
     {
@@ -511,12 +498,34 @@ class ReservaEquipamentoController extends Controller
 
     //Retirar equipamento
     public function retirar(Request $request){
+        $reservas = Reservas::find($request->id);
+        $reservas->status = "Retirado";
+        $reservas->data_hora_retirada = date('Y-m-d H:i:s',strtotime('now'));
+        $reservas->fk_usuario_retirada = Auth::user()->id;
+        $reservas->save();
+        $reservas->setAttribute('buttons', $this->setDataButtons($reservas)); 
 
+        return response()->json($reservas);
     }
 
     //Finalizar reserva
     public function finalizar(Request $request){
-
+        //Alterando status da reserva       
+        $reservas = Reservas::find($request->id);
+        $reservas->status = "Finalizada";
+        $reservas->data_hora_entrega = date('Y-m-d H:i:s',strtotime('now'));
+        $reservas->fk_usuario_entrega = Auth::user()->id;
+        $reservas->save();
+ 
+        //Atualizando tabela equipamento reservas
+        EquipamentoReservas::where('fk_reserva',$request->id)
+        ->update(['status' => 'Inativo']);
+        AmbienteReserva::where('fk_reserva',$request->id)
+        ->update(['status' => 'Inativo']);
+        
+         $reservas->setAttribute('buttons', $this->setDataButtons($reservas)); 
+ 
+         return response()->json($reservas);
     }
     
 }
