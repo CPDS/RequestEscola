@@ -228,7 +228,10 @@ class ReservaAmbienteController extends Controller
         //recuperando hora inicial da reserva
         $hora_inicial = date('H:i',strtotime($reservas->data_inicial));
         //dd($ambientes);
-        
+        $dadosVisualizar = '';
+        $dados_editar = '';
+        $dados_cancelar = '';
+        $dados_feedback = '';
         //preenchendo os botões
         foreach($ambientes as $ambiente){
             //dd($ambiente);
@@ -488,7 +491,8 @@ class ReservaAmbienteController extends Controller
             ->orwhereRaw('reservas.status = \'Cancelada\' and data_final + interval \'2 minute\' > now()')
             ->orwhere('reservas.status','Em uso')
             ->orwhere('reservas.status','Reservado')
-            ->orwhereRaw('fk_usuario = ? and reservas.status != \'Inativo\'',[$usuario_logado->id])
+            ->where('tipo',true)
+            ->orwhereRaw('fk_usuario = ? and reservas.status != \'Inativo\' and tipo = true',[$usuario_logado->id])
             ->select('reservas.fk_usuario','data_inicial','data_final','data_hora_retirada'
             ,'data_hora_entrega','fk_reserva_externa','fk_usuario_retirada','fk_usuario_entrega','solicitante'
             ,'solicitante_telefone','parecer','reservas.observacao','feedback','reservas.status','ambiente_reservas.fk_reserva'

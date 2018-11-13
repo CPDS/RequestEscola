@@ -91,7 +91,7 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::group(['prefix'=> 'reserva-equipamento', 'where' => ['id'=>'0-9+']], function (){
 			Route::get('/',['as' => 'reserva-equipamento.index', 'uses' => 'ReservaEquipamentoController@index']);
 			Route::get('/list',['as' => 'reserva-equipamento.list', 'uses' => 'ReservaEquipamentoController@list']);
-			Route::get('/atendidos',['as' => 'reserva-equipamento.atendidos', 'uses' => 'ReservaEquipamentoController@atendidos'])->middleware('role:Administrador|Funcionario');
+			Route::get('/atendidos',['as' => 'reserva-equipamento.atendidos', 'uses' => 'ReservaEquipamentoController@atendidos'])->middleware('role:Administrador|Funcionário');
 			Route::post('/create', ['as' => 'resereva-ambiente.create', 'uses' => 'ReservaEquipamentoController@store']);
 			Route::post('/edit',['as' => 'reserva-equipamento.edit', 'uses' => 'ReservaEquipamentoController@update'])->middleware('role:Administrador|Funcionário');
 			Route::post('/retirar',['as' => 'reserva-equipamento.retirar', 'uses' => 'ReservaEquipamentoController@retirar'])->middleware('role:Administrador|Funcionário');

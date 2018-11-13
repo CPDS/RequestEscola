@@ -113,6 +113,7 @@
 @endrole
 
 @include('reservas.equipamento.modals.criar_editar')
+@include('reservas.equipamento.modals.visualizar')
 
    
 @endsection

@@ -39,7 +39,7 @@ class Reservas extends Model
 
     public function usuarioEntrega(){
         
-        return $this->belongsTo(User::class,'fk_entrega');
+        return $this->belongsTo(User::class,'fk_usuario_entrega');
     }
     
 }

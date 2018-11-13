@@ -18,11 +18,35 @@ use App\{
     Equipamentos,
     EquipamentoReservas, 
     TipoAmbiente,
-    AmbienteReserva
+    AmbienteReserva,
+    TipoEquipamentos
 };
 
 class ReservaEquipamentoController extends Controller
 {
+
+    function __construct(){
+        $reserva = Reservas::whereRaw('status = \'Reservado\' and data_final < now()')
+        ->get();
+        
+        Reservas::whereRaw('status = \'Reservado\' and data_final < now()')
+        ->update([
+            'status' => 'Expirado',
+            'feedback' => 'Reserva Expirada'
+        ]);
+        
+        foreach($reserva as $reservas){
+            EquipamentoReservas::where('fk_reserva',$reservas->id)
+            ->update([
+                'status' => 'Inativo'
+            ]);
+            AmbienteReserva::where('fk_reserva',$reservas->id)
+            ->update([
+                'status' => 'Inativo'
+            ]);
+        }
+
+    }
     
     public function index()
     {   
@@ -32,9 +56,97 @@ class ReservaEquipamentoController extends Controller
         return view('reservas.equipamento.index',compact('locais','ambientes','tipoAmbientes'));
     }
 
+    //selecionar equipamentos reservados
+    public static function Equipamentos_reservados($data_inicio, $data_final){
+        //convertendo para formato americano
+        $data_inicio = date('Y-m-d H:i:s',strtotime($data_inicio));
+        $data_final = date('Y-m-d H:i:s',strtotime($data_final));
+         
+        //Todos os ambientes ocupados no dia escolhido + hora inicial + hora final das reservas
+        $consulta = 'select equipamentos.id,
+        reservas.data_inicial,reservas.data_final,
+        equipamento_reservas.status from equipamentos join equipamento_reservas
+        on equipamentos.id = equipamento_reservas.fk_equipamento
+        join reservas on equipamento_reservas.fk_reserva = reservas.id
+        where ? between data_inicial and data_final
+        or ? between data_inicial and data_final
+        and equipamento_reservas.status = ?
+        and reservas.status = ? or reservas.status = ?';
+        
+        //Associando atributos e executando a consulta sql  
+        $Reservados = DB::select($consulta,[
+            $data_inicio,
+            $data_final,
+            'Ativo',
+            'Reservado',
+            'Retirado'
+        ]);
+
+        return $Reservados;
+    }
+
+    //Retorna equipamentos reservados para javascript
+    public function reservados(Request $request){
+        $dados = explode(',',$request->dados);
+        $local = $dados[0];
+        $data_inicio = $dados[1];
+        $data_final = $dados[2];
+
+       //tipos de Equipamento
+       $tipos = TipoEquipamentos::where('status','Ativo')->get();
+        
+       $paraReservar = array();
+       $tipoEquipamento = array();
+       //pecorrendo por cada tipo de Equipamento
+       foreach($tipos as $tipo){
+        
+        //armazenando os tipos de equipamentos
+        array_push($tipoEquipamento,[
+            'id' => $tipo->id,
+            'nome' => $tipo->nome
+        ]);
+        $naoPodeUsar = array();
+        //recuperando os equipamentos reservados
+        $equipamentos_reservados = ReservaEquipamentoController::Equipamentos_reservados($data_inicio, $data_final);
+        
+        if($equipamentos_reservados != null){
+                foreach($equipamentos_reservados as $equipamento_reservado){
+                    if($equipamento_reservado->status)
+                        array_push($naoPodeUsar,$equipamento_reservado->fk_ambiente);
+                }
+            }
+
+            //condições para selecionar os equipamentos a serem reservados
+            if($equipamentos_reservados == null){
+                $equipamento_que_sera_reservado = Equipamentos::where('status','Ativo')
+                ->where('fk_local',$local)
+                ->get();
+            }else{
+                $equipamento_que_sera_reservado = Equipamentos::where('status','Ativo')
+                ->where('fk_local',$local)
+                ->whereNotIn('id',$naoPodeUsar)
+                ->get();
+            }
+        }
+        //dd($equipamento_que_sera_reservado);
+        //populando array de ambientes disponíveis
+        foreach ($equipamento_que_sera_reservado as $equipamento_que_sera_Reservado2) {
+                        
+            array_push($paraReservar,[
+                'id' => $equipamento_que_sera_Reservado2->id,
+                'codigo' => $equipamento_que_sera_Reservado2->codigo,
+                'fk_tipo' => $equipamento_que_sera_Reservado2->fk_tipo_equipamento
+            ]);  
+        }
+
+        //retornando arrays
+        return response()->json(['equipamentos'=> $paraReservar, 'tipoEquipamento' => $tipoEquipamento]);
+        
+    }
+
+
     //Botões
     private function setDataButtons($reservas){
-    
         
         //recuperando dados de ambiente
         $ambientes = AmbienteReserva::where('fk_reserva',$reservas->id)
@@ -43,17 +155,17 @@ class ReservaEquipamentoController extends Controller
         $equipamento_reservas = EquipamentoReservas::where('status','!=','Inativo')
         ->where('fk_reserva',$reservas->id)
         ->get();
-        //dd($equipamento_reservas);
+        
 
         $equipamentos = '';
         //equipamentos
         foreach($equipamento_reservas as $equipamento){
-            $equipamentos .= 'Tipo: '.$equipamento->equipamento->tipoEquipamento->nome;
+            $equipamentos .= ' Tipo: '.$equipamento->equipamento->tipoEquipamento->nome;
             if(!$equipamento->equipamento->codigo)
-                $equipamentos .= 'Tombo: '.$equipamento->equipamento->num_tombo;
+                $equipamentos .= ' Tombo: '.$equipamento->equipamento->num_tombo;
             else
-                $equipamentos .= 'Código: '.$equipamento->equipamento->codigo;
-            
+                $equipamentos .= ' Código: '.$equipamento->equipamento->codigo;
+                
         }   
 
         //dd($equipamento_reservas);
@@ -77,11 +189,19 @@ class ReservaEquipamentoController extends Controller
         $dadoFeedback = '';
         $dadosRetirar = '';
 
-
+        $usuarioRetirada = '';
+        $usuarioEntrega = '';
 
         //preenchendo os botões
         foreach($equipamento_reservas as $equipamento){
-            //dd($ambiente);
+            
+            //Caso tenha retirado o equipamento
+            if($reservas->data_hora_retirada)
+                $usuarioRetirada = $ambientes->reserva->usuarioRetirada->name;
+            //caso tenha entrege os equipamentos
+            if($reservas->data_hora_entrega)
+                $usuarioEntrega = $ambientes->reserva->usuarioEntrega->name;
+            
              //dados do botão visualizar
              $dadosVisualizar = 'data-id="'.$reservas->id.
              '" data-observacao="'.$reservas->observacao.
@@ -91,10 +211,11 @@ class ReservaEquipamentoController extends Controller
              '" data-equipamentos="'.$equipamentos.
              '" data-hora_retirada="'.$reservas->data_hora_retirada.
              '" data-hora_entrega="'.$reservas->data_hora_entrega.
-            
+             '" data-usuario_retirada="'.$usuarioRetirada.
+             '" data-usuario_entrega="'.$usuarioEntrega.
              '" data-ambiente="'.$ambientes->ambiente->tipo->nome.' Nº: '.$ambientes->ambiente->numero_ambiente.
              '" data-local="'.$equipamento->equipamento->local->nome.
-             '" data-equipamentos="'.$equipamentos.'"';
+             '"';
             
             //dados para botão editar
             $dadosEditar = 'data-id="'.$reservas->id.
@@ -126,7 +247,7 @@ class ReservaEquipamentoController extends Controller
         $btnExcluir= '';
         $btnCancelar = '';
         $btnFinalizar = '';
-
+        $btnRetirar = '';
         //Condição para botão excluir e cancelar
         if($reservas->status == 'Reservado' || $reservas->status == 'Retirado')
             $btnCancelar = ' <a '.$dadosCancelar.' class="btn btn-sm btn-danger btnCancelar" title="Cancelar" data-toggle="tooltip"><i class="fa fa-times"></i></a>';    
@@ -157,6 +278,7 @@ class ReservaEquipamentoController extends Controller
 
     }
 
+
     //listar pedidos para colaboradores (reservados) e professores (todos)
     public function list(){
     
@@ -169,7 +291,7 @@ class ReservaEquipamentoController extends Controller
             ->join('equipamento_reservas','reservas.id','=','equipamento_reservas.fk_reserva')
             ->join('users','reservas.fk_usuario','=','users.id')
             ->where('reservas.status','Reservado')
-            ->groupBy('reservas.id','users.name')
+            ->groupBy('reservas.id','users.id')
             ->select('reservas.fk_usuario','data_inicial','data_final','data_hora_retirada'
             ,'data_hora_entrega','fk_reserva_externa','fk_usuario_retirada','fk_usuario_entrega','reservas.solicitante'
             ,'reservas.solicitante_telefone','parecer','reservas.observacao','feedback','reservas.status','reservas.id'
@@ -182,6 +304,7 @@ class ReservaEquipamentoController extends Controller
             ->join('users','reservas.fk_usuario','=','users.id')
             ->where('reservas.fk_usuario',$usuario_logado->id)
             ->where('reservas.status', '!=', 'Inativo')
+            ->groupBy('reservas.id','users.id')
             ->select('reservas.fk_usuario','data_inicial','data_final','data_hora_retirada'
             ,'data_hora_entrega','fk_reserva_externa','fk_usuario_retirada','fk_usuario_entrega','solicitante'
             ,'solicitante_telefone','parecer','reservas.observacao','feedback','reservas.status','reservas.id'
@@ -238,6 +361,7 @@ class ReservaEquipamentoController extends Controller
         ->orwhereRaw('reservas.status = \'Cancelado\' and reservas.data_final + interval \'2 minute\' > now()')
         ->orwhereRaw('reservas.status = \'Finalizada\' and reservas.data_hora_entrega + interval \'2 minute\' > now()')
         ->orwhereRaw('reservas.status != \'Inativo\' and reservas.status != \'Reservado\' and reservas.fk_usuario = ?',[$usuario_logado->id])
+        ->groupBy('reservas.id','users.id')
         ->select('reservas.fk_usuario','data_inicial','data_final','data_hora_retirada'
         ,'data_hora_entrega','fk_reserva_externa','fk_usuario_retirada','fk_usuario_entrega','solicitante'
         ,'solicitante_telefone','parecer','reservas.observacao','feedback','reservas.status','reservas.id'
@@ -258,7 +382,7 @@ class ReservaEquipamentoController extends Controller
             return date('H:i',strtotime($reservas->data_final));
         })
         ->editColumn('telefone',function($reservas){
-            return $reservas->telefone_solicitante;
+            return $reservas->solicitante_telefone;
         })
         ->editColumn('status', function($reservas){
             $status = $reservas->status;

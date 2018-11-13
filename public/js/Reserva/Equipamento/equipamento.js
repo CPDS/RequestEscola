@@ -288,7 +288,7 @@ $(document).ready(function($) {
 
                         $.each(dados.equipamentos, function(i,equipamentos){
                             if(tipoEquipamento.id == equipamentos.fk_tipo){
-                                option += '<option value="'+equipamentos.id+'">'+equipamentos.numero_ambiente+'</option>';
+                                option += '<option value="'+equipamentos.id+'">'+equipamentos.codigo+'</option>';
                             }
                         });
 
@@ -304,12 +304,11 @@ $(document).ready(function($) {
 
     //Visualizar
     $(document).on('click', '.btnVisualizar', function() {
-        $('#ambiente-visualizar').text($(this).data('ambiente'));
         $('#telefone-visualizar').text($(this).data('telefone'));
-        $('#horaInicial-visualizar').text($(this).data('hora_incio'));
-        $('#horaFinal-visualizar').text($(this).data('hora_final'));
-        $('#dataFinal-visualizar').text($(this).data('data_final'));
-        $('#numero-visualizar').text($(this).data('numero'));        
+        $('#ambiente-visualizar').text($(this).data('ambiente'));
+        $('#retirada-visualizar').text('Retirado por: '+$(this).data('usuario_retirada')+' às:' +$(this).data('hora_retirada'));
+        $('#entrega-visualizar').text('Recolhido por: '+$(this).data('usuario_entrega')+' às:' +$(this).data('hora_entrega'));
+        $('#equipamentos-visualizar').text($(this).data('equipamentos'));        
         $('#responsavel-visualizar').text($(this).data('responsavel'));
         $('#observacao-visualizar').text($(this).data('observacao'));
         $('#local-visualizar').text($(this).data('local'));
