@@ -52,11 +52,6 @@
                 <strong>Telefone do Responsável:</strong>
                 <span id="telefone-visualizar"></span>
             </div>
-
-            <div class="form-group">
-                <strong>Equipamentos:</strong>
-                <span id="equipamentos-visualizar"></span>
-            </div>
             
             <div class="form-group">
                 <strong>Feedback:</strong>
@@ -66,6 +61,11 @@
             <div class="form-group">
                 <strong>Observações:</strong>
                 <span id="observacao-visualizar"></span>
+            </div>
+
+            <div class="form-group" style="color: red;">
+                <strong>Equipamentos:</strong>
+                <span id="equipamentos-visualizar"></span>
             </div>
 
       </div>

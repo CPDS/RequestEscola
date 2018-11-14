@@ -306,8 +306,8 @@ $(document).ready(function($) {
     $(document).on('click', '.btnVisualizar', function() {
         $('#telefone-visualizar').text($(this).data('telefone'));
         $('#ambiente-visualizar').text($(this).data('ambiente'));
-        $('#retirada-visualizar').text('Retirado por: '+$(this).data('usuario_retirada')+' às:' +$(this).data('hora_retirada'));
-        $('#entrega-visualizar').text('Recolhido por: '+$(this).data('usuario_entrega')+' às:' +$(this).data('hora_entrega'));
+        $('#retirada-visualizar').text('Retirado por: '+$(this).data('usuario_retirada')+' em: ' +$(this).data('hora_retirada'));
+        $('#entrega-visualizar').text('Recolhido por: '+$(this).data('usuario_entrega')+' em: ' +$(this).data('hora_entrega'));
         $('#equipamentos-visualizar').text($(this).data('equipamentos'));        
         $('#responsavel-visualizar').text($(this).data('responsavel'));
         $('#observacao-visualizar').text($(this).data('observacao'));

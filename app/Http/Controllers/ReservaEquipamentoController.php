@@ -38,11 +38,11 @@ class ReservaEquipamentoController extends Controller
         foreach($reserva as $reservas){
             EquipamentoReservas::where('fk_reserva',$reservas->id)
             ->update([
-                'status' => 'Inativo'
+                'status' => 'Finalizada'
             ]);
             AmbienteReserva::where('fk_reserva',$reservas->id)
             ->update([
-                'status' => 'Inativo'
+                'status' => 'Finalizada'
             ]);
         }
 
@@ -150,7 +150,9 @@ class ReservaEquipamentoController extends Controller
         
         //recuperando dados de ambiente
         $ambientes = AmbienteReserva::where('fk_reserva',$reservas->id)
-        ->where('status','Ativo')->first();
+        ->where('status','!=','Inativo')
+        ->where('tipo',false)
+        ->first();
         //dd($ambientes);
         $equipamento_reservas = EquipamentoReservas::where('status','!=','Inativo')
         ->where('fk_reserva',$reservas->id)
@@ -160,7 +162,7 @@ class ReservaEquipamentoController extends Controller
         $equipamentos = '';
         //equipamentos
         foreach($equipamento_reservas as $equipamento){
-            $equipamentos .= ' Tipo: '.$equipamento->equipamento->tipoEquipamento->nome;
+            $equipamentos .= $equipamento->equipamento->tipoEquipamento->nome;
             if(!$equipamento->equipamento->codigo)
                 $equipamentos .= ' Tombo: '.$equipamento->equipamento->num_tombo;
             else
@@ -191,16 +193,21 @@ class ReservaEquipamentoController extends Controller
 
         $usuarioRetirada = '';
         $usuarioEntrega = '';
-
+        $dataRetirada = '';
+        $dataEntrega = '';
         //preenchendo os botões
         foreach($equipamento_reservas as $equipamento){
             
             //Caso tenha retirado o equipamento
-            if($reservas->data_hora_retirada)
+            if($reservas->data_hora_retirada){
                 $usuarioRetirada = $ambientes->reserva->usuarioRetirada->name;
+                $dataRetirada = date('d/m/Y H:i:s',strtotime($reservas->data_hora_retirada));
+            }
             //caso tenha entrege os equipamentos
-            if($reservas->data_hora_entrega)
+            if($reservas->data_hora_entrega){
                 $usuarioEntrega = $ambientes->reserva->usuarioEntrega->name;
+                $dataEntrega = date('d/m/Y H:i:s',strtotime($reservas->data_hora_entrega));
+            }
             
              //dados do botão visualizar
              $dadosVisualizar = 'data-id="'.$reservas->id.
@@ -209,8 +216,8 @@ class ReservaEquipamentoController extends Controller
              '" data-responsavel="'.$reservas->name.
              '" data-feedback="'.$reservas->feedback.
              '" data-equipamentos="'.$equipamentos.
-             '" data-hora_retirada="'.$reservas->data_hora_retirada.
-             '" data-hora_entrega="'.$reservas->data_hora_entrega.
+             '" data-hora_retirada="'.$dataRetirada.
+             '" data-hora_entrega="'.$dataEntrega.
              '" data-usuario_retirada="'.$usuarioRetirada.
              '" data-usuario_entrega="'.$usuarioEntrega.
              '" data-ambiente="'.$ambientes->ambiente->tipo->nome.' Nº: '.$ambientes->ambiente->numero_ambiente.
@@ -498,6 +505,19 @@ class ReservaEquipamentoController extends Controller
 
     //Retirar equipamento
     public function retirar(Request $request){
+        
+        $reserva = Reservas::where('id',$request->id)->first();
+        
+        //regras para retirar equipamento
+        $dataAtual = date('Y-m-d H:i:s',strtotime('now'));
+        $data_retirada_menos_15 = data('Y-m-d H:i:s',strtotime($reserva->data_inicial.' - 15 minute'));
+        $data_retirada_mais_15 = data('Y-m-d H:i:s',strtotime($reserva->data_inicial.' + 15 minute'));
+        
+        if($data_retirada_menos_15 > $dataAtual)
+            return Response::json(array('errors' => ['Só é possivel retirar com antecedência inferior a 15 minutos']));
+        if($data_retirada_mais_15 < $dataAtual)
+            return Response::json(array('errors' => ['Não é possivel rerirar após 15 minutos']));
+        
         $reservas = Reservas::find($request->id);
         $reservas->status = "Retirado";
         $reservas->data_hora_retirada = date('Y-m-d H:i:s',strtotime('now'));
@@ -517,11 +537,11 @@ class ReservaEquipamentoController extends Controller
         $reservas->fk_usuario_entrega = Auth::user()->id;
         $reservas->save();
  
-        //Atualizando tabela equipamento reservas
+        //Atualizando tabelas equipamento reservas e ambiente reservas
         EquipamentoReservas::where('fk_reserva',$request->id)
-        ->update(['status' => 'Inativo']);
+        ->update(['status' => 'Finalizada']);
         AmbienteReserva::where('fk_reserva',$request->id)
-        ->update(['status' => 'Inativo']);
+        ->update(['status' => 'Finalizada']);
         
          $reservas->setAttribute('buttons', $this->setDataButtons($reservas)); 
  
