@@ -170,11 +170,11 @@ class ReservaAmbienteController extends Controller
             ]);
             //recuperando os ambientes reservados
             $ambientes_reservados = $this->Ambientes_reservados($data_inicio, $data_final);
-            
+            //dd($ambientes_reservados);
             //adicionando ambientes reservados no array 
             if($ambientes_reservados != null){
                 foreach($ambientes_reservados as $ambiente_reservado){
-                    if($ambiente_reservado->status)
+                    if($ambiente_reservado->status == "Reservado" || $ambiente_reservado->status == "Em uso")
                         array_push($naoPodeUsar,$ambiente_reservado->fk_ambiente);
                 }
             }
@@ -215,11 +215,7 @@ class ReservaAmbienteController extends Controller
         ->where('status','!=','Inativo')
         ->where('fk_reserva',$reservas->fk_reserva)
         ->get();
-        
-        //dd($reservas);
-        
-
-        
+                
         //Recuperando data e hora final da reserva e convertendo o formato
         $data_final = date('d/m/Y',strtotime($reservas->data_final));
         $hora_final = date('H:i',strtotime($reservas->data_final));
@@ -227,14 +223,14 @@ class ReservaAmbienteController extends Controller
         $data_fim_editar = $reservas->data_final;
         //recuperando hora inicial da reserva
         $hora_inicial = date('H:i',strtotime($reservas->data_inicial));
-        //dd($ambientes);
+        
         $dadosVisualizar = '';
         $dados_editar = '';
         $dados_cancelar = '';
         $dados_feedback = '';
         //preenchendo os botões
         foreach($ambientes as $ambiente){
-            //dd($ambiente);
+            
             //dados do botão visualizar
             $dadosVisualizar = 'data-id="'.$reservas->fk_reserva.
             '" data-local="'.$ambiente->ambiente->local->nome.
@@ -279,7 +275,7 @@ class ReservaAmbienteController extends Controller
         if($reservas->status == 'Reservado' || $reservas->status == 'Em uso')
             $btnCancelar = ' <a '.$dados_cancelar.' class="btn btn-sm btn-danger btnCancelar" title="Cancelar" data-toggle="tooltip"><i class="fa fa-times"></i></a>';    
         else if($reservas->fk_usuario == Auth::user()->id && $reservas->feedback != null)
-            $btnExcluir = ' <a data-id="'.$reservas->id.'" class="btn btn-sm btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';            
+            $btnExcluir = ' <a data-id="'.$reservas->fk_reserva.'" class="btn btn-sm btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';            
 
         //Botões para colaboradores (Administradores e funcionários)
         if(Auth::user()->hasRole('Administrador|Funcionário')){

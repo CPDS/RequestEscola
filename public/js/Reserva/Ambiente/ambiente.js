@@ -372,6 +372,10 @@ $(document).ready(function($) {
 
                     jQuery('#feedback-modal').modal('hide');
 
+                    //Atualizando tabelas
+                    $('#reserva').DataTable().ajax.reload(null, false);
+                    $('#tabela_professor').DataTable().ajax.reload(null, false);
+
                     $(function() {
                         iziToast.success({
                             title: 'OK',
@@ -394,7 +398,7 @@ $(document).ready(function($) {
         });
     });
 
-    //AJAX Adicionar Ambiente
+    //AJAX Adicionar Reserva Ambiente
     $('.modal-footer').on('click', '.add', function() {
         
         var dados = new FormData($("#form")[0]); //pega os dados do form
@@ -428,6 +432,10 @@ $(document).ready(function($) {
 
                     jQuery('#criar_editar-modal').modal('hide');
                     
+                    //Atualizando tabelas
+                    $('#reserva').DataTable().ajax.reload(null, false);
+                    $('#tabela_professor').DataTable().ajax.reload(null, false);
+
                     $(function() {
                         iziToast.success({
                             title: 'OK',
@@ -475,7 +483,7 @@ $(document).ready(function($) {
                     $('.callout').find('p').text(""); //limpa a div para erros successivos
 
                     $.each(data.errors, function(nome, mensagem) {
-                            $('.callout').find("p").append(mensagem + "</br>");
+                        $('.callout').find("p").append(mensagem + "</br>");
                     });
 
                 } else {
@@ -483,6 +491,10 @@ $(document).ready(function($) {
                     $('#table').DataTable().draw(false);
 
                     jQuery('#criar_editar-modal').modal('hide');
+                    
+                    //Atualizando tabelas
+                    $('#reserva').DataTable().ajax.reload(null, false);
+                    $('#tabela_professor').DataTable().ajax.reload(null, false);
 
                     $(function() {
                         iziToast.success({
@@ -524,7 +536,9 @@ $(document).ready(function($) {
             success: function(data) {
                 $('#table').DataTable().row('#item-' + data.id).remove().draw(); //remove a linha e ordena
                 jQuery('#cancelar-modal').modal('hide'); //fechar o modal
-                
+                //Atualizando tabelas
+                $('#reserva').DataTable().ajax.reload(null, false);
+                $('#tabela_professor').DataTable().ajax.reload(null, false);
                 $(function() {
                     iziToast.success({
                         title: 'OK',
@@ -562,6 +576,10 @@ $(document).ready(function($) {
             success: function(data) {
                 $('#table').DataTable().row('#item-' + data.id).remove().draw(); //remove a linha e ordena
                 jQuery('#excluir-modal').modal('hide'); //fechar o modal
+                
+                //Atualizando tabelas
+                $('#reserva').DataTable().ajax.reload(null, false);
+                $('#tabela_professor').DataTable().ajax.reload(null, false);
 
                 $(function() {
 

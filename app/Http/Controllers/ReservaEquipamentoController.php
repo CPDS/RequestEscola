@@ -110,11 +110,11 @@ class ReservaEquipamentoController extends Controller
         $equipamentos_reservados = ReservaEquipamentoController::Equipamentos_reservados($data_inicio, $data_final);
         
         if($equipamentos_reservados != null){
-                foreach($equipamentos_reservados as $equipamento_reservado){
-                    if($equipamento_reservado->status)
-                        array_push($naoPodeUsar,$equipamento_reservado->fk_ambiente);
-                }
+            foreach($equipamentos_reservados as $equipamento_reservado){
+                if($equipamento_reservado->status == 'Reservado' || $equipamento_reservado->status == 'Retirado')
+                    array_push($naoPodeUsar,$equipamento_reservado->fk_ambiente);
             }
+        }
 
             //condições para selecionar os equipamentos a serem reservados
             if($equipamentos_reservados == null){
@@ -169,11 +169,6 @@ class ReservaEquipamentoController extends Controller
                 $equipamentos .= ' Código: '.$equipamento->equipamento->codigo;
                 
         }   
-
-        //dd($equipamento_reservas);
-        //dd($reservas);
-        
-
         
         //Recuperando data e hora final da reserva e convertendo o formato
         $data_final = date('d/m/Y',strtotime($reservas->data_final));

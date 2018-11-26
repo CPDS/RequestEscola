@@ -449,10 +449,10 @@ $(document).ready(function($) {
 
                 } else {
                     
-                    $('#table').DataTable().draw(false);
+                    $('#atendidos-table').DataTable().draw(false);
 
                     jQuery('#feedback-modal').modal('hide');
-
+                    
                     $(function() {
                         iziToast.success({
                             title: 'OK',
@@ -505,8 +505,8 @@ $(document).ready(function($) {
 
                 } else {
                     
-                    $('#table').DataTable().draw(false);
-
+                    $('#reserva-table').DataTable().draw(false);
+                    
                     jQuery('#criar_editar-modal').modal('hide');
                     
                     $(function() {
@@ -561,7 +561,8 @@ $(document).ready(function($) {
 
                 } else {
                     
-                    $('#table').DataTable().draw(false);
+                    $('#reserva-table').DataTable().draw(false);
+                    $('#atendidos-table').DataTable().draw(false);
 
                     jQuery('#criar_editar-modal').modal('hide');
 
@@ -700,7 +701,7 @@ $(document).ready(function($) {
                             message: 'Equipamentos retirados com Sucesso!',
                         });
                     });
-                    //window.location.reload();
+                    
                 }               
             },
             error: function() {
