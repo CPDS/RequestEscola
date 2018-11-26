@@ -23,7 +23,7 @@
   </div>
   <!-- row -->
   <div class="row">
-    <div class="col-lg-6 col-xs-6">
+    <div class="col-lg-4 col-xs-4">
       <!-- small box -->
       <div class="small-box bg-primary">
         <div class="inner">
@@ -39,7 +39,7 @@
       </div>
     </div>
     <!-- ./col -->
-    <div class="col-lg-6 col-xs-6">
+    <div class="col-lg-4 col-xs-4">
       <!-- small box -->
       <div class="small-box bg-green">
         <div class="inner">
@@ -53,12 +53,30 @@
         <a href="{{url('reserva-ambiente')}}" class="small-box-footer">Exibir reserva(s) <i class="fa fa-arrow-circle-right"></i></a>
       </div>
     </div>
+
+
+     <!-- ./col -->
+    <div class="col-lg-4 col-xs-4">
+      <!-- small box -->
+      <div class="small-box bg-aqua">
+        <div class="inner">
+          <h3>X</h3>
+          <p>Reserva(s) de equipamento(s) aguardando retirada hoje</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-calendar-check-o "></i>
+        </div>
+        <a href="#" class="small-box-footer">Exibir reserva(s) <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
   </div>
 
   <!-- row -->
   <div class="row">
+    
     <!-- ./col -->
-    <div class="col-lg-6 col-xs-6">
+    <div class="col-lg-4 col-xs-4">
       <!-- small box -->
       <div class="small-box bg-red">
         <div class="inner">
@@ -71,39 +89,9 @@
         <a href="{{ url('equipamentos') }}" class="small-box-footer">Exibir <i class="fa fa-arrow-circle-right"></i></a>
       </div>
     </div>
+    
     <!-- ./col -->
-    <div class="col-lg-6 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-aqua">
-        <div class="inner">
-          <h3>X</h3>
-          <p>Reserva(s) de equipamento(s) aguardando retirada hoje</p>
-        </div>
-        <div class="icon">
-          <i class="fa fa-calendar-check-o "></i>
-        </div>
-        <a href="#" class="small-box-footer">Exibir reserva(s) <i class="fa fa-arrow-circle-right"></i></a>
-      </div>
-    </div>  
-  </div>
-
-  <!-- row -->
-  <div class="row">
-    <div class="col-lg-6 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-aqua">
-        <div class="inner">
-          <h3>X</h3>
-          <p>Retirada(s) de equipamento em andamento</p>
-        </div>
-        <div class="icon">
-          <i class="glyphicon glyphicon-check"></i>
-        </div>
-        <a href="#" class="small-box-footer">Exibir Retirada(s) <i class="fa fa-arrow-circle-right"></i></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-6 col-xs-6">
+    <div class="col-lg-4 col-xs-4">
       <!-- small box -->
       <div class="small-box bg-green">
         <div class="inner">
@@ -116,5 +104,21 @@
         <a href="{{ url('equipamentos') }}" class="small-box-footer">Exibir <i class="fa fa-arrow-circle-right"></i></a>
       </div>
     </div>
+
+
+    <div class="col-lg-4 col-xs-4">
+      <!-- small box -->
+      <div class="small-box bg-aqua">
+        <div class="inner">
+          <h3>X</h3>
+          <p>Retirada(s) de equipamento em andamento</p>
+        </div>
+        <div class="icon">
+          <i class="glyphicon glyphicon-check"></i>
+        </div>
+        <a href="#" class="small-box-footer">Exibir Retirada(s) <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
   </div>
+
 @endsection

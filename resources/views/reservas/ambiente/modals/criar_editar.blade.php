@@ -116,9 +116,18 @@
               </div>  
             </div>
           </div>
+
+          <div class="form-group col-xs-12">
+            <strong>Observação:</strong>
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+              <textarea placeholder="Descreva o local" maxlength="254" class="form-control" id="observacao" name="observacao" type="text" style="resize: none;"></textarea> 
+            </div> 
+          </div>
+
 		<div class="form-group col-md-12">
 			<strong id="texto_observacao">Observações</strong>
-			<textarea class="form-control" rows="3" width="100%" maxlength="254" id="observacao" class="form-control" name="observacao"></textarea> 
+			<textarea class="form-control" rows="3" width="100%" maxlength="254" id="observacao" class="form-control" name="observacao" style="resize: none;"></textarea> 
 		</div>
 
         <input type="hidden" id="id" name="id">

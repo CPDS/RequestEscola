@@ -9,8 +9,8 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
         </button>
-
-        <h4 class="modal-title"><strong>Desativar usuário</strong></h4>
+        
+        <h4 class="modal-title"></h4>
       </div>
 
       <div class="modal-body"> Tem certeza que deseja desativar este usuário? </div>
@@ -20,7 +20,9 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
         <span class="hidden id_del"></span> <!-- Passar o ID para o Controlador -->
       </div>      
+    
     </div> 
+    
       <!-- Fim de ModaL Content -->
   </div> 
   <!-- Fim de ModaL Dialog -->

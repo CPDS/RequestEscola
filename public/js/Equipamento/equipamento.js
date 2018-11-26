@@ -130,6 +130,15 @@ $(document).ready(function($) {
         jQuery('#excluir-modal').modal('show'); //Abrir o modal
     });
 
+    //Defeito
+     $(document).on('click', '.btnDefeito', function() {
+        alert('ok');
+        /*
+        $('.modal-title').text('Informar Defeito');
+        $('.id_def').val($(this).data('id')); 
+        jQuery('#defeito-modal').modal('show'); //Abrir o modal*/
+    });
+
     //AJAX Adicionar Equipamento
     $('.modal-footer').on('click', '.add', function() {
         

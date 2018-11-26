@@ -110,7 +110,7 @@
 
             <div class="form-group col-md-12">
               <strong id="texto_observacao">Observações</strong>
-              <textarea class="form-control" rows="3" width="100%" maxlength="254" id="observacao" class="form-control" name="observacao"></textarea> 
+              <textarea class="form-control" rows="3" width="100%" maxlength="254" id="observacao" class="form-control" name="observacao" style="resize: none;"></textarea> 
             </div>
 
         <input type="hidden" id="id" name="id">
