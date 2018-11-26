@@ -191,8 +191,8 @@ $(document).ready(function($) {
     });
 
     //Evento ajax - EXCLUIR USUÁRIO
-    $('.modal-footer').on('click', '.can', function() {
-        
+    $('.modal-footer').on('click', '.del', function() {
+
         $.ajax({
             type: 'post',
             url: './users/delete',
@@ -218,6 +218,7 @@ $(document).ready(function($) {
                 });
             },
             error: function() {
+
                 jQuery('#excluir-modal').modal('hide'); //fechar o modal
 
                 iziToast.error({

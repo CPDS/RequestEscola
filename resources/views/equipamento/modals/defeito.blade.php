@@ -8,7 +8,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
 
-        <h4 class="modal-title"><strong>Defeito</strong></h4>
+        <h4 class="modal-title"></h4>
       </div>
 
       <div class="modal-body"> Tem certeza que o equipamento está com problemas? </div>
@@ -21,6 +21,6 @@
     </div> 
     <!-- Fim de ModaL Content -->
   </div>
-   <!-- Fim de ModaL Dialog -->
+  <!-- Fim de ModaL Dialog -->
 </div>
  <!-- Fim de ModaL -->

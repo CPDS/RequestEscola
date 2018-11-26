@@ -48,7 +48,7 @@
 	
 	@include('usuario.modals.ativar')
 	@include('usuario.modals.criar_editar')
-	@include('usuario.modals.excluir')
 	@include('usuario.modals.visualizar')
+	@include('usuario.modals.excluir')
 
 @endsection

@@ -91,7 +91,7 @@
                                 </div>
                             -->
                                 <div class="text-center">
-                                    <a href="{{ url('/logout') }}" class="btn btn-default btn-flat"
+                                    <a href="{{ url('/logout') }}" class="btn btn-default"
                                        onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
                                         Sair

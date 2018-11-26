@@ -9,7 +9,7 @@
         <span aria-hidden="true">&times;</span>
         </button>
 
-        <h4 class="modal-title"><strong>Excluir equipamento</strong></h4>
+        <h4 class="modal-title"></h4>
       </div>
 
       <div class="modal-body"> Tem certeza que deseja excluir este equipamento? </div>
