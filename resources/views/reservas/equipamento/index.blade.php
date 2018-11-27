@@ -117,7 +117,9 @@
 @role('Administrador|Funcionário')
 	@include('reservas.equipamento.modals.retirar')
 	@include('reservas.equipamento.modals.finalizar')
+	@include('reservas.equipamento.modals.editar')
 @endrole
-
+@include('reservas.equipamento.modals.cancelar');
+@include('reservas.equipamento.modals.excluir');
    
 @endsection

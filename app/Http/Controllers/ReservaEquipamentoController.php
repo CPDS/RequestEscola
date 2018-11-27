@@ -221,24 +221,17 @@ class ReservaEquipamentoController extends Controller
             
             //dados para botão editar
             $dadosEditar = 'data-id="'.$reservas->id.
-            '" data-solicitante="'.$ambientes->reserva->usuario->telefone.
-            '" data-responsavel="'.$reservas->name.
-            '" data-telefone="'.$reservas->solicitante_telefone.
-            '" data-ambiente="'.$ambientes->fk_ambiente.
-            '" data-local="'.$ambientes->ambiente->fk_local.
-            '" data-data_hora_inicio="'.$data_inicio_editar.
-            '" data-data_hora_termino="'.$data_fim_editar.
-            '" data-ambiente_padrao="manter"
-               data-ambiente_novo="novo"';
+            '" data-solicitante-editar="'.$ambientes->reserva->usuario->name.
+            '" data-responsavel-editar="'.$reservas->name.
+            '" data-telefone-editar="'.$reservas->solicitante_telefone.
+            '" data-ambiente-editar="'.$ambientes->fk_ambiente.
+            '" data-local-editar="'.$ambientes->ambiente->fk_local.'"';
 
-            //Dados cancelar
-            $dadosCancelar = 'data-id="'.$reservas->id.
-            '" data-descricao="'.$ambientes->ambiente->descricao.'" ';
             //dados feedback
             $dadoFeedback = 'data-id_feedback="'.$reservas->id.
             '" data-feedback="'.$reservas->feedback.'"';
-            //dados retirar
-            $dadosRetirar = ' data-id="'.$reservas->id.
+            //dados retirar e cancelar
+            $dadosEquipamentos = ' data-id="'.$reservas->id.
             '"data-equipamentos="'.$equipamentos.'"';
         }
     
@@ -252,7 +245,7 @@ class ReservaEquipamentoController extends Controller
         $btnRetirar = '';
         //Condição para botão excluir e cancelar
         if($reservas->status == 'Reservado' || $reservas->status == 'Retirado')
-            $btnCancelar = ' <a '.$dadosCancelar.' class="btn btn-sm btn-danger btnCancelar" title="Cancelar" data-toggle="tooltip"><i class="fa fa-times"></i></a>';    
+            $btnCancelar = ' <a '.$dadosEquipamentos.' class="btn btn-sm btn-danger btnCancelar" title="Cancelar" data-toggle="tooltip"><i class="fa fa-times"></i></a>';    
         else if($reservas->fk_usuario == Auth::user()->id && $reservas->feedback != null)
             $btnExcluir = ' <a data-id="'.$reservas->id.'" class="btn btn-sm btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';            
 
@@ -263,7 +256,7 @@ class ReservaEquipamentoController extends Controller
             if($reservas->status == 'Retirado')
                 $btnFinalizar = ' <a   class="btn btn-sm btn-success btnFinalizar" data-id="'. $reservas->id .'" title="Finalizar" data-toggle="tooltip" ><i class="glyphicon glyphicon-import"></i></a>';
             if($reservas->status == 'Reservado')
-                $btnRetirar = ' <a  class="btn btn-sm btn-success btnRetirar" '. $dadosRetirar.' title="Retirar" data-toggle="tooltip" ><i class="glyphicon glyphicon-export"></i></a>';
+                $btnRetirar = ' <a  class="btn btn-sm btn-success btnRetirar" '. $dadosEquipamentos.' title="Retirar" data-toggle="tooltip" ><i class="glyphicon glyphicon-export"></i></a>';
         }
         //botão para feedback
         if($reservas->status == 'Finalizada' && $reservas->feedback == null && $reservas->fk_usuario == Auth::user()->id){

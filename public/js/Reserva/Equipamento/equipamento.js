@@ -237,7 +237,7 @@ $(document).ready(function($) {
         tags: true,
       });
 
-    //Ação checkbox do solicitante
+    //Ação checkbox do solicitante criar
     $(document).on('click','#ch_usuario_logado', function() {
         if($('#ch_usuario_logado').is(':checked')){
             $('#solicitante').prop("readonly",true);
@@ -250,6 +250,23 @@ $(document).ready(function($) {
             $('#solicitante').val('');
             $('#telefone').prop("readonly",false);
             $('#telefone').val('');
+            
+        }
+    });
+
+    //Ação checkbox do solicitante Editar
+    $(document).on('click','#ch_usuario_logado_editar', function() {
+        if($('#ch_usuario_logado_editar').is(':checked')){
+            $('#solicitante-editar').prop("readonly",true);
+            $('#solicitante-editar').val($(this).data('nome'));
+            $('#telefone-editar').prop("readonly",true);
+            $('#telefone-editar').val($('.btnAdicionar').data('telefone'));
+        }
+        else{
+            $('#solicitante-editar').prop("readonly",false);
+            $('#solicitante-editar').val('');
+            $('#telefone-editar').prop("readonly",false);
+            $('#telefone-editar').val('');
             
         }
     });
@@ -349,24 +366,27 @@ $(document).ready(function($) {
         $('.modal-title').text('Editar Reserva de Ambiente');
         $('.callout').addClass("hidden"); //ocultar a div de aviso
         $('.callout').find("p").text(""); //limpar a div de aviso
-        $('#div_tel').removeClass("col-md-6");
-        $('#div_tel').addClass("col-md-12");
-        $('.dadosHora').addClass("hidden");//Exibindo dados de horario
         $('#texto_observacao').text('Descrição do Pedido: ');
-        
+        $('#form')[0].reset();//limpar dados do formulário
         var btnEditar = $(this);
+
+
         
         //condição para checkbox
-        if(btnEditar.data('solicitante') != $('#ch_usuario_logado').data('nome')){
-            $('#ch_usuario_logado').prop("checked",false);
-            $('#solicitante').prop("readonly",false);
-            $('#telefone').prop("readonly",false);
+        if(btnEditar.data('solicitante-editar') != $('#ch_usuario_logado_editar').data('nome')){
+            $('#ch_usuario_logado_editar').prop("checked",false);
+            $('#solicitante-editar').prop("readonly",false);
+            $('#telefone-editar').prop("readonly",false);
         }
         
         //preenchendo formulário
-        $('#form :input').each(function(index,input){
-            $('#'+input.id).val($(btnEditar).data(input.id));
-        });
+        $('#solicitante-editar').val(btnEditar.data('solicitante-editar'));
+        $('#responsavel-editar').val(btnEditar.data('responsavel-editar'));
+        $('#telefone-editar').val(btnEditar.data('telefone-editar'));
+        $('#ambiente-editar').val(btnEditar.data('ambiente-editar'));
+        $('#local-editar').val(btnEditar.data('local-editar'));
+        $('#id_ed').val(btnEditar.data('id'));
+        
 
         jQuery('#editar-modal').modal('show'); //Abrir o modal
     });
@@ -375,8 +395,9 @@ $(document).ready(function($) {
     $(document).on('click', '.btnCancelar', function() {
         $('.callout').addClass("hidden"); //ocultar a div de aviso
         $('.callout').find("p").text(""); //limpar a div de aviso
+        $('.modal-title').text('Cancelar Reserva');
         
-        $('#ambiente-retirar').text($(this).data('descricao'));
+        $('#equipamentos-cancelar').text($(this).data('equipamentos'));
         $('.id_can').val($(this).data('id')); 
         jQuery('#cancelar-modal').modal('show'); //Abrir o modal
     });
