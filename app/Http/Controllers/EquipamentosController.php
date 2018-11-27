@@ -55,8 +55,11 @@ class EquipamentosController extends Controller
             $btnEditar = ' <a data-id="'.$equipamento->id.'" class="btn btn-primary btnEditar" '.$dados.' title="Editar" data-toggle="tooltip"><i class="fa fa- fa-pencil-square-o"></i></a>';
             $btnExcluir = ' <a data-id="'.$equipamento->id.'" class="btn btn-danger btnExcluir" title="Excluir" data-toggle="tooltip"><i class="fa fa-trash-o"></i></a>';
             
-            if($equipamento->status != "Defeito")
+            if($equipamento->status != "Defeito"){
                 $btnDefeito = ' <a  data-id="'.$equipamento->id.'" class="btn btn-warning btnDefeito" title="Informar Defeito" data-toggle="tooltip" ><i class="fa fa-exclamation-triangle"></i> </a>';
+            }
+            else
+                $btnDefeito = '';    
         }else{
             $btnEditar = '';
             $btnExcluir = '';
@@ -184,6 +187,15 @@ class EquipamentosController extends Controller
             $equipamento->setAttribute('buttons', $this->setDataButtons($equipamento));
             return response()->json($equipamento);
         }
+    }
+
+    public function defeito(Request $request)
+    {
+        //
+        $equipamento = Equipamentos::find($request->id);
+        $equipamento->status = 'Defeito';
+        $equipamento->save();
+        return response()->json($equipamento);
     }
 
     public function destroy(Request $request)

@@ -33,8 +33,8 @@ $(document).ready(function($) {
         sorting: [[ 1, "asc" ]],
         responsive: true,
         lengthMenu: [
-            [10, 15, -1],
-            [10, 15, "Todos"]
+        [10, 15, -1],
+        [10, 15, "Todos"]
         ],
         language: {
             "sEmptyTable": "Nenhum registro encontrado",
@@ -60,7 +60,7 @@ $(document).ready(function($) {
             }
         },
         columnDefs : [
-          { targets : [0,6], sortable : false },
+        { targets : [0,6], sortable : false },
           { "width": "5%", "targets": 0  },  //ID
           { "width": "10%", "targets": 1 },//nome
           { "width": "10%", "targets": 2 },//tipo
@@ -68,12 +68,12 @@ $(document).ready(function($) {
           { "width": "14%", "targets": 4 },//marca
           { "width": "14%", "targets": 5 },//status
           { "width": "14%", "targets": 6 }//acao
-        ]
-    });
+          ]
+      });
 
     tabela.on('draw.dt', function() {
         tabela.column(0, { search: 'applied', order: 'applied' }).nodes().each(function(cell, i) {
-        cell.innerHTML = tabela.page.info().page * tabela.page.info().length + i + 1;
+            cell.innerHTML = tabela.page.info().page * tabela.page.info().length + i + 1;
         });
     }).draw();
 
@@ -131,17 +131,55 @@ $(document).ready(function($) {
     });
 
     //Defeito
-     $(document).on('click', '.btnDefeito', function() {
-        alert('ok');
-        /*
+    $(document).on('click', '.btnDefeito', function() {
         $('.modal-title').text('Informar Defeito');
         $('.id_def').val($(this).data('id')); 
-        jQuery('#defeito-modal').modal('show'); //Abrir o modal*/
+        jQuery('#defeito-modal').modal('show'); //Abrir o modal
+    });
+
+    //Ajax Defeito
+    $('.modal-footer').on('click', '.def', function() {
+
+        $.ajax({
+            type: 'post',
+            url: './equipamentos/defeito',
+            data: {
+                'id': $(".id_def").val(),
+            },
+            beforeSend: function(){
+                jQuery('.def').button('loading');
+            },
+            complete: function() {
+                jQuery('.def').button('reset');
+            },
+            success: function(data) {
+                $('#table').DataTable().row('#item-' + data.id).remove().draw(); //remove a linha e ordena
+                jQuery('#defeito-modal').modal('hide'); //fechar o modal
+
+                $(function() {
+
+                    iziToast.success({
+                        title: 'OK',
+                        message: 'Status atualizado com Sucesso!',
+                    });
+                });
+            },
+            error: function() {
+
+                jQuery('#defeito-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+
+        });
     });
 
     //AJAX Adicionar Equipamento
     $('.modal-footer').on('click', '.add', function() {
-        
+
         var dados = new FormData($("#form")[0]); //pega os dados do form
 
         $.ajax({
@@ -158,17 +196,17 @@ $(document).ready(function($) {
             },
             success: function(data) {
                  //Verificar os erros de preenchimento
-                if ((data.errors)) {
+                 if ((data.errors)) {
 
                     $('.callout').removeClass('hidden'); //exibe a div de erro
                     $('.callout').find('p').text(""); //limpa a div para erros sucessivos
 
                     $.each(data.errors, function(nome, mensagem) {
-                            $('.callout').find("p").append(mensagem + "</br>");
+                        $('.callout').find("p").append(mensagem + "</br>");
                     });
 
                 } else {
-                    
+
                     $('#table').DataTable().draw(false);
 
                     jQuery('#criar_editar-modal').modal('hide');
@@ -212,17 +250,17 @@ $(document).ready(function($) {
             },
             success: function(data) {
                  //Verificar os erros de preenchimento
-                if ((data.errors)) {
+                 if ((data.errors)) {
 
                     $('.callout').removeClass('hidden'); //exibe a div de erro
                     $('.callout').find('p').text(""); //limpa a div para erros successivos
 
                     $.each(data.errors, function(nome, mensagem) {
-                            $('.callout').find("p").append(mensagem + "</br>");
+                        $('.callout').find("p").append(mensagem + "</br>");
                     });
 
                 } else {
-                    
+
                     $('#table').DataTable().draw(false);
 
                     jQuery('#criar_editar-modal').modal('hide');

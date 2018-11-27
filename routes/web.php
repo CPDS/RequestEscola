@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth']], function() {
 			Route::post('/create', ['as' => 'equipamentos.create', 'uses' => 'EquipamentosController@store'])->middleware('role:Administrador');
 			Route::post('/edit',['as' => 'equipamentos.edit', 'uses' => 'EquipamentosController@update'])->middleware('role:Administrador');
 			Route::post('/delete',['as' => 'equipamentos.destroy', 'uses'=> 'EquipamentosController@destroy'])->middleware('role:Administrador');
+			Route::post('/defeito',['as' => 'equipamentos.defeito', 'uses'=> 'EquipamentosController@defeito'])->middleware('role:Administrador');
 		});
 
 		//Rotas de Manutenção
