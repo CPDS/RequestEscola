@@ -29,7 +29,7 @@ class ManutencoesController extends Controller
      */
     public function index()
     {
-    	$equipamentos = Equipamentos::where('status','Ativo')->get();
+    	$equipamentos = Equipamentos::where('status','Defeito')->get();
     	$usuario = User::where('status',true)->get();
 
         return view('manutencao.funcionarios.index', compact('equipamentos'));
@@ -123,9 +123,9 @@ class ManutencoesController extends Controller
            $dataAtual = Carbon::now(); //pega a hora atual do PC
 
            $manutencao = new Manutencoes();
-           $manutencao->id_equipamento = $request->id_equipamento;
+           $manutencao->fk_equipamento = $request->id_equipamento;
            $manutencao->descricao = $request->descricao;
-           $manutencao->id_usuario = Auth::user()->id;
+           $manutencao->fk_usuario = Auth::user()->id;
            $manutencao->data = $dataAtual->toDateTimeString();
            $manutencao->destino = $request->destino;
            $manutencao->status = "Ativo";
@@ -134,10 +134,10 @@ class ManutencoesController extends Controller
            $equipamento->status = "Em Manutencao";
            $flag_email=false;
            $manutencao->save();
-          /* $equipamento->save();
+           $equipamento->save();
            $manutencao->setAttribute('buttons', $this->setDataButtons($manutencao));
 
-           return response()->json();*/
+           return response()->json();
         }
     }
 
@@ -171,16 +171,15 @@ class ManutencoesController extends Controller
 
     public function conserto(Request $request) {
       
-        /*
-        $manutencao = Manutencao::find($request->id);
+        $manutencao = Manutencoes::find($request->id);
         $manutencao->status = "Inativo";
-        $equipamento = Equipamento::find($manutencao->id_equipamento);
+        $equipamento = Equipamentos::find($manutencao->fk_equipamento);
         $equipamento->status = "Ativo";
         $equipamento->save();
         $manutencao->save();
 
         return response()->json($manutencao);
-        */
+        
     }
 
 }

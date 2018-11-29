@@ -14,7 +14,7 @@ $(document).ready(function($) {
         { data: null, name: 'order' },
         { data: 'tombo', name: 'tombo' },
         { data: 'data', name: 'data' },
-        { data: 'usuario.nome', name: 'usuario.nome' },
+        { data: 'usuario', name: 'usuario' },
         { data: 'destino', name: 'destino' },
         { data: 'status', name: 'status' },
         { data: 'acao', name: 'acao' }
@@ -131,6 +131,47 @@ $(document).ready(function($) {
         $('.id_cons').val($(this).data('id')); 
         jQuery('#conserto-modal').modal('show'); //Abrir o modal
     });
+
+    //Conserto
+    $('.modal-footer').on('click', '.cons', function() {
+
+        $.ajax({
+            type: 'post',
+            url: './manutencao/conserto',
+            data: {
+                'id': $(".id_cons").val(),
+            },
+            beforeSend: function(){
+                jQuery('.cons').button('loading');
+            },
+            complete: function() {
+                jQuery('.cons').button('reset');
+            },
+            success: function(data) {
+                $('#manutencao_table').DataTable().row('#item-' + data.id).remove().draw(); //remove a linha e ordena
+                jQuery('#conserto-modal').modal('hide'); //fechar o modal
+
+                $(function() {
+
+                    iziToast.success({
+                        title: 'OK',
+                        message: 'Status atualizado com Sucesso!',
+                    });
+                });
+            },
+            error: function() {
+
+                jQuery('#conserto-modal').modal('hide'); //fechar o modal
+
+                iziToast.error({
+                    title: 'Erro Interno',
+                    message: 'Operação Cancelada!',
+                });
+            },
+
+        });
+    });
+
 
     //AJAX Adicionar Manutenção
     $('.modal-footer').on('click', '.add', function() {

@@ -33,39 +33,34 @@
               <strong>Tipo do Equipamento:</strong>
               <span id="tipo_equipamento-visualizar"></span>
             </div>
-<!--
-          <div class="form-group">
-              <strong>Data da Solicitação:</strong>
-              <span id="data-visualizar"></span>
+            
+            <div class="form-group">
+              <strong>Descrição da Solicitação:</strong>
+              <span id="descricao-visualizar"></span>
+            </div>
+
+            <div class="form-group">
+              <strong>Local:</strong>
+              <span id="local-visualizar"></span>
+            </div>
+
+            <div class="form-group">
+              <strong>Status:</strong>
+              <span id="status-visualizar"></span>
+            </div>
+
           </div>
-        -->
-        <div class="form-group">
-          <strong>Descrição da Solicitação:</strong>
-          <span id="descricao-visualizar"></span>
-        </div>
 
-        <div class="form-group">
-          <strong>Local:</strong>
-          <span id="local-visualizar"></span>
         </div>
-
-        <div class="form-group">
-          <strong>Status:</strong>
-          <span id="status-visualizar"></span>
-        </div>
-
+        
       </div>
 
-    </div>
-    
-  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="id_usuario">Fechar</button>
+      </div>
 
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" data-dismiss="modal" id="id_usuario">Fechar</button>
-  </div>
+    </div> <!-- Fim de ModaL Content -->
 
-</div> <!-- Fim de ModaL Content -->
-
-</div> <!-- Fim de ModaL Dialog -->
+  </div> <!-- Fim de ModaL Dialog -->
 
 </div> <!-- Fim de ModaL Visualizar -->
